@@ -1,0 +1,279 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>Make Your Device Public Without Any Public IPv4 - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="Make Your Device Public Without Any Public IPv4">
+<meta property="og:description" content="This post shows how to make any device (running on Windows, MAC OS X, Linux-based systems) visible public (outside of your private or home network), without any public IPv4 address. I mean the state when you are stuck behind a NAT gateway or proxy and also your Internet Service Provider (ISP) did not supply any public IPv4 or IPv6 address to you. The solution is an IPv6 tunneling.
+Moreover, you will receive a public IP address anywhere you connect your device to any network with this tutorial, no future configuration required, isn&rsquo;t it attractive for you?">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://blog.pavelsklenar.com/make-your-device-public-without-any-public-ipv4/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2015-10-08T00:00:00+00:00">
+<meta property="article:modified_time" content="2021-09-20T22:40:20+02:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png">
+<meta name=twitter:title content="Make Your Device Public Without Any Public IPv4">
+<meta name=twitter:description content="This post shows how to make any device (running on Windows, MAC OS X, Linux-based systems) visible public (outside of your private or home network), without any public IPv4 address. I mean the state when you are stuck behind a NAT gateway or proxy and also your Internet Service Provider (ISP) did not supply any public IPv4 or IPv6 address to you. The solution is an IPv6 tunneling.
+Moreover, you will receive a public IP address anywhere you connect your device to any network with this tutorial, no future configuration required, isn&rsquo;t it attractive for you?">
+<meta name=application-name content="blog.pavelsklenar.com">
+<meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/make-your-device-public-without-any-public-ipv4/><link rel=prev href=https://blog.pavelsklenar.com/how-to-create-maven-dependencies-using-dsl-in-groovy/><link rel=next href=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Make Your Device Public Without Any Public IPv4","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/make-your-device-public-without-any-public-ipv4\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","wordcount":1485,"url":"https:\/\/blog.pavelsklenar.com\/make-your-device-public-without-any-public-ipv4\/","datePublished":"2015-10-08T00:00:00+00:00","dateModified":"2021-09-20T22:40:20+02:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>('false'==='true'&&window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=/posts/> Posts </a><a class=menu-item href=/tags/> Tags </a><a class=menu-item href=/categories/> Categories </a><a class=menu-item href=/about/> About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
+Cancel
+</a>
+</div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">Make Your Device Public Without Any Public IPv4</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/networking/><i class="far fa-folder fa-fw"></i>networking</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2015-10-08>2015-10-08</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1485 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;<span id=/make-your-device-public-without-any-public-ipv4/ class=leancloud_visitors data-flag-title="Make Your Device Public Without Any Public IPv4">
+<i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;views
+</span>&nbsp;</div>
+</div><div class="details toc" id=toc-static kept>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li><a href=#list-of-content>List of Content:</a></li>
+<li><a href=#why-ipv6>Why IPv6?</a></li>
+<li><a href=#getting-an-ipv6-address>Getting an IPv6 Address</a></li>
+<li><a href=#choosing-a-tunneling-provider>Choosing a tunneling provider</a></li>
+<li><a href=#ipv6-tunnel-setup>IPv6 Tunnel setup</a>
+<ul>
+<li><a href=#sign-up-for-sixxs>Sign up for SixXS</a></li>
+<li><a href=#request-tunnel>Request tunnel</a></li>
+<li><a href=#tunnel-configuration>Tunnel configuration</a></li>
+</ul>
+</li>
+<li><a href=#register-your-own-domain>Register your own domain</a></li>
+<li><a href=#access-restrictions>Access restrictions</a>
+<ul>
+<li><a href=#how-to-use-ipv4-gateway>How to use IPv4 gateway?</a></li>
+</ul>
+</li>
+<li><a href=#conclusion>Conclusion</a></li>
+</ul>
+</nav></div>
+</div><div class=content id=content><p>This post shows how to make any device (running on Windows, MAC OS X, Linux-based systems) visible public (outside of your private or home network), without any public IPv4 address. I mean the state when you are stuck behind a NAT gateway or proxy and also your Internet Service Provider (ISP) did not supply any public IPv4 or IPv6 address to you. The solution is an <strong>IPv6 tunneling</strong>.</p>
+<p>Moreover, you will receive a public IP address anywhere you connect your device to any network with this tutorial, no future configuration required, isn&rsquo;t it attractive for you?</p>
+<h2 id=list-of-content>List of Content:</h2>
+<ul>
+<li><a href=#why_ipv6 rel>Why IPv6?</a></li>
+<li><a href=#getting_ipv6_address rel>Getting an IPv6 address</a></li>
+<li><a href=#choosing_tunneling_provider rel>Choosing a tunneling provider</a></li>
+<li><a href=#tunnel_setup rel>Tunnel setup</a></li>
+<li><a href=#register_your_own_domain rel>Register your own domain</a></li>
+<li><a href=#access_restrictions rel>Access restrictions</a></li>
+<li><a href=#conclusions rel>Conclusion</a></li>
+</ul>
+<h2 id=why-ipv6>Why IPv6?</h2>
+<p>IPv4 addresses become very valuable article because its global pooling capacity were already exhausted on 1 February 2011 (<a href=https://www.icann.org/en/system/files/press-materials/release-03feb11-en.pdf target=_blank rel="noopener noreferrer">source</a>).</p>
+<p>I cannot say it globally, but nowadays you may encounter problems to receive your own public IPv4 address from your Internet provider in some locations due to insufficient capacity.</p>
+<blockquote>
+<p>Available Pool of Unallocated IPv4 Internet Addresses Now Completely Emptied. The Future Rests with IPv6.(<a href=https://www.icann.org/en/system/files/press-materials/release-03feb11-en.pdf target=_blank rel="noopener noreferrer">source</a>).</p>
+</blockquote>
+<h2 id=getting-an-ipv6-address>Getting an IPv6 Address</h2>
+<p>So if you want to get an IPv6 address, you have few ways to do it. The first one (and the best one) is if your Internet Service Provider (ISP) supplies them to you. All you have to do is enabling IPv6 on your computer (maybe it has been already enabled) and you&rsquo;re done.</p>
+<p>Most of us are not so lucky, fortunately, there exist some tunneling protocols which allows you to get and use an IPv6 address over your IPv4 connection to the internet.</p>
+<p>I do not want to use any of automatic tunneling protocols (i.e. 6to4, Teredo, ISATAP). They are not suitable for our &ldquo;server&rdquo; purpose. Most tunnels use IPv4 protocol 41 to transport IPv6 over IPv4 and not all firewalls and NATs can properly pass protocol 41 without any special configuration.</p>
+<blockquote>
+<p><strong>Note:</strong> ICMP is protocol 1, IGMP is protocol 2, TCP is protocol 6, UDP is protocol 17. (<a href=https://wiki.ubuntu.com/IPv6 target=_blank rel="noopener noreferrer">source</a>)</p>
+</blockquote>
+<p>I prefer and would like to show tunneling using <a href=https://en.wikipedia.org/wiki/List_of_IPv6_tunnel_brokers target=_blank rel="noopener noreferrer">tunnel brokers.</a> These tunnels are more deterministic and easier to debug than automatic tunneling, exactly what we need to make our device public and stable all the time.</p>
+<p>You need a special broker (a company or organization providing free IPv6 in IPv4 tunneling), on the other hand, they generally support one of <a href=https://en.wikipedia.org/wiki/Tunnel_Setup_Protocol target=_blank rel="noopener noreferrer">TSP</a> and <a href=https://en.wikipedia.org/wiki/AYIYA target=_blank rel="noopener noreferrer">AYIYA</a> protocols. These protocols send their tunneled packets over UDP, so they are passing most of NATs.</p>
+<h2 id=choosing-a-tunneling-provider>Choosing a tunneling provider</h2>
+<p>The main public providers (<a href=https://en.wikipedia.org/wiki/List_of_IPv6_tunnel_brokers target=_blank rel="noopener noreferrer">list of all</a>):</p>
+<ul>
+<li>
+<p><a href=http://tunnelbroker.net/ target=_blank rel="noopener noreferrer">Hurricane Electric</a> (6in4),</p>
+</li>
+<li>
+<p><a href=http://gogonet.gogo6.com/page/freenet6-ipv6-services target=_blank rel="noopener noreferrer">Freenet6</a> (TSP),</p>
+</li>
+<li>
+<p><a href=http://www.sixxs.net/ target=_blank rel="noopener noreferrer">SixXS</a> (6in4, L2TP or AYIYA).</p>
+</li>
+</ul>
+<table><tbody><tr><td style=text-align:center><strong>Provider</strong></td><td style=text-align:center><strong>Supported protocols</strong></td><td style=text-align:center><strong>Pros</strong></td><td style=text-align:center><strong>Cons</strong></td></tr><tr><td style=text-align:left><a class=http href=http://tunnelbroker.net/>Hurricane Electric</a>&nbsp;(without any personal experience)</td><td style=text-align:left><ul><li>6in4</li></ul></td><td style=text-align:left><ul><li>Due to the used protocol, minimum packet overhead (IPv4 packet header is immediately followed by the IPv6 packet)</li></ul></td><td style=text-align:left><ul><li>Only 6in4 - possible problem with passing NATs (based on the protocol 41).</li></ul></td></tr><tr><td style=text-align:left><a class=http href=http://gogonet.gogo6.com/page/freenet6-ipv6-services>Freenet6</a></td><td style=text-align:left><ul><li>TSP</li></ul></td><td style=text-align:left><ul><li>User-friendly setting with a desktop client.</li><li>Very fast setup of a tunnel - from registration and installation to usage (compared with SixXS)</li><li>Supports anonymous connections.</li></ul></td><td style=text-align:left><ul><li>Not so many gogo6 servers - i.e.&nbsp;tunnel servers&nbsp; nearest to your locality (<a href=http://www.gogo6.com/freenet6/service-status>service status</a>).</li><li>Not for commercial use.</li></ul></td></tr><tr><td style=text-align:left><a class=http href=http://www.sixxs.net/>SixXS</a></td><td style=text-align:left><ul><li>6in4</li><li>L2TP</li><li>AYIYA</li></ul></td><td style=text-align:left><ul><li>Supports various protocols.</li><li>No traffic limits.</li><li>Allowed to use SixXS commercially (without any guarantee).</li><li>Client tool (AICCU) supports many platforms&nbsp;(Windows, Linux, FreeBSD, MAC OS X etc.)</li><li>Ability to choose your nearest <a href=https://www.sixxs.net/pops>POP</a><sup>1</sup> (many servers all around the world).</li><li>Great FAQ and support on the product website.</li></ul>&nbsp;</td><td style=text-align:left><ul><li>&nbsp;Signup phase&nbsp;is&nbsp;verified by a real human (when you fill in e.g.&nbsp;a too concise reason&nbsp;why you want to use their service, you will be rejected and you need to repeat the whole process).</li><li>Only one possible registration to one person.</li><li>Signup phase followed by &nbsp;a tunnel requesting&nbsp;phase (needs to be manually approved as well).</li><li>Your latency to your&nbsp;<a href=https://www.sixxs.net/pops/>POP<sup>1</sup></a> must be lower than 100 ms, otherwise a tunnel will not be established.</li></ul></td></tr></tbody></table>
+<p>1Point of Presence - i.e. tunnel server  nearest to your locality</p>
+<p>I have some little experience with Freenet6 (which was actually fine), but I have chosen SixXS for really great support on their website and one of a POP in my country (I have very low latency around 2 ms).</p>
+<h2 id=ipv6-tunnel-setup>IPv6 Tunnel setup</h2>
+<h3 id=sign-up-for-sixxs>Sign up for SixXS</h3>
+<p>Fill in the form on the <a href=https://www.sixxs.net/signup/ target=_blank rel="noopener noreferrer">website</a>. Be careful insufficient information provided by you may cause rejection of your request. I was rejected as well for my concise reason why I want to use tunneling. Your data will be verified by a real human so may expect your result within few days. Repeated requests take more time.</p>
+<h3 id=request-tunnel>Request tunnel</h3>
+<p>Once when you receive your new credentials, sign in and create a new tunnel request (in the left side menu) on the <a href=https://www.sixxs.net/home/ target=_blank rel="noopener noreferrer">User home</a> page.</p>
+<p>Choose &ldquo;Dynamic NAT-traversing IPv4 Endpoint using <a href=https://www.sixxs.net/tools/ayiya/ target=_blank rel="noopener noreferrer">AYIYA</a>&rdquo; to apply for this type of tunnel (again, AYIYA has no problem to pass any NATs).</p>
+<h3 id=tunnel-configuration>Tunnel configuration</h3>
+<p>Download <a href=https://www.sixxs.net/tools/aiccu/ target=_blank rel="noopener noreferrer">AICCU</a> for your platform and <a href="https://www.sixxs.net/faq/aiccu/?faq=tundriver" target=_blank rel="noopener noreferrer">install a driver when needed.</a></p>
+<p>I want to set up my Raspberry PI to use an IPv6, so I will install AICCU to Raspbian OS (similar to Debian, Ubuntu etc.) If you are using Windows, follow these <a href="https://www.sixxs.net/faq/account/?faq=10steps" target=_blank rel="noopener noreferrer">instructions</a>.</p>
+<p>The installation process is very simple:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>apt-get install aiccu
+</code></pre></div><p>You will be prompt for your SixXS credentials during an installation. Once installed run</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>aiccu start
+</code></pre></div><p>or</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>bash/etc/init.d/aiccu start
+</code></pre></div><p>Now you can test your IPv6 connectivity to any IPv6-only website, e.g. ipv6.google.com:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>pi@raspberrypi / $ ping6 ipv6.google.com
+PING ipv6.google.com<span class=o>(</span>bud02s21-in-x0e.1e100.net<span class=o>)</span> <span class=m>56</span> data bytes
+<span class=m>64</span> bytes from bud02s21-in-x0e.1e100.net: <span class=nv>icmp_seq</span><span class=o>=</span><span class=m>1</span> <span class=nv>ttl</span><span class=o>=</span><span class=m>58</span> <span class=nv>time</span><span class=o>=</span>12.4 ms
+<span class=m>64</span> bytes from bud02s21-in-x0e.1e100.net: <span class=nv>icmp_seq</span><span class=o>=</span><span class=m>2</span> <span class=nv>ttl</span><span class=o>=</span><span class=m>58</span> <span class=nv>time</span><span class=o>=</span>12.3 ms
+<span class=m>64</span> bytes from bud02s21-in-x0e.1e100.net: <span class=nv>icmp_seq</span><span class=o>=</span><span class=m>3</span> <span class=nv>ttl</span><span class=o>=</span><span class=m>58</span> <span class=nv>time</span><span class=o>=</span>12.4 ms
+<span class=m>64</span> bytes from bud02s21-in-x0e.1e100.net: <span class=nv>icmp_seq</span><span class=o>=</span><span class=m>4</span> <span class=nv>ttl</span><span class=o>=</span><span class=m>58</span> <span class=nv>time</span><span class=o>=</span>12.2 ms
+</code></pre></div><p>When you stop your tunnel:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>aiccu stop
+</code></pre></div><p>you may expect a negative result:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>pi@raspberrypi / $ ping6 ipv6.google.com 
+connect: Network is unreachable 
+</code></pre></div><p>You may test your running tunnel on <code>http://ipv6-test.com</code> as well:</p>
+<p><figure><a class=lightgallery href=/make-your-device-public-without-any-public-ipv4/images/2015-09-16-09_05_35-IPv6-test-IPv6_4-connectivity-and-speed-test.png title="-IPv6 test - IPv6_4 connectivity and speed test" data-thumbnail=/make-your-device-public-without-any-public-ipv4/images/2015-09-16-09_05_35-IPv6-test-IPv6_4-connectivity-and-speed-test.png data-sub-html="<h2>IPv6 test - IPv6_4 connectivity and speed test</h2><p>-IPv6 test - IPv6_4 connectivity and speed test</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/2015-09-16-09_05_35-IPv6-test-IPv6_4-connectivity-and-speed-test.png data-srcset="/make-your-device-public-without-any-public-ipv4/images/2015-09-16-09_05_35-IPv6-test-IPv6_4-connectivity-and-speed-test.png, images/2015-09-16-09_05_35-IPv6-test-IPv6_4-connectivity-and-speed-test.png 1.5x, /make-your-device-public-without-any-public-ipv4/images/2015-09-16-09_05_35-IPv6-test-IPv6_4-connectivity-and-speed-test.png 2x" data-sizes=auto alt=/make-your-device-public-without-any-public-ipv4/images/2015-09-16-09_05_35-IPv6-test-IPv6_4-connectivity-and-speed-test.png>
+</a><figcaption class=image-caption>IPv6 test - IPv6_4 connectivity and speed test</figcaption>
+</figure></p>
+<p>Finally, you can test connectivity to your device from any IPv6 capable device:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>home@mypc / $ ping6 2a01:****:****:****::2
+PING 2a01:****:****:****::2<span class=o>(</span>2a01:****:****:****::2<span class=o>)</span> <span class=m>56</span> data bytes
+<span class=m>64</span> bytes from 2a01:****:****:****::2: <span class=nv>icmp_seq</span><span class=o>=</span><span class=m>1</span> <span class=nv>ttl</span><span class=o>=</span><span class=m>64</span> <span class=nv>time</span><span class=o>=</span>5.1 ms
+<span class=m>64</span> bytes from 2a01:****:****:****::2: <span class=nv>icmp_seq</span><span class=o>=</span><span class=m>2</span> <span class=nv>ttl</span><span class=o>=</span><span class=m>64</span> <span class=nv>time</span><span class=o>=</span>5.3 ms
+<span class=m>64</span> bytes from 2a01:****:****:****::2: <span class=nv>icmp_seq</span><span class=o>=</span><span class=m>3</span> <span class=nv>ttl</span><span class=o>=</span><span class=m>64</span> <span class=nv>time</span><span class=o>=</span>5.1 ms
+<span class=m>64</span> bytes from 2a01:****:****:****::2: <span class=nv>icmp_seq</span><span class=o>=</span><span class=m>4</span> <span class=nv>ttl</span><span class=o>=</span><span class=m>64</span> <span class=nv>time</span><span class=o>=</span>5.5 ms
+</code></pre></div><p>How it works:</p>
+<p><figure><a class=lightgallery href=/make-your-device-public-without-any-public-ipv4/images/IPv6_tunnel1.png title=IPv6_tunnel data-thumbnail=/make-your-device-public-without-any-public-ipv4/images/IPv6_tunnel1.png data-sub-html="<h2>IPv6 connectivity to ipv6.google.com</h2><p>IPv6_tunnel</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/IPv6_tunnel1.png data-srcset="/make-your-device-public-without-any-public-ipv4/images/IPv6_tunnel1.png, images/IPv6_tunnel1.png 1.5x, /make-your-device-public-without-any-public-ipv4/images/IPv6_tunnel1.png 2x" data-sizes=auto alt=/make-your-device-public-without-any-public-ipv4/images/IPv6_tunnel1.png>
+</a><figcaption class=image-caption>IPv6 connectivity to ipv6.google.com</figcaption>
+</figure></p>
+<h2 id=register-your-own-domain>Register your own domain</h2>
+<p>As you noticed, your new IPv6 address is not so easy to remember as any IPv4 address.</p>
+<p>Fortunately, you can use any of domain registry provider as you are familiar with a registration of IPv4 addresses. They exist some free providers which offer registrations of third-level domains.</p>
+<p>I used to register my domains by <a href=http://www.noip.com/ target=_blank rel="noopener noreferrer">noip.com</a>, but they support only IPv4 domains for free (i.e. IPv6 needs AAAA records in DNS). No problem, we can try <a href=http://freedns.afraid.org target=_blank rel="noopener noreferrer">freedns.afraid.org</a>:</p>
+<p><figure><a class=lightgallery href=/make-your-device-public-without-any-public-ipv4/images/2015-09-01-14_58_05-Adding-a-Subdomain.png title="Adding a Subdomain" data-thumbnail=/make-your-device-public-without-any-public-ipv4/images/2015-09-01-14_58_05-Adding-a-Subdomain.png data-sub-html="<h2>Adding an IPv6 capable subdomain on freedns.afraid.org</h2><p>Adding a Subdomain</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/2015-09-01-14_58_05-Adding-a-Subdomain.png data-srcset="/make-your-device-public-without-any-public-ipv4/images/2015-09-01-14_58_05-Adding-a-Subdomain.png, images/2015-09-01-14_58_05-Adding-a-Subdomain.png 1.5x, /make-your-device-public-without-any-public-ipv4/images/2015-09-01-14_58_05-Adding-a-Subdomain.png 2x" data-sizes=auto alt=/make-your-device-public-without-any-public-ipv4/images/2015-09-01-14_58_05-Adding-a-Subdomain.png>
+</a><figcaption class=image-caption>Adding an IPv6 capable subdomain on freedns.afraid.org</figcaption>
+</figure></p>
+<p>After your registration, select Subdomains (1), then select AAAA type (2) (i.e. you want to insert IPv6 address). Choose your own new third-level domain (3) and insert your IPv6 address to Destination (4). When you submit a form you need to wait a few minutes to update DNS servers. After that, your device will be accessible through the myfirstipv6domain.us.to.</p>
+<h2 id=access-restrictions>Access restrictions</h2>
+<p>As you may be noticed, an IPv6 world is completely different from IPv4 and you cannot access IPv4-only sites from an IPv6-only device and vice versa. So you encounter a problem when you would like to visit your public IPv6-only device from any IPv4-only device. How to get over this limit?</p>
+<p>Get another IPv6 tunnel - fine enough, but your device will be still far away from public.</p>
+<p>The second option is more &ldquo;public&rdquo;. Use an IPv4 gate to translate an IPv4 request to IPv6 request. SixXS offers a free <a href=https://www.sixxs.net/tools/gateway/ target=_blank rel="noopener noreferrer">IPv4 and IPv6 gateways</a>.</p>
+<h3 id=how-to-use-ipv4-gateway>How to use IPv4 gateway?</h3>
+<p>Check my example. You would like to visit an IPv6-only website (e.g. you have started an Apache server on your new IPv6-only device) from an IPv4-only device.</p>
+<p>We will use a domain name from the previous step, i.e. myfirstipv6domain.us.to to access our new Apache server.</p>
+<p>If so, simply append  a suffix &ldquo;<strong>.ipv4.sixxs.org</strong>&rdquo; after your domain, i.e. myfirstipv6domain.us.to.ipv4.sixxs.org:</p>
+<p><figure><a class=lightgallery href=/make-your-device-public-without-any-public-ipv4/images/2015-09-01-14_54_41-myrasp.us_.to_.ipv4_.sixxs_.org_.png title="2015-09-01 14_54_41-myrasp.us.to.ipv4.sixxs.org" data-thumbnail=/make-your-device-public-without-any-public-ipv4/images/2015-09-01-14_54_41-myrasp.us_.to_.ipv4_.sixxs_.org_.png data-sub-html="<h2>Simple usage of an IPv4 gateway.</h2><p>2015-09-01 14_54_41-myrasp.us.to.ipv4.sixxs.org</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/2015-09-01-14_54_41-myrasp.us_.to_.ipv4_.sixxs_.org_.png data-srcset="/make-your-device-public-without-any-public-ipv4/images/2015-09-01-14_54_41-myrasp.us_.to_.ipv4_.sixxs_.org_.png, images/2015-09-01-14_54_41-myrasp.us_.to_.ipv4_.sixxs_.org_.png 1.5x, /make-your-device-public-without-any-public-ipv4/images/2015-09-01-14_54_41-myrasp.us_.to_.ipv4_.sixxs_.org_.png 2x" data-sizes=auto alt=/make-your-device-public-without-any-public-ipv4/images/2015-09-01-14_54_41-myrasp.us_.to_.ipv4_.sixxs_.org_.png>
+</a><figcaption class=image-caption>Simple usage of an IPv4 gateway.</figcaption>
+</figure></p>
+<h2 id=conclusion>Conclusion</h2>
+<p>As you can see, it is quite easy to make any of your device public anywhere you want. Naturally, the described solution is appropriate for a home server only, where you want to share some information to public or access your home server from outside.</p>
+<p>I am using this solution on my Raspberry PI with Raspbian OS to share a simple web site from my weather station. I got rid of all dependencies on my NAT setting and port forwarding.</p>
+<p>The tunnel has no blackouts and its latency is very low:</p>
+<p><figure><a class=lightgallery href=/make-your-device-public-without-any-public-ipv4/images/statistics.png title=statistics data-thumbnail=/make-your-device-public-without-any-public-ipv4/images/statistics.png data-sub-html="<h2>Statistic of my tunnel's latency for a whole day (source: My user profile on SixXS)</h2><p>statistics</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/statistics.png data-srcset="/make-your-device-public-without-any-public-ipv4/images/statistics.png, images/statistics.png 1.5x, /make-your-device-public-without-any-public-ipv4/images/statistics.png 2x" data-sizes=auto alt=/make-your-device-public-without-any-public-ipv4/images/statistics.png>
+</a><figcaption class=image-caption>Statistic of my tunnel's latency for a whole day (source: My user profile on SixXS)</figcaption>
+</figure></p>
+</div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2021-09-20&nbsp;<a class=git-hash href=https://github.com/pajikos/commit/f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43 target=_blank rel="noopener noreferrer" title="commit by Pavel Sklenar(pavel.sklenar@cloudfield.cz) f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43: Initial migration commit">
+<i class="fas fa-hashtag fa-fw"></i>f5d3ae4</a></span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=/make-your-device-public-without-any-public-ipv4/index.md target=_blank rel="noopener noreferrer">Read Markdown</a>
+</span></div>
+<div class=post-info-share>
+<span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/make-your-device-public-without-any-public-ipv4/ data-title="Make Your Device Public Without Any Public IPv4"><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/make-your-device-public-without-any-public-ipv4/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/make-your-device-public-without-any-public-ipv4/ data-title="Make Your Device Public Without Any Public IPv4" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/make-your-device-public-without-any-public-ipv4/ data-title="Make Your Device Public Without Any Public IPv4"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/make-your-device-public-without-any-public-ipv4/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/make-your-device-public-without-any-public-ipv4/ data-title="Make Your Device Public Without Any Public IPv4"><i class="fab fa-evernote fa-fw"></i></a></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=/how-to-create-maven-dependencies-using-dsl-in-groovy/ class=prev rel=prev title="How To Create Maven Dependencies using DSL in Groovy"><i class="fas fa-angle-left fa-fw"></i>How To Create Maven Dependencies using DSL in Groovy</a>
+<a href=/using-filteredrowset-simple-example/ class=next rel=next title="Using JDBC FilteredRowSet - Simple Example">Using JDBC FilteredRowSet - Simple Example<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id=comments><div id=disqus_thread class=comment></div><noscript>
+Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.
+</noscript><div id=valine class=comment></div><noscript>
+Please enable JavaScript to view the comments powered by <a href=https://valine.js.org/>Valine</a>.
+</noscript></div></article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><link rel=stylesheet href=/lib/valine/valine.min.css><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{valine:{appId:"QGzwQXOqs5JOhN4RGPOkR2mR-MdYXbMMI",appKey:"WBmoGyJtbqUswvfLh6L8iEBr",avatar:"mp",el:"#valine",emojiCDN:"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/",emojiMaps:{100:"1f4af.png",alien:"1f47d.png",anger:"1f4a2.png",angry:"1f620.png",anguished:"1f627.png",astonished:"1f632.png",black_heart:"1f5a4.png",blue_heart:"1f499.png",blush:"1f60a.png",bomb:"1f4a3.png",boom:"1f4a5.png",broken_heart:"1f494.png",brown_heart:"1f90e.png",clown_face:"1f921.png",cold_face:"1f976.png",cold_sweat:"1f630.png",confounded:"1f616.png",confused:"1f615.png",cry:"1f622.png",crying_cat_face:"1f63f.png",cupid:"1f498.png",dash:"1f4a8.png",disappointed:"1f61e.png",disappointed_relieved:"1f625.png",dizzy:"1f4ab.png",dizzy_face:"1f635.png",drooling_face:"1f924.png",exploding_head:"1f92f.png",expressionless:"1f611.png",face_vomiting:"1f92e.png",face_with_cowboy_hat:"1f920.png",face_with_hand_over_mouth:"1f92d.png",face_with_head_bandage:"1f915.png",face_with_monocle:"1f9d0.png",face_with_raised_eyebrow:"1f928.png",face_with_rolling_eyes:"1f644.png",face_with_symbols_on_mouth:"1f92c.png",face_with_thermometer:"1f912.png",fearful:"1f628.png",flushed:"1f633.png",frowning:"1f626.png",ghost:"1f47b.png",gift_heart:"1f49d.png",green_heart:"1f49a.png",grimacing:"1f62c.png",grin:"1f601.png",grinning:"1f600.png",hankey:"1f4a9.png",hear_no_evil:"1f649.png",heart:"2764-fe0f.png",heart_decoration:"1f49f.png",heart_eyes:"1f60d.png",heart_eyes_cat:"1f63b.png",heartbeat:"1f493.png",heartpulse:"1f497.png",heavy_heart_exclamation_mark_ornament:"2763-fe0f.png",hole:"1f573-fe0f.png",hot_face:"1f975.png",hugging_face:"1f917.png",hushed:"1f62f.png",imp:"1f47f.png",innocent:"1f607.png",japanese_goblin:"1f47a.png",japanese_ogre:"1f479.png",joy:"1f602.png",joy_cat:"1f639.png",kiss:"1f48b.png",kissing:"1f617.png",kissing_cat:"1f63d.png",kissing_closed_eyes:"1f61a.png",kissing_heart:"1f618.png",kissing_smiling_eyes:"1f619.png",laughing:"1f606.png",left_speech_bubble:"1f5e8-fe0f.png",love_letter:"1f48c.png",lying_face:"1f925.png",mask:"1f637.png",money_mouth_face:"1f911.png",nauseated_face:"1f922.png",nerd_face:"1f913.png",neutral_face:"1f610.png",no_mouth:"1f636.png",open_mouth:"1f62e.png",orange_heart:"1f9e1.png",partying_face:"1f973.png",pensive:"1f614.png",persevere:"1f623.png",pleading_face:"1f97a.png",pouting_cat:"1f63e.png",purple_heart:"1f49c.png",rage:"1f621.png",relaxed:"263a-fe0f.png",relieved:"1f60c.png",revolving_hearts:"1f49e.png",right_anger_bubble:"1f5ef-fe0f.png",robot_face:"1f916.png",rolling_on_the_floor_laughing:"1f923.png",scream:"1f631.png",scream_cat:"1f640.png",see_no_evil:"1f648.png",shushing_face:"1f92b.png",skull:"1f480.png",skull_and_crossbones:"2620-fe0f.png",sleeping:"1f634.png",sleepy:"1f62a.png",slightly_frowning_face:"1f641.png",slightly_smiling_face:"1f642.png",smile:"1f604.png",smile_cat:"1f638.png",smiley:"1f603.png",smiley_cat:"1f63a.png",smiling_face_with_3_hearts:"1f970.png",smiling_imp:"1f608.png",smirk:"1f60f.png",smirk_cat:"1f63c.png",sneezing_face:"1f927.png",sob:"1f62d.png",space_invader:"1f47e.png",sparkling_heart:"1f496.png",speak_no_evil:"1f64a.png",speech_balloon:"1f4ac.png","star-struck":"1f929.png",stuck_out_tongue:"1f61b.png",stuck_out_tongue_closed_eyes:"1f61d.png",stuck_out_tongue_winking_eye:"1f61c.png",sunglasses:"1f60e.png",sweat:"1f613.png",sweat_drops:"1f4a6.png",sweat_smile:"1f605.png",thinking_face:"1f914.png",thought_balloon:"1f4ad.png",tired_face:"1f62b.png",triumph:"1f624.png",two_hearts:"1f495.png",unamused:"1f612.png",upside_down_face:"1f643.png",weary:"1f629.png",white_frowning_face:"2639-fe0f.png",white_heart:"1f90d.png",wink:"1f609.png",woozy_face:"1f974.png",worried:"1f61f.png",yawning_face:"1f971.png",yellow_heart:"1f49b.png",yum:"1f60b.png",zany_face:"1f92a.png",zipper_mouth_face:"1f910.png",zzz:"1f4a4.png"},enableQQ:!1,highlight:!0,lang:"en",pageSize:10,placeholder:"Your comment ...",recordIP:!0,serverURLs:"https://leancloud.hugoCodeIT.com",visitor:!0}},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body>
+</html>

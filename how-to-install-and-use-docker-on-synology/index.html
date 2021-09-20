@@ -1,0 +1,289 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>How to install and use Docker on Synology - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="How to install and use Docker on Synology">
+<meta property="og:description" content="Installation Simply find and install a Docker application from the Synology Package Center.
+Note: If you do not find the application in your Package Center, your Synology is most probably not supported yet:
+ Due to the hardware requirement, Docker will be only available on the following models: 18 series: DS3018xs, DS918+, DS718+, DS218+ 17 series: FS3017, FS2017, RS18017xs+, RS4017xs+, RS3617xs+, RS3617xs, RS3617RPxs, DS3617xs, DS1817+, DS1517+ 16 series: RS18016xs+, RS2416+, RS2416RP+, DS916+, DS716+II, DS716+, DS216+II, DS216+ 15-series: RC18015xs+, DS3615xs, DS2415+, DS1815+, DS1515+, RS815RP+, RS815+, DS415+ 14-series: RS3614xs+, RS3614xs, RS3614RPxs, RS2414RP+, RS2414+, RS814RP+, RS814+ 13-series: DS2413+, RS3413xs+, RS10613xs+, DS1813+, DS1513+, DS713+ 12-series: DS3612xs, RS3412xs, RS3412RPxs, RS2212RP+, RS2212+, DS1812+, DS1512+, RS812RP+, RS812+, DS412+, DS712+ 11-series: DS3611xs, DS2411+, RS3411xs, RS3411RPxs, RS2211RP+, RS2211+, DS1511+, DS411+II, DS411+ 10-series: DS1010+, RS810RP+, RS810+, DS710+(source, last updated 09-29-2017)">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://blog.pavelsklenar.com/how-to-install-and-use-docker-on-synology/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2015-07-24T00:00:00+00:00">
+<meta property="article:modified_time" content="2021-09-20T22:40:20+02:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png">
+<meta name=twitter:title content="How to install and use Docker on Synology">
+<meta name=twitter:description content="Installation Simply find and install a Docker application from the Synology Package Center.
+Note: If you do not find the application in your Package Center, your Synology is most probably not supported yet:
+ Due to the hardware requirement, Docker will be only available on the following models: 18 series: DS3018xs, DS918+, DS718+, DS218+ 17 series: FS3017, FS2017, RS18017xs+, RS4017xs+, RS3617xs+, RS3617xs, RS3617RPxs, DS3617xs, DS1817+, DS1517+ 16 series: RS18016xs+, RS2416+, RS2416RP+, DS916+, DS716+II, DS716+, DS216+II, DS216+ 15-series: RC18015xs+, DS3615xs, DS2415+, DS1815+, DS1515+, RS815RP+, RS815+, DS415+ 14-series: RS3614xs+, RS3614xs, RS3614RPxs, RS2414RP+, RS2414+, RS814RP+, RS814+ 13-series: DS2413+, RS3413xs+, RS10613xs+, DS1813+, DS1513+, DS713+ 12-series: DS3612xs, RS3412xs, RS3412RPxs, RS2212RP+, RS2212+, DS1812+, DS1512+, RS812RP+, RS812+, DS412+, DS712+ 11-series: DS3611xs, DS2411+, RS3411xs, RS3411RPxs, RS2211RP+, RS2211+, DS1511+, DS411+II, DS411+ 10-series: DS1010+, RS810RP+, RS810+, DS710+(source, last updated 09-29-2017)">
+<meta name=application-name content="blog.pavelsklenar.com">
+<meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/how-to-install-and-use-docker-on-synology/><link rel=prev href=https://blog.pavelsklenar.com/simple-groovy-logger-without-any-logging-framework/><link rel=next href=https://blog.pavelsklenar.com/how-to-run-application-in-docker-on-synology/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"How to install and use Docker on Synology","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/how-to-install-and-use-docker-on-synology\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"installation","wordcount":756,"url":"https:\/\/blog.pavelsklenar.com\/how-to-install-and-use-docker-on-synology\/","datePublished":"2015-07-24T00:00:00+00:00","dateModified":"2021-09-20T22:40:20+02:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>('false'==='true'&&window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=/posts/> Posts </a><a class=menu-item href=/tags/> Tags </a><a class=menu-item href=/categories/> Categories </a><a class=menu-item href=/about/> About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
+Cancel
+</a>
+</div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">How to install and use Docker on Synology</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/docker/><i class="far fa-folder fa-fw"></i>docker</a>&nbsp;<a href=/categories/synology/><i class="far fa-folder fa-fw"></i>synology</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2015-07-24>2015-07-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;756 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;<span id=/how-to-install-and-use-docker-on-synology/ class=leancloud_visitors data-flag-title="How to install and use Docker on Synology">
+<i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;views
+</span>&nbsp;</div>
+</div><div class="details toc" id=toc-static kept>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li><a href=#installation>Installation</a></li>
+<li><a href=#how-to-use-it>How to use it?</a>
+<ul>
+<li><a href=#overview>Overview</a></li>
+<li><a href=#registry>Registry</a></li>
+<li><a href=#image>Image</a></li>
+<li><a href=#container>Container</a></li>
+</ul>
+</li>
+</ul>
+</nav></div>
+</div><div class=content id=content><h2 id=installation>Installation</h2>
+<p>Simply find and install a Docker application from the Synology Package Center.</p>
+<p><strong>Note</strong>: If you do not find the application in your Package Center, your Synology is most probably not supported yet:</p>
+<blockquote>
+<p>Due to the hardware requirement, Docker will be only available on the following models: 18 series: DS3018xs, DS918+, DS718+, DS218+ 17 series: FS3017, FS2017, RS18017xs+, RS4017xs+, RS3617xs+, RS3617xs, RS3617RPxs, DS3617xs, DS1817+, DS1517+ 16 series: RS18016xs+, RS2416+, RS2416RP+, DS916+, DS716+II, DS716+, DS216+II, DS216+ 15-series:     RC18015xs+, DS3615xs, DS2415+, DS1815+, DS1515+, RS815RP+, RS815+, DS415+ 14-series:     RS3614xs+, RS3614xs, RS3614RPxs, RS2414RP+, RS2414+, RS814RP+, RS814+ 13-series:     DS2413+, RS3413xs+, RS10613xs+, DS1813+, DS1513+, DS713+ 12-series:     DS3612xs, RS3412xs, RS3412RPxs, RS2212RP+, RS2212+, DS1812+, DS1512+, RS812RP+, RS812+, DS412+, DS712+ 11-series:     DS3611xs, DS2411+, RS3411xs, RS3411RPxs, RS2211RP+, RS2211+, DS1511+, DS411+II, DS411+ 10-series:     DS1010+, RS810RP+, RS810+, DS710+(<a href=https://www.synology.com/en-us/dsm/packages/Docker target=_blank rel="noopener noreferrer">source, last updated 09-29-2017</a>)</p>
+</blockquote>
+<h2 id=how-to-use-it>How to use it?</h2>
+<p>When you start a Docker application, you will see an application menu on the left side:</p>
+<ul>
+<li>Overview</li>
+<li>Registry</li>
+<li>Image</li>
+<li>Container</li>
+<li>Log</li>
+</ul>
+<h3 id=overview>Overview</h3>
+<p>Here you will see your running containers, i.e. your running applications including allocated memory and CPU resources.</p>
+<p><figure><a class=lightgallery href=/how-to-install-and-use-docker-on-synology/images/Overview.png title="Synology Docker Overview" data-thumbnail=/how-to-install-and-use-docker-on-synology/images/Overview.png data-sub-html="<h2>Synology Docker Overview</h2><p>Synology Docker Overview</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/Overview.png data-srcset="/how-to-install-and-use-docker-on-synology/images/Overview.png, images/Overview.png 1.5x, /how-to-install-and-use-docker-on-synology/images/Overview.png 2x" data-sizes=auto alt=/how-to-install-and-use-docker-on-synology/images/Overview.png>
+</a><figcaption class=image-caption>Synology Docker Overview</figcaption>
+</figure></p>
+<p>The real command in Docker:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker ps
+</code></pre></div><h3 id=registry>Registry</h3>
+<p>On the registry page, you can search for new images (the same as on <a href=https://registry.hub.docker.com/ target=_blank rel="noopener noreferrer">the official site</a>). You can also add some new repositories (in addition to the official site) in Settings.</p>
+<p>The real command in Docker:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker search ubuntu
+</code></pre></div><p><figure><a class=lightgallery href=/how-to-install-and-use-docker-on-synology/images/images.png title="Synology Docker Images" data-thumbnail=/how-to-install-and-use-docker-on-synology/images/images.png data-sub-html="<h2>Synology Docker Images</h2><p>Synology Docker Images</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/images.png data-srcset="/how-to-install-and-use-docker-on-synology/images/images.png, images/images.png 1.5x, /how-to-install-and-use-docker-on-synology/images/images.png 2x" data-sizes=auto alt=/how-to-install-and-use-docker-on-synology/images/images.png>
+</a><figcaption class=image-caption>Synology Docker Images</figcaption>
+</figure></p>
+<p>After you found your image (e.g. ubuntu in our case), you should download it to your Synology. All Images are read-only and you can use them multiple times for more containers.</p>
+<p>The real command in Docker:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker pull ubuntu
+</code></pre></div><h3 id=image>Image</h3>
+<p>Here you will find images available on your Synology, ready to create new containers using a wizard or directly with a <code>docker run</code> command. You can usually find this command on the official page with an image.</p>
+<p>The real command in Docker:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker images
+</code></pre></div><p><figure><a class=lightgallery href=/how-to-install-and-use-docker-on-synology/images/Image.png title="Synology Docker Image" data-thumbnail=/how-to-install-and-use-docker-on-synology/images/Image.png data-sub-html="<h2>Synology Docker Image</h2><p>Synology Docker Image</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/Image.png data-srcset="/how-to-install-and-use-docker-on-synology/images/Image.png, images/Image.png 1.5x, /how-to-install-and-use-docker-on-synology/images/Image.png 2x" data-sizes=auto alt=/how-to-install-and-use-docker-on-synology/images/Image.png>
+</a><figcaption class=image-caption>Synology Docker Image</figcaption>
+</figure></p>
+<p>We use a <a href=http://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/ target=_blank rel="noopener noreferrer">long running process</a> for creating a new container from a <code>docker run</code> command:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker run -d ubuntu /bin/sh <span class=s2>&#34;while true; do echo hello world; sleep 1; done&#34;</span>
+</code></pre></div><p><figure><a class=lightgallery href=/how-to-install-and-use-docker-on-synology/images/creating-docker-container.png title="creating docker container" data-thumbnail=/how-to-install-and-use-docker-on-synology/images/creating-docker-container.png data-sub-html="<h2>creating docker container</h2><p>creating docker container</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/creating-docker-container.png data-srcset="/how-to-install-and-use-docker-on-synology/images/creating-docker-container.png, images/creating-docker-container.png 1.5x, /how-to-install-and-use-docker-on-synology/images/creating-docker-container.png 2x" data-sizes=auto alt=/how-to-install-and-use-docker-on-synology/images/creating-docker-container.png>
+</a><figcaption class=image-caption>creating docker container</figcaption>
+</figure></p>
+<p>The Synology wizard checks your command for compatibility, not all <code>docker run</code> parameters are available for use.</p>
+<ul>
+<li>Docker run supports the below parameters:
+<ul>
+<li><code>"d", "detach"</code></li>
+<li><code>"e", "env"</code></li>
+<li><code>"link"</code></li>
+<li><code>"m", "memory"</code></li>
+<li><code>"name"</code></li>
+<li><code>"P", "publish-all"</code></li>
+<li><code>"p", "publish"</code></li>
+<li><code>"privileged"</code></li>
+<li><code>"v", "volume"</code></li>
+</ul>
+</li>
+<li>Docker run does not support the below parameters:
+<ul>
+<li><code>"a", "attach"</code></li>
+<li><code>"add-host"</code></li>
+<li><code>"c", "cpu-shares"</code></li>
+<li><code>"cap-add"</code></li>
+<li><code>"cap-drop"</code></li>
+<li><code>"cidfile"</code></li>
+<li><code>"cpuset"</code></li>
+<li><code>"device"</code></li>
+<li><code>"dns"</code></li>
+<li><code>"dns-search"</code></li>
+<li><code>"entrypoint"</code></li>
+<li><code>"env-file"</code></li>
+<li><code>"expose"</code></li>
+<li><code>"h", "hostname"</code></li>
+<li><code>"i", "interactive"</code></li>
+<li><code>"lxc-conf"</code></li>
+<li><code>"net"</code></li>
+<li><code>"restart"</code></li>
+<li><code>"rm"</code></li>
+<li><code>"security-opt"</code></li>
+<li><code>"sig-proxy"</code></li>
+<li><code>"t", "tty"</code></li>
+<li><code>"u", "user"</code></li>
+<li><code>"w", "workdir"</code></li>
+</ul>
+</li>
+</ul>
+<p>Basically, your containers need to run as a <a href=https://docs.docker.com/articles/basics/ target=_blank rel="noopener noreferrer">daemon</a> on your Synology (an opposite to run an interactive shell). It makes sense, you cannot run an interactive shell in your Synology Docker application in a web browser.</p>
+<p>Back to our new ubuntu container (actually got name dummyUbuntu). The wizard offers to set more options, but we want to create a dummy container, so click Next, Next, Next.</p>
+<h3 id=container>Container</h3>
+<p>The dummyUbuntu container appears now on the Container page.</p>
+<p><figure><a class=lightgallery href=/how-to-install-and-use-docker-on-synology/images/container.png title=container data-thumbnail=/how-to-install-and-use-docker-on-synology/images/container.png data-sub-html="<h2>Container</h2><p>container</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/container.png data-srcset="/how-to-install-and-use-docker-on-synology/images/container.png, images/container.png 1.5x, /how-to-install-and-use-docker-on-synology/images/container.png 2x" data-sizes=auto alt=/how-to-install-and-use-docker-on-synology/images/container.png>
+</a><figcaption class=image-caption>Container</figcaption>
+</figure></p>
+<p>The real command in Docker (prints all containers including stopped):</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker ps -a
+</code></pre></div><p>The last step is waiting for us: Run it.</p>
+<p>When you double click on any container, a window with some more details about a running container appears.</p>
+<p><figure><a class=lightgallery href=/how-to-install-and-use-docker-on-synology/images/container-detail.png title="container&amp;rsquo;s detail" data-thumbnail=/how-to-install-and-use-docker-on-synology/images/container-detail.png data-sub-html="<h2>Container detail</h2><p>container&amp;rsquo;s detail</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/container-detail.png data-srcset="/how-to-install-and-use-docker-on-synology/images/container-detail.png, images/container-detail.png 1.5x, /how-to-install-and-use-docker-on-synology/images/container-detail.png 2x" data-sizes=auto alt=/how-to-install-and-use-docker-on-synology/images/container-detail.png>
+</a><figcaption class=image-caption>Container detail</figcaption>
+</figure></p>
+<p>You see some information about our dummyUbuntu container and capability to Start, Stop, Restart it.</p>
+<p>The real command in Docker:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker start/stop/restart dummyUbuntu
+</code></pre></div><p>You can see other information about a running container using the top menu.</p>
+<p><figure><a class=lightgallery href=/how-to-install-and-use-docker-on-synology/images/container-detail-process.png title="container detail-process" data-thumbnail=/how-to-install-and-use-docker-on-synology/images/container-detail-process.png data-sub-html="<h2>Container detail-process</h2><p>container detail-process</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/container-detail-process.png data-srcset="/how-to-install-and-use-docker-on-synology/images/container-detail-process.png, images/container-detail-process.png 1.5x, /how-to-install-and-use-docker-on-synology/images/container-detail-process.png 2x" data-sizes=auto alt=/how-to-install-and-use-docker-on-synology/images/container-detail-process.png>
+</a><figcaption class=image-caption>Container detail-process</figcaption>
+</figure></p>
+<p>The real command in Docker:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker top dummyUbuntu
+</code></pre></div><p>On the Log tab, you can see logs from your container (not automatically refreshed, maybe in the future with the parameter <code>-f</code> as available in the standard Docker client).</p>
+<p><figure><a class=lightgallery href=/how-to-install-and-use-docker-on-synology/images/container-detail-log.png title="container detail-log" data-thumbnail=/how-to-install-and-use-docker-on-synology/images/container-detail-log.png data-sub-html="<h2>container detail-log</h2><p>container detail-log</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/container-detail-log.png data-srcset="/how-to-install-and-use-docker-on-synology/images/container-detail-log.png, images/container-detail-log.png 1.5x, /how-to-install-and-use-docker-on-synology/images/container-detail-log.png 2x" data-sizes=auto alt=/how-to-install-and-use-docker-on-synology/images/container-detail-log.png>
+</a><figcaption class=image-caption>container detail-log</figcaption>
+</figure></p>
+<p>The real command in Docker:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker logs dummyUbuntu
+</code></pre></div><p>The last tab Terminal shows output of a command used to run your container (in our case the dummy long running process: <code>"while true; do echo hello world; sleep 1; done"</code> )</p>
+<p><figure><a class=lightgallery href=/how-to-install-and-use-docker-on-synology/images/container-detail-terminal.png title="container detail-terminal" data-thumbnail=/how-to-install-and-use-docker-on-synology/images/container-detail-terminal.png data-sub-html="<h2>container detail-terminal</h2><p>container detail-terminal</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/container-detail-terminal.png data-srcset="/how-to-install-and-use-docker-on-synology/images/container-detail-terminal.png, images/container-detail-terminal.png 1.5x, /how-to-install-and-use-docker-on-synology/images/container-detail-terminal.png 2x" data-sizes=auto alt=/how-to-install-and-use-docker-on-synology/images/container-detail-terminal.png>
+</a><figcaption class=image-caption>container detail-terminal</figcaption>
+</figure></p>
+<p>The real command in Docker:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker attach dummyUbuntu
+</code></pre></div><p><strong>Note:</strong> The <code>docker attach</code> command never starts a new instance of a shell, instead of that you will see an ongoing output of the first start command. For more alternatives, see the point 8 on page <a href=http://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/ target=_blank rel="noopener noreferrer">10 Useful Docker Commands – Tips and Tricks</a>.</p>
+</div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2021-09-20&nbsp;<a class=git-hash href=https://github.com/pajikos/commit/f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43 target=_blank rel="noopener noreferrer" title="commit by Pavel Sklenar(pavel.sklenar@cloudfield.cz) f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43: Initial migration commit">
+<i class="fas fa-hashtag fa-fw"></i>f5d3ae4</a></span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=/how-to-install-and-use-docker-on-synology/index.md target=_blank rel="noopener noreferrer">Read Markdown</a>
+</span></div>
+<div class=post-info-share>
+<span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/how-to-install-and-use-docker-on-synology/ data-title="How to install and use Docker on Synology" data-hashtags=installation><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/how-to-install-and-use-docker-on-synology/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/how-to-install-and-use-docker-on-synology/ data-title="How to install and use Docker on Synology" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/how-to-install-and-use-docker-on-synology/ data-title="How to install and use Docker on Synology"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/how-to-install-and-use-docker-on-synology/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/how-to-install-and-use-docker-on-synology/ data-title="How to install and use Docker on Synology"><i class="fab fa-evernote fa-fw"></i></a></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/installation/>installation</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=/simple-groovy-logger-without-any-logging-framework/ class=prev rel=prev title="Simple Groovy Logger Without Any Logging Framework"><i class="fas fa-angle-left fa-fw"></i>Simple Groovy Logger Without Any Logging Framework</a>
+<a href=/how-to-run-application-in-docker-on-synology/ class=next rel=next title="How to Run Application in Docker on Synology">How to Run Application in Docker on Synology<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id=comments><div id=disqus_thread class=comment></div><noscript>
+Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.
+</noscript><div id=valine class=comment></div><noscript>
+Please enable JavaScript to view the comments powered by <a href=https://valine.js.org/>Valine</a>.
+</noscript></div></article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><link rel=stylesheet href=/lib/valine/valine.min.css><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{valine:{appId:"QGzwQXOqs5JOhN4RGPOkR2mR-MdYXbMMI",appKey:"WBmoGyJtbqUswvfLh6L8iEBr",avatar:"mp",el:"#valine",emojiCDN:"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/",emojiMaps:{100:"1f4af.png",alien:"1f47d.png",anger:"1f4a2.png",angry:"1f620.png",anguished:"1f627.png",astonished:"1f632.png",black_heart:"1f5a4.png",blue_heart:"1f499.png",blush:"1f60a.png",bomb:"1f4a3.png",boom:"1f4a5.png",broken_heart:"1f494.png",brown_heart:"1f90e.png",clown_face:"1f921.png",cold_face:"1f976.png",cold_sweat:"1f630.png",confounded:"1f616.png",confused:"1f615.png",cry:"1f622.png",crying_cat_face:"1f63f.png",cupid:"1f498.png",dash:"1f4a8.png",disappointed:"1f61e.png",disappointed_relieved:"1f625.png",dizzy:"1f4ab.png",dizzy_face:"1f635.png",drooling_face:"1f924.png",exploding_head:"1f92f.png",expressionless:"1f611.png",face_vomiting:"1f92e.png",face_with_cowboy_hat:"1f920.png",face_with_hand_over_mouth:"1f92d.png",face_with_head_bandage:"1f915.png",face_with_monocle:"1f9d0.png",face_with_raised_eyebrow:"1f928.png",face_with_rolling_eyes:"1f644.png",face_with_symbols_on_mouth:"1f92c.png",face_with_thermometer:"1f912.png",fearful:"1f628.png",flushed:"1f633.png",frowning:"1f626.png",ghost:"1f47b.png",gift_heart:"1f49d.png",green_heart:"1f49a.png",grimacing:"1f62c.png",grin:"1f601.png",grinning:"1f600.png",hankey:"1f4a9.png",hear_no_evil:"1f649.png",heart:"2764-fe0f.png",heart_decoration:"1f49f.png",heart_eyes:"1f60d.png",heart_eyes_cat:"1f63b.png",heartbeat:"1f493.png",heartpulse:"1f497.png",heavy_heart_exclamation_mark_ornament:"2763-fe0f.png",hole:"1f573-fe0f.png",hot_face:"1f975.png",hugging_face:"1f917.png",hushed:"1f62f.png",imp:"1f47f.png",innocent:"1f607.png",japanese_goblin:"1f47a.png",japanese_ogre:"1f479.png",joy:"1f602.png",joy_cat:"1f639.png",kiss:"1f48b.png",kissing:"1f617.png",kissing_cat:"1f63d.png",kissing_closed_eyes:"1f61a.png",kissing_heart:"1f618.png",kissing_smiling_eyes:"1f619.png",laughing:"1f606.png",left_speech_bubble:"1f5e8-fe0f.png",love_letter:"1f48c.png",lying_face:"1f925.png",mask:"1f637.png",money_mouth_face:"1f911.png",nauseated_face:"1f922.png",nerd_face:"1f913.png",neutral_face:"1f610.png",no_mouth:"1f636.png",open_mouth:"1f62e.png",orange_heart:"1f9e1.png",partying_face:"1f973.png",pensive:"1f614.png",persevere:"1f623.png",pleading_face:"1f97a.png",pouting_cat:"1f63e.png",purple_heart:"1f49c.png",rage:"1f621.png",relaxed:"263a-fe0f.png",relieved:"1f60c.png",revolving_hearts:"1f49e.png",right_anger_bubble:"1f5ef-fe0f.png",robot_face:"1f916.png",rolling_on_the_floor_laughing:"1f923.png",scream:"1f631.png",scream_cat:"1f640.png",see_no_evil:"1f648.png",shushing_face:"1f92b.png",skull:"1f480.png",skull_and_crossbones:"2620-fe0f.png",sleeping:"1f634.png",sleepy:"1f62a.png",slightly_frowning_face:"1f641.png",slightly_smiling_face:"1f642.png",smile:"1f604.png",smile_cat:"1f638.png",smiley:"1f603.png",smiley_cat:"1f63a.png",smiling_face_with_3_hearts:"1f970.png",smiling_imp:"1f608.png",smirk:"1f60f.png",smirk_cat:"1f63c.png",sneezing_face:"1f927.png",sob:"1f62d.png",space_invader:"1f47e.png",sparkling_heart:"1f496.png",speak_no_evil:"1f64a.png",speech_balloon:"1f4ac.png","star-struck":"1f929.png",stuck_out_tongue:"1f61b.png",stuck_out_tongue_closed_eyes:"1f61d.png",stuck_out_tongue_winking_eye:"1f61c.png",sunglasses:"1f60e.png",sweat:"1f613.png",sweat_drops:"1f4a6.png",sweat_smile:"1f605.png",thinking_face:"1f914.png",thought_balloon:"1f4ad.png",tired_face:"1f62b.png",triumph:"1f624.png",two_hearts:"1f495.png",unamused:"1f612.png",upside_down_face:"1f643.png",weary:"1f629.png",white_frowning_face:"2639-fe0f.png",white_heart:"1f90d.png",wink:"1f609.png",woozy_face:"1f974.png",worried:"1f61f.png",yawning_face:"1f971.png",yellow_heart:"1f49b.png",yum:"1f60b.png",zany_face:"1f92a.png",zipper_mouth_face:"1f910.png",zzz:"1f4a4.png"},enableQQ:!1,highlight:!0,lang:"en",pageSize:10,placeholder:"Your comment ...",recordIP:!0,serverURLs:"https://leancloud.hugoCodeIT.com",visitor:!0}},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body>
+</html>

@@ -1,0 +1,289 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>Spring Boot: Run and Build in Docker - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="Spring Boot: Run and Build in Docker">
+<meta property="og:description" content="It exists many “Docker for Java developers” guides, but most of them does not take care of small and efficient Docker images.
+I have combined many resources how to make a simple and fast Docker image containing any of Spring Boot like application.
+My goals:
+ Create a single and portable Dockerfile (as general as possible). Make Maven build inside Docker (no need to have Maven locally). Don&rsquo;t download any Maven dependencies repeatedly, if no changes in pom.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://blog.pavelsklenar.com/spring-boot-run-and-build-in-docker/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2018-12-16T00:00:00+00:00">
+<meta property="article:modified_time" content="2021-09-20T22:40:20+02:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png">
+<meta name=twitter:title content="Spring Boot: Run and Build in Docker">
+<meta name=twitter:description content="It exists many “Docker for Java developers” guides, but most of them does not take care of small and efficient Docker images.
+I have combined many resources how to make a simple and fast Docker image containing any of Spring Boot like application.
+My goals:
+ Create a single and portable Dockerfile (as general as possible). Make Maven build inside Docker (no need to have Maven locally). Don&rsquo;t download any Maven dependencies repeatedly, if no changes in pom.">
+<meta name=application-name content="blog.pavelsklenar.com">
+<meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/spring-boot-run-and-build-in-docker/><link rel=prev href=https://blog.pavelsklenar.com/securing-rest-api-with-client-certificate/><link rel=next href=https://blog.pavelsklenar.com/vulnerability-scan-as-part-of-continuous-integration/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Spring Boot: Run and Build in Docker","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/spring-boot-run-and-build-in-docker\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"docker, java, maven, spring-boot","wordcount":1103,"url":"https:\/\/blog.pavelsklenar.com\/spring-boot-run-and-build-in-docker\/","datePublished":"2018-12-16T00:00:00+00:00","dateModified":"2021-09-20T22:40:20+02:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>('false'==='true'&&window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=/posts/> Posts </a><a class=menu-item href=/tags/> Tags </a><a class=menu-item href=/categories/> Categories </a><a class=menu-item href=/about/> About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
+Cancel
+</a>
+</div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">Spring Boot: Run and Build in Docker</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/docker/><i class="far fa-folder fa-fw"></i>docker</a>&nbsp;<a href=/categories/java/><i class="far fa-folder fa-fw"></i>java</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2018-12-16>2018-12-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1103 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;6 minutes&nbsp;<span id=/spring-boot-run-and-build-in-docker/ class=leancloud_visitors data-flag-title="Spring Boot: Run and Build in Docker">
+<i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;views
+</span>&nbsp;</div>
+</div><div class="details toc" id=toc-static kept>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li><a href=#the-building-part-of-the-dockerfile>The building part of the Dockerfile</a>
+<ul>
+<li><a href=#how-to-customize-maven-settings>How to customize Maven settings?</a></li>
+</ul>
+</li>
+<li><a href=#the-runtime-part-of-the-dockerfile>The runtime part of the Dockerfile</a></li>
+<li><a href=#how-to-build-and-run-spring-boot-application-in-docker-in-one-step>How to build and run Spring Boot application in Docker in one step?</a>
+<ul>
+<li><a href=#how-to-debug>How to debug? </a></li>
+<li><a href=#how-to-setup-logging>How to setup logging?</a></li>
+<li><a href=#how-to-change-application-configuration>How to change application configuration?</a>
+<ul>
+<li><a href=#command-line-arguments>Command line arguments</a></li>
+<li><a href=#system-properties>System properties</a></li>
+<li><a href=#environment-variables>Environment variables</a></li>
+<li><a href=#mount-your-own-configuration-file>Mount your own configuration file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav></div>
+</div><div class=content id=content><p>It exists many <em>“Docker for Java developers”</em> guides, but most of them does not take care of small and efficient Docker images.</p>
+<p>I have combined many resources how to make a simple and fast Docker image containing any of Spring Boot like application.</p>
+<p>My goals:</p>
+<ul>
+<li>Create a single and portable Dockerfile (as general as possible).</li>
+<li>Make Maven build inside Docker (no need to have Maven locally).</li>
+<li>Don&rsquo;t download any Maven dependencies repeatedly, if no changes in pom.xml (rebuilding image as fast as possible).</li>
+<li>The final Docker image should contain only application itself (no source codes, no Maven dependencies required by Maven build etc.)</li>
+<li>The final image should be as small as possible (no full JDK required).</li>
+<li>The application inside Docker should remain configurable as much as possible (with all Spring Boot configuration options).</li>
+<li>Possibility to enable debug (on demand).</li>
+<li>Possibility to see log files.</li>
+</ul>
+<p>The final image is designed for development purpose, but it does not contain any no-go production parts and it is fully configurable.</p>
+<p>To see a working example, see <a href=https://github.com/pajikos/java-examples/tree/master/spring-boot-docker-build target=_blank rel="noopener noreferrer">my Github project</a>.</p>
+<p>To fulfill a single portable Dockerfile requirement, I need to use <a href=https://docs.docker.com/develop/develop-images/multistage-build/ target=_blank rel="noopener noreferrer">Docker multi-stage builds</a>.</p>
+<p>It will have two main parts (stages):</p>
+<ul>
+<li>The building part</li>
+<li>The runtime part</li>
+</ul>
+<h2 id=the-building-part-of-the-dockerfile>The building part of the Dockerfile</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=c>### BUILD image</span><span class=err>
+</span><span class=err></span><span class=k>FROM</span><span class=s> maven:3-jdk-11 as builder</span><span class=err>
+</span><span class=err></span><span class=c># create app folder for sources</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> mkdir -p /build<span class=err>
+</span><span class=err></span><span class=k>WORKDIR</span><span class=s> /build</span><span class=err>
+</span><span class=err></span><span class=k>COPY</span> pom.xml /build<span class=err>
+</span><span class=err></span><span class=c>#Download all required dependencies into one layer</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> mvn -B dependency:resolve dependency:resolve-plugins<span class=err>
+</span><span class=err></span><span class=c>#Copy source code</span><span class=err>
+</span><span class=err></span><span class=k>COPY</span> src /build/src<span class=err>
+</span><span class=err></span><span class=c># Build application</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> mvn package<span class=err>
+</span></code></pre></div><p>I have started from <a href=https://hub.docker.com/_/maven/ target=_blank rel="noopener noreferrer">the official Maven image</a>, so you may change this as you wish. The most interesting part is this:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=k>RUN</span> mvn -B dependency:resolve dependency:resolve-plugins<span class=err>
+</span></code></pre></div><p>It downloads all dependencies required either by your application or by plugins called during a build process. Then all dependencies are a part of one layer. That layer does not change until any changes in pom.xml found. </p>
+<p>So the rebuilding is very fast and does not include downloading all dependencies again and again.</p>
+<p>The second option how to download required dependencies comes from <a href=https://github.com/carlossg/docker-maven target=_blank rel="noopener noreferrer">the official Docker Maven site</a> (when you have some problems with the previous variant):</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=k>RUN</span> mvn -B -e -C -T 1C org.apache.maven.plugins:maven-dependency-plugin:3.0.2:go-offline<span class=err>
+</span></code></pre></div><h3 id=how-to-customize-maven-settings>How to customize Maven settings?</h3>
+<p>It may exist many situations, where you need to change a default Maven setting for your customized build. To do that you need to copy your settings.xml into the image before at the start of the builder image definition, for example:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=k>FROM</span><span class=s> maven:3-jdk-11 as builder</span><span class=err>
+</span><span class=err></span><span class=c>#Copy Custom Maven settings</span><span class=err>
+</span><span class=err></span><span class=k>COPY</span> settings.xml /root/.m2/<span class=err>
+</span></code></pre></div><h2 id=the-runtime-part-of-the-dockerfile>The runtime part of the Dockerfile</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=k>FROM</span><span class=s> openjdk:11-slim as runtime</span><span class=err>
+</span><span class=err></span><span class=k>EXPOSE</span><span class=s> 8080</span><span class=err>
+</span><span class=err></span><span class=c>#Set app home folder</span><span class=err>
+</span><span class=err></span><span class=k>ENV</span> APP_HOME /app<span class=err>
+</span><span class=err></span><span class=c>#Possibility to set JVM options (https://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html)</span><span class=err>
+</span><span class=err></span><span class=k>ENV</span> <span class=nv>JAVA_OPTS</span><span class=o>=</span><span class=s2>&#34;&#34;</span><span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=c>#Create base app folder</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> mkdir <span class=nv>$APP_HOME</span><span class=err>
+</span><span class=err></span><span class=c>#Create folder to save configuration files</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> mkdir <span class=nv>$APP_HOME</span>/config<span class=err>
+</span><span class=err></span><span class=c>#Create folder with application logs</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> mkdir <span class=nv>$APP_HOME</span>/log<span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=k>VOLUME</span><span class=s> $APP_HOME/log</span><span class=err>
+</span><span class=err></span><span class=k>VOLUME</span><span class=s> $APP_HOME/config</span><span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=k>WORKDIR</span><span class=s> $APP_HOME</span><span class=err>
+</span><span class=err></span><span class=c>#Copy executable jar file from the builder image</span><span class=err>
+</span><span class=err></span><span class=k>COPY</span> --from<span class=o>=</span>builder /build/target/*.jar app.jar<span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=k>ENTRYPOINT</span> <span class=p>[</span> <span class=s2>&#34;sh&#34;</span><span class=p>,</span> <span class=s2>&#34;-c&#34;</span><span class=p>,</span> <span class=s2>&#34;java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar&#34;</span><span class=p>]</span><span class=err>
+</span><span class=err></span><span class=c>#Second option using shell form:</span><span class=err>
+</span><span class=err></span><span class=c>#ENTRYPOINT exec java $JAVA_OPTS -jar app.jar $0 $@</span><span class=err>
+</span></code></pre></div><p>The runtime part starts with some necessary step, i.e. exposing port, setting environments and creating some useful folders. The most interesting part is related to copying a previously created jar file into our new image:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=c>#Copy executable jar file from the builder image</span><span class=err>
+</span><span class=err></span><span class=k>COPY</span> --from<span class=o>=</span>builder /build/target/*.jar app.jar<span class=err>
+</span></code></pre></div><p>I am copying from the builder image, see the param &ndash;from. For more info about copying files from other images, see the Docker documentation page for <a href=https://docs.docker.com/develop/develop-images/multistage-build/ target=_blank rel="noopener noreferrer">multi-stage builds</a>.</p>
+<p>As for the Spring Boot application, the created jar file is executable, so it is possible to run our application with the single command:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=k>ENTRYPOINT</span> <span class=p>[</span> <span class=s2>&#34;sh&#34;</span><span class=p>,</span> <span class=s2>&#34;-c&#34;</span><span class=p>,</span> <span class=s2>&#34;java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar&#34;</span> <span class=p>]</span><span class=err>
+</span></code></pre></div><p>To reduce <a href=https://wiki.apache.org/tomcat/HowTo/FasterStartUp#Entropy_Source target=_blank rel="noopener noreferrer">Tomcat startup time</a> there is a system property pointing to &ldquo;/dev/urandom&rdquo;.</p>
+<p>It exists other options how to run Spring Boot application inside Docker. For more info, visit <a href=https://spring.io/guides/gs/spring-boot-docker/ target=_blank rel="noopener noreferrer">the official Spring guide</a>.</p>
+<h2 id=how-to-build-and-run-spring-boot-application-in-docker-in-one-step>How to build and run Spring Boot application in Docker in one step?</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker build -t &lt;image_tag&gt; . <span class=o>&amp;&amp;</span> docker run -p 8080:8080 &lt;image_tag&gt;
+</code></pre></div><p>The above command will build your application with Maven and start it without any delay. This is the simplest way without any customizations. The life may come with some specific requirements, so here&rsquo;s a couple of them.</p>
+<p>Now you can visit the URL to get response from <a href=https://github.com/pajikos/java-examples/tree/master/spring-boot-docker-build target=_blank rel="noopener noreferrer">my GitHub example</a>:</p>
+<p>http://localhost:8081/customer/10</p>
+<h3 id=how-to-debug>How to debug? </h3>
+<p>My example uses Java 11, so there are some JVM options to enable debug mode:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker build -t &lt;image_tag&gt; . <span class=o>&amp;&amp;</span> docker run -p 8080:8080 -p 5005:5005 --env <span class=nv>JAVA_OPTS</span><span class=o>=</span>-agentlib:jdwp<span class=o>=</span><span class=nv>transport</span><span class=o>=</span>dt_socket,server<span class=o>=</span>y,suspend<span class=o>=</span>n,address<span class=o>=</span>*:5005 &lt;image_tag&gt;
+</code></pre></div><p>You need to add the docker environment variable JAVA_OPTS with JVM options and map the internal debugging port to the outside of the container: -p 5005:5005.</p>
+<p>For Java 5-8 containers, use this JAVA_OPTS parameter:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nv>JAVA_OPTS</span><span class=o>=</span>-agentlib:jdwp<span class=o>=</span><span class=nv>transport</span><span class=o>=</span>dt_socket,server<span class=o>=</span>y,suspend<span class=o>=</span>n,address<span class=o>=</span><span class=m>5005</span>
+</code></pre></div><h3 id=how-to-setup-logging>How to setup logging?</h3>
+<p>The runtime container contains folder /app/log with all log files. This path could be easily mounted into your host:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker build -t &lt;image_tag&gt; . <span class=o>&amp;&amp;</span> docker run -p 8080:8080 -v /opt/spring-boot/test/log:/app/log &lt;image_tag&gt;
+</code></pre></div><h3 id=how-to-change-application-configuration>How to change application configuration?</h3>
+<p>The jar file contains default configuration. To selectively override those values, you have <a href=https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html target=_blank rel="noopener noreferrer">many options</a>. I will show you some a part of them.</p>
+<p>Please note that all of the configuration magics are possible when using <a href=https://docs.docker.com/engine/reference/builder/#entrypoint target=_blank rel="noopener noreferrer">the exec form of the ENTRYPOINT</a>. When using the shell form of the ENTRYPOINT, you need to pass all command line arguments manually:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=k>ENTRYPOINT</span> <span class=nb>exec</span> java <span class=nv>$JAVA_OPTS</span> -jar app.jar <span class=nv>$0</span> <span class=nv>$@</span><span class=err>
+</span></code></pre></div><h4 id=command-line-arguments>Command line arguments</h4>
+<p>The Spring Boot automatically accepts all command line arguments and these arguments are passed into run command inside Docker:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker build -t &lt;image_tag&gt; . <span class=o>&amp;&amp;</span> docker run -p 8080:8080 &lt;image_tag&gt; --logging.level.org.springframework<span class=o>=</span>debug
+</code></pre></div><h4 id=system-properties>System properties</h4>
+<p>The similar way is using regular system properties:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker build -t &lt;image_tag&gt; . <span class=o>&amp;&amp;</span> docker run -p 8080:8080 --env <span class=nv>JAVA_OPTS</span><span class=o>=</span>-Dlogging.level.org.springframework<span class=o>=</span>DEBUG &lt;image_tag&gt; 
+</code></pre></div><h4 id=environment-variables>Environment variables</h4>
+<p>You may use environment variables instead of system properties. Most operating systems disallow period-separated key names, but you can use underscores instead (for example, <code>SPRING_CONFIG_NAME</code> instead of <code>spring.config.name</code>). Check <a href=https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html target=_blank rel="noopener noreferrer">the documentation page</a> for more information.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker build -t &lt;image_tag&gt; . <span class=o>&amp;&amp;</span> docker run -p 8080:8080 --env <span class=nv>LOGGING_LEVEL_ORG_SPRINGFRAMEWORK</span><span class=o>=</span>DEBUG &lt;image_tag&gt;
+</code></pre></div><h4 id=mount-your-own-configuration-file>Mount your own configuration file</h4>
+<p>You may have noticed that there is a VOLUME for mounting configuration folder:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker build -t &lt;image_tag&gt; . <span class=o>&amp;&amp;</span> docker run -p 8080:8080 -v /opt/spring-boot/test/config:/app/config:ro &lt;image_tag&gt;
+</code></pre></div><p>So your local folder /opt/spring-boot/test/config should contain the file application.properties. This is the default configuration file name and can be easily changed by setting the property <br>
+spring.config.name.</p>
+<p>It&rsquo;s all, but your requirements may vary in many ways. I tried to solve some of the most important conditions to use Docker for Java developers. Without resolving them, it was not worth talking about using Docker for Java developers.</p>
+<p>As mentioned above, see the project example on <a href=https://github.com/pajikos/java-examples/tree/master/spring-boot-docker-build target=_blank rel="noopener noreferrer">my GitHub</a> with all of the mentioned code.</p>
+<p>Some interesting links:</p>
+<ul>
+<li><a href=https://spring.io/guides/gs/spring-boot-docker target=_blank rel="noopener noreferrer">The official Spring Boot in Docker guide</a></li>
+<li><a href=https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html target=_blank rel="noopener noreferrer">Externalized Configuration in Spring Boot</a></li>
+<li><a href=https://docs.docker.com/develop/develop-images/multistage-build/#before-multi-stage-builds target=_blank rel="noopener noreferrer">Docker Multi-stage builds</a></li>
+<li><a href=https://hub.docker.com/_/openjdk/ target=_blank rel="noopener noreferrer">OpenJDK Docker images</a></li>
+<li><a href=https://hub.docker.com/_/maven/ target=_blank rel="noopener noreferrer">Maven Docker images</a></li>
+</ul>
+</div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2021-09-20&nbsp;<a class=git-hash href=https://github.com/pajikos/commit/f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43 target=_blank rel="noopener noreferrer" title="commit by Pavel Sklenar(pavel.sklenar@cloudfield.cz) f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43: Initial migration commit">
+<i class="fas fa-hashtag fa-fw"></i>f5d3ae4</a></span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=/spring-boot-run-and-build-in-docker/index.md target=_blank rel="noopener noreferrer">Read Markdown</a>
+</span></div>
+<div class=post-info-share>
+<span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/spring-boot-run-and-build-in-docker/ data-title="Spring Boot: Run and Build in Docker" data-hashtags=docker,java,maven,spring-boot><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/spring-boot-run-and-build-in-docker/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/spring-boot-run-and-build-in-docker/ data-title="Spring Boot: Run and Build in Docker" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/spring-boot-run-and-build-in-docker/ data-title="Spring Boot: Run and Build in Docker"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/spring-boot-run-and-build-in-docker/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/spring-boot-run-and-build-in-docker/ data-title="Spring Boot: Run and Build in Docker"><i class="fab fa-evernote fa-fw"></i></a></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/docker/>docker</a>,&nbsp;<a href=/tags/java/>java</a>,&nbsp;<a href=/tags/maven/>maven</a>,&nbsp;<a href=/tags/spring-boot/>spring-boot</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=/securing-rest-api-with-client-certificate/ class=prev rel=prev title="Securing REST APIs with Client Certificates"><i class="fas fa-angle-left fa-fw"></i>Securing REST APIs with Client Certificates</a>
+<a href=/vulnerability-scan-as-part-of-continuous-integration/ class=next rel=next title="Vulnerability Scan as part of Continuous Integration">Vulnerability Scan as part of Continuous Integration<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id=comments><div id=disqus_thread class=comment></div><noscript>
+Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.
+</noscript><div id=valine class=comment></div><noscript>
+Please enable JavaScript to view the comments powered by <a href=https://valine.js.org/>Valine</a>.
+</noscript></div></article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><link rel=stylesheet href=/lib/valine/valine.min.css><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{valine:{appId:"QGzwQXOqs5JOhN4RGPOkR2mR-MdYXbMMI",appKey:"WBmoGyJtbqUswvfLh6L8iEBr",avatar:"mp",el:"#valine",emojiCDN:"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/",emojiMaps:{100:"1f4af.png",alien:"1f47d.png",anger:"1f4a2.png",angry:"1f620.png",anguished:"1f627.png",astonished:"1f632.png",black_heart:"1f5a4.png",blue_heart:"1f499.png",blush:"1f60a.png",bomb:"1f4a3.png",boom:"1f4a5.png",broken_heart:"1f494.png",brown_heart:"1f90e.png",clown_face:"1f921.png",cold_face:"1f976.png",cold_sweat:"1f630.png",confounded:"1f616.png",confused:"1f615.png",cry:"1f622.png",crying_cat_face:"1f63f.png",cupid:"1f498.png",dash:"1f4a8.png",disappointed:"1f61e.png",disappointed_relieved:"1f625.png",dizzy:"1f4ab.png",dizzy_face:"1f635.png",drooling_face:"1f924.png",exploding_head:"1f92f.png",expressionless:"1f611.png",face_vomiting:"1f92e.png",face_with_cowboy_hat:"1f920.png",face_with_hand_over_mouth:"1f92d.png",face_with_head_bandage:"1f915.png",face_with_monocle:"1f9d0.png",face_with_raised_eyebrow:"1f928.png",face_with_rolling_eyes:"1f644.png",face_with_symbols_on_mouth:"1f92c.png",face_with_thermometer:"1f912.png",fearful:"1f628.png",flushed:"1f633.png",frowning:"1f626.png",ghost:"1f47b.png",gift_heart:"1f49d.png",green_heart:"1f49a.png",grimacing:"1f62c.png",grin:"1f601.png",grinning:"1f600.png",hankey:"1f4a9.png",hear_no_evil:"1f649.png",heart:"2764-fe0f.png",heart_decoration:"1f49f.png",heart_eyes:"1f60d.png",heart_eyes_cat:"1f63b.png",heartbeat:"1f493.png",heartpulse:"1f497.png",heavy_heart_exclamation_mark_ornament:"2763-fe0f.png",hole:"1f573-fe0f.png",hot_face:"1f975.png",hugging_face:"1f917.png",hushed:"1f62f.png",imp:"1f47f.png",innocent:"1f607.png",japanese_goblin:"1f47a.png",japanese_ogre:"1f479.png",joy:"1f602.png",joy_cat:"1f639.png",kiss:"1f48b.png",kissing:"1f617.png",kissing_cat:"1f63d.png",kissing_closed_eyes:"1f61a.png",kissing_heart:"1f618.png",kissing_smiling_eyes:"1f619.png",laughing:"1f606.png",left_speech_bubble:"1f5e8-fe0f.png",love_letter:"1f48c.png",lying_face:"1f925.png",mask:"1f637.png",money_mouth_face:"1f911.png",nauseated_face:"1f922.png",nerd_face:"1f913.png",neutral_face:"1f610.png",no_mouth:"1f636.png",open_mouth:"1f62e.png",orange_heart:"1f9e1.png",partying_face:"1f973.png",pensive:"1f614.png",persevere:"1f623.png",pleading_face:"1f97a.png",pouting_cat:"1f63e.png",purple_heart:"1f49c.png",rage:"1f621.png",relaxed:"263a-fe0f.png",relieved:"1f60c.png",revolving_hearts:"1f49e.png",right_anger_bubble:"1f5ef-fe0f.png",robot_face:"1f916.png",rolling_on_the_floor_laughing:"1f923.png",scream:"1f631.png",scream_cat:"1f640.png",see_no_evil:"1f648.png",shushing_face:"1f92b.png",skull:"1f480.png",skull_and_crossbones:"2620-fe0f.png",sleeping:"1f634.png",sleepy:"1f62a.png",slightly_frowning_face:"1f641.png",slightly_smiling_face:"1f642.png",smile:"1f604.png",smile_cat:"1f638.png",smiley:"1f603.png",smiley_cat:"1f63a.png",smiling_face_with_3_hearts:"1f970.png",smiling_imp:"1f608.png",smirk:"1f60f.png",smirk_cat:"1f63c.png",sneezing_face:"1f927.png",sob:"1f62d.png",space_invader:"1f47e.png",sparkling_heart:"1f496.png",speak_no_evil:"1f64a.png",speech_balloon:"1f4ac.png","star-struck":"1f929.png",stuck_out_tongue:"1f61b.png",stuck_out_tongue_closed_eyes:"1f61d.png",stuck_out_tongue_winking_eye:"1f61c.png",sunglasses:"1f60e.png",sweat:"1f613.png",sweat_drops:"1f4a6.png",sweat_smile:"1f605.png",thinking_face:"1f914.png",thought_balloon:"1f4ad.png",tired_face:"1f62b.png",triumph:"1f624.png",two_hearts:"1f495.png",unamused:"1f612.png",upside_down_face:"1f643.png",weary:"1f629.png",white_frowning_face:"2639-fe0f.png",white_heart:"1f90d.png",wink:"1f609.png",woozy_face:"1f974.png",worried:"1f61f.png",yawning_face:"1f971.png",yellow_heart:"1f49b.png",yum:"1f60b.png",zany_face:"1f92a.png",zipper_mouth_face:"1f910.png",zzz:"1f4a4.png"},enableQQ:!1,highlight:!0,lang:"en",pageSize:10,placeholder:"Your comment ...",recordIP:!0,serverURLs:"https://leancloud.hugoCodeIT.com",visitor:!0}},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body>
+</html>

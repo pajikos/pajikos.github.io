@@ -1,0 +1,252 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>How to install Ubuntu on Synology - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="How to install Ubuntu on Synology">
+<meta property="og:description" content="This post is about installing an Ubuntu desktop on your Synology NAS. You are able to install any other Linux distribution using this recipe, it does not matter whether desktop or server type of any distro.
+To install any virtual machine to your Synology, you need to install Virtual Machine Manager to your NAS. Your model must be supported:
+ 19 series: RS1219+ 18 series: FS1018, RS3618xs, RS818RP+, RS818+, RS2818RP+, RS2418RP+, RS2418+, DS3018xs, DS918+, DS718+, DS218+, DS1618+ 17 series: FS3017, FS2017, RS3617xs, RS3617RPxs, RS4017xs+, RS3617xs+, RS18017xs+, DS3617xs, DS1817+, DS1517+ 16 series: RS2416RP+, RS2416+, RS18016xs+, DS916+ 15 series: RS815RP+, RS815+, RC18015xs+, DS3615xs, DS2415+, DS1815+, DS1515+ 14 series: RS3614xs, RS3614RPxs, RS3614xs+ 13 series: RS3413xs+, RS10613xs+ 12 series: RS3412xs, RS3412RPxs, DS3612xs 11 series: RS3411xs, RS3411RPxs, DS3611xs (source, last updated 2018-08-13)">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://blog.pavelsklenar.com/how-to-install-ubuntu-on-synology/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2018-08-13T00:00:00+00:00">
+<meta property="article:modified_time" content="2021-09-20T22:40:20+02:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png">
+<meta name=twitter:title content="How to install Ubuntu on Synology">
+<meta name=twitter:description content="This post is about installing an Ubuntu desktop on your Synology NAS. You are able to install any other Linux distribution using this recipe, it does not matter whether desktop or server type of any distro.
+To install any virtual machine to your Synology, you need to install Virtual Machine Manager to your NAS. Your model must be supported:
+ 19 series: RS1219+ 18 series: FS1018, RS3618xs, RS818RP+, RS818+, RS2818RP+, RS2418RP+, RS2418+, DS3018xs, DS918+, DS718+, DS218+, DS1618+ 17 series: FS3017, FS2017, RS3617xs, RS3617RPxs, RS4017xs+, RS3617xs+, RS18017xs+, DS3617xs, DS1817+, DS1517+ 16 series: RS2416RP+, RS2416+, RS18016xs+, DS916+ 15 series: RS815RP+, RS815+, RC18015xs+, DS3615xs, DS2415+, DS1815+, DS1515+ 14 series: RS3614xs, RS3614RPxs, RS3614xs+ 13 series: RS3413xs+, RS10613xs+ 12 series: RS3412xs, RS3412RPxs, DS3612xs 11 series: RS3411xs, RS3411RPxs, DS3611xs (source, last updated 2018-08-13)">
+<meta name=application-name content="blog.pavelsklenar.com">
+<meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/how-to-install-ubuntu-on-synology/><link rel=prev href=https://blog.pavelsklenar.com/spring-security-radius-login/><link rel=next href=https://blog.pavelsklenar.com/how-to-create-pkcs-12-for-your-application/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"How to install Ubuntu on Synology","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/how-to-install-ubuntu-on-synology\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","wordcount":764,"url":"https:\/\/blog.pavelsklenar.com\/how-to-install-ubuntu-on-synology\/","datePublished":"2018-08-13T00:00:00+00:00","dateModified":"2021-09-20T22:40:20+02:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>('false'==='true'&&window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=/posts/> Posts </a><a class=menu-item href=/tags/> Tags </a><a class=menu-item href=/categories/> Categories </a><a class=menu-item href=/about/> About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
+Cancel
+</a>
+</div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">How to install Ubuntu on Synology</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/synology/><i class="far fa-folder fa-fw"></i>synology</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2018-08-13>2018-08-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;764 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;<span id=/how-to-install-ubuntu-on-synology/ class=leancloud_visitors data-flag-title="How to install Ubuntu on Synology">
+<i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;views
+</span>&nbsp;</div>
+</div><div class="details toc" id=toc-static kept>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li><a href=#downloading-an-installation-image>Downloading an installation image</a></li>
+<li><a href=#creating-virtual-machine>Creating Virtual Machine</a>
+<ul>
+<li><a href=#choose-operating-system>Choose Operating System</a></li>
+<li><a href=#select-storage>Select Storage</a></li>
+<li><a href=#general-configuration>General Configuration</a></li>
+<li><a href=#storage>Storage</a></li>
+<li><a href=#network-configuration>Network Configuration</a></li>
+<li><a href=#other-settings>Other Settings</a></li>
+<li><a href=#assign-permissions>Assign Permissions</a></li>
+<li><a href=#summary>Summary</a></li>
+</ul>
+</li>
+<li><a href=#installation-of-a-system>Installation of a system</a></li>
+<li><a href=#post-installation-recommendations>Post-installation recommendations</a></li>
+</ul>
+</nav></div>
+</div><div class=content id=content><p>This post is about installing an Ubuntu desktop on your Synology NAS. You are able to install any other Linux <a href=https://distrowatch.com/ target=_blank rel="noopener noreferrer">distribution</a> using this recipe, it does not matter whether desktop or server type of any distro.</p>
+<p>To install any virtual machine to your Synology, you need to install <a href=https://www.synology.com/en-global/dsm/packages/Virtualization target=_blank rel="noopener noreferrer">Virtual Machine Manager</a> to your NAS. Your model must be supported:</p>
+<blockquote>
+<p>19 series: RS1219+ 18 series: FS1018, RS3618xs, RS818RP+, RS818+, RS2818RP+, RS2418RP+, RS2418+, DS3018xs, DS918+, DS718+, DS218+, DS1618+ 17 series: FS3017, FS2017, RS3617xs, RS3617RPxs, RS4017xs+, RS3617xs+, RS18017xs+, DS3617xs, DS1817+, DS1517+ 16 series: RS2416RP+, RS2416+, RS18016xs+, DS916+ 15 series: RS815RP+, RS815+, RC18015xs+, DS3615xs, DS2415+, DS1815+, DS1515+ 14 series: RS3614xs, RS3614RPxs, RS3614xs+ 13 series: RS3413xs+, RS10613xs+ 12 series: RS3412xs, RS3412RPxs, DS3612xs 11 series: RS3411xs, RS3411RPxs, DS3611xs (<a href=https://www.synology.com/en-global/dsm/packages/Virtualization target=_blank rel="noopener noreferrer">source</a>, last updated 2018-08-13)</p>
+</blockquote>
+<p>We can summarize a recipe into the following steps:</p>
+<ul>
+<li>Downloading an installation image</li>
+<li>Creating a virtual machine</li>
+<li>Installation of a system</li>
+<li>Post-installation recommendations</li>
+</ul>
+<h2 id=downloading-an-installation-image>Downloading an installation image</h2>
+<p>You can install your favourite image (ISO) of your distro. I have used an <a href=https://www.ubuntu.com/download/desktop target=_blank rel="noopener noreferrer">Ubuntu Desktop</a> because it is very popular with most people (actually I do not know why :)).</p>
+<p>Download ubuntu-xxx-desktop-amd64.iso and save it to your NAS.</p>
+<h2 id=creating-virtual-machine>Creating Virtual Machine</h2>
+<p>Creating your own Virtual Machine is the most important step, but Synology has its own wizard which is very helpful and I think is very easy to understand. So run Virtual Machine Manager, select Virtual Machine on the left menu a click to create.</p>
+<p><figure><a class=lightgallery href=/how-to-install-ubuntu-on-synology/images/create_virtual_machine.png title=/how-to-install-ubuntu-on-synology/images/create_virtual_machine.png data-thumbnail=/how-to-install-ubuntu-on-synology/images/create_virtual_machine.png data-sub-html="<h2>Create a new virtual machine</h2>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/create_virtual_machine.png data-srcset="/how-to-install-ubuntu-on-synology/images/create_virtual_machine.png, images/create_virtual_machine.png 1.5x, /how-to-install-ubuntu-on-synology/images/create_virtual_machine.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/create_virtual_machine.png>
+</a><figcaption class=image-caption>Create a new virtual machine</figcaption>
+</figure></p>
+<h3 id=choose-operating-system>Choose Operating System</h3>
+<p>In the first step of the wizard, select the Linux choice. Option Other may be helpful for some exotic or old distros.</p>
+<p><figure><a class=lightgallery href=/how-to-install-ubuntu-on-synology/images/wizzard_step1.png title=/how-to-install-ubuntu-on-synology/images/wizzard_step1.png data-thumbnail=/how-to-install-ubuntu-on-synology/images/wizzard_step1.png data-sub-html="<h2>Wizard step 1</h2>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/wizzard_step1.png data-srcset="/how-to-install-ubuntu-on-synology/images/wizzard_step1.png, images/wizzard_step1.png 1.5x, /how-to-install-ubuntu-on-synology/images/wizzard_step1.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/wizzard_step1.png>
+</a><figcaption class=image-caption>Wizard step 1</figcaption>
+</figure></p>
+<h3 id=select-storage>Select Storage</h3>
+<p>The step 2 is related to storage, where your machine will physically be installed. If it is your first install, you will be prompted to create a new one. Your data on NAS will not be affected, all ubuntu files will be separated.</p>
+<p><figure><a class=lightgallery href=/how-to-install-ubuntu-on-synology/images/wizzard_step2.png title=/how-to-install-ubuntu-on-synology/images/wizzard_step2.png data-thumbnail=/how-to-install-ubuntu-on-synology/images/wizzard_step2.png data-sub-html="<h2>Wizard step 2</h2>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/wizzard_step2.png data-srcset="/how-to-install-ubuntu-on-synology/images/wizzard_step2.png, images/wizzard_step2.png 1.5x, /how-to-install-ubuntu-on-synology/images/wizzard_step2.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/wizzard_step2.png>
+</a><figcaption class=image-caption>Wizard step 2</figcaption>
+</figure></p>
+<h3 id=general-configuration>General Configuration</h3>
+<p>The step 3 is related to general configuration. As you maybe noticed, you are creating a new virtual machine, so you need to assign CPU (2), RAM (3), video card (3) etc. A number of assigned RAM is related to your available memory, but you need to know, that the DSM system needs memory for its run as well so you cannot count with 4 virtual machines (4 x 1GB), when your NAS has 4 GB in total.</p>
+<p>Actually, exactly one virtual machine consumes memory assigned by you plus 256 MB + 80 MB  (resources for the hypervising: Each VM requires 256 MB; each vCPU requires 80 MB), so 1GB assigned to your Virtual Machine needs 1360 MB in total.</p>
+<p><figure><a class=lightgallery href=/how-to-install-ubuntu-on-synology/images/wizzard_step3-1.png title=/how-to-install-ubuntu-on-synology/images/wizzard_step3-1.png data-thumbnail=/how-to-install-ubuntu-on-synology/images/wizzard_step3-1.png data-sub-html="<h2>Wizard step 3</h2>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/wizzard_step3-1.png data-srcset="/how-to-install-ubuntu-on-synology/images/wizzard_step3-1.png, images/wizzard_step3-1.png 1.5x, /how-to-install-ubuntu-on-synology/images/wizzard_step3-1.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/wizzard_step3-1.png>
+</a><figcaption class=image-caption>Wizard step 3</figcaption>
+</figure></p>
+<h3 id=storage>Storage</h3>
+<p>The 4th step is related to storage. Now you need to set up your previously downloaded ISO image for bootup (1) and setup capacity of the virtual disk (2). As you noticed, I set 10 GB what is quite sufficient for showing Ubuntu (after installing it takes about 5 GB)
+<figure><a class=lightgallery href=/how-to-install-ubuntu-on-synology/images/wizzard_step4.png title=/how-to-install-ubuntu-on-synology/images/wizzard_step4.png data-thumbnail=/how-to-install-ubuntu-on-synology/images/wizzard_step4.png data-sub-html="<h2>Wizard step 4</h2>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/wizzard_step4.png data-srcset="/how-to-install-ubuntu-on-synology/images/wizzard_step4.png, images/wizzard_step4.png 1.5x, /how-to-install-ubuntu-on-synology/images/wizzard_step4.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/wizzard_step4.png>
+</a><figcaption class=image-caption>Wizard step 4</figcaption>
+</figure></p>
+<h3 id=network-configuration>Network Configuration</h3>
+<p>The step number 5 is related to network configuration. If you do not have any special requirements, you can leave it as it, or you can disable network inside your Ubuntu, so no internet access.</p>
+<p><figure><a class=lightgallery href=/how-to-install-ubuntu-on-synology/images/wizzard_step5.png title=/how-to-install-ubuntu-on-synology/images/wizzard_step5.png data-thumbnail=/how-to-install-ubuntu-on-synology/images/wizzard_step5.png data-sub-html="<h2>Wizard step 5</h2>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/wizzard_step5.png data-srcset="/how-to-install-ubuntu-on-synology/images/wizzard_step5.png, images/wizzard_step5.png 1.5x, /how-to-install-ubuntu-on-synology/images/wizzard_step5.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/wizzard_step5.png>
+</a><figcaption class=image-caption>Wizard step 5</figcaption>
+</figure></p>
+<h3 id=other-settings>Other Settings</h3>
+<p>The last but one step is not so important, all default choices are sufficient. Maybe you can set autostart to yes.</p>
+<p><figure><a class=lightgallery href=/how-to-install-ubuntu-on-synology/images/wizzard_step6.png title=/how-to-install-ubuntu-on-synology/images/wizzard_step6.png data-thumbnail=/how-to-install-ubuntu-on-synology/images/wizzard_step6.png data-sub-html="<h2>Wizard step 6</h2>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/wizzard_step6.png data-srcset="/how-to-install-ubuntu-on-synology/images/wizzard_step6.png, images/wizzard_step6.png 1.5x, /how-to-install-ubuntu-on-synology/images/wizzard_step6.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/wizzard_step6.png>
+</a><figcaption class=image-caption>Wizard step 6</figcaption>
+</figure></p>
+<h3 id=assign-permissions>Assign Permissions</h3>
+<p>The last step is about assigning permissions to power on/off or restart a virtual machine, I checked admin only.</p>
+<p><figure><a class=lightgallery href=/how-to-install-ubuntu-on-synology/images/wizzard_step7.png title=/how-to-install-ubuntu-on-synology/images/wizzard_step7.png data-thumbnail=/how-to-install-ubuntu-on-synology/images/wizzard_step7.png data-sub-html="<h2>Wizard step 7</h2>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/wizzard_step7.png data-srcset="/how-to-install-ubuntu-on-synology/images/wizzard_step7.png, images/wizzard_step7.png 1.5x, /how-to-install-ubuntu-on-synology/images/wizzard_step7.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/wizzard_step7.png>
+</a><figcaption class=image-caption>Wizard step 7</figcaption>
+</figure></p>
+<h3 id=summary>Summary</h3>
+<p>After submitting the summary page, your virtual machine will be running (please, check Power on the virtual machine after creation).</p>
+<p><figure><a class=lightgallery href=/how-to-install-ubuntu-on-synology/images/summary.png title=/how-to-install-ubuntu-on-synology/images/summary.png data-thumbnail=/how-to-install-ubuntu-on-synology/images/summary.png data-sub-html="<h2>Summary</h2>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/summary.png data-srcset="/how-to-install-ubuntu-on-synology/images/summary.png, images/summary.png 1.5x, /how-to-install-ubuntu-on-synology/images/summary.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/summary.png>
+</a><figcaption class=image-caption>Summary</figcaption>
+</figure></p>
+<p>On the Virtual Machine page, select your previously created machine and click to Connect (1).<img class=lazyload src=/svg/loading.min.svg data-src=images/connect-1024x466.png data-srcset="/how-to-install-ubuntu-on-synology/images/connect-1024x466.png, images/connect-1024x466.png 1.5x, /how-to-install-ubuntu-on-synology/images/connect-1024x466.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/connect-1024x466.png title=/how-to-install-ubuntu-on-synology/images/connect-1024x466.png>A new tab with vnc session to your machine will be created. Please follow steps depending on your needs and an installing system.</p>
+<h2 id=installation-of-a-system>Installation of a system</h2>
+<p><figure><a class=lightgallery href=/how-to-install-ubuntu-on-synology/images/ubuntu_installation.png title=/how-to-install-ubuntu-on-synology/images/ubuntu_installation.png data-thumbnail=/how-to-install-ubuntu-on-synology/images/ubuntu_installation.png data-sub-html="<h2>Installation system...</h2>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/ubuntu_installation.png data-srcset="/how-to-install-ubuntu-on-synology/images/ubuntu_installation.png, images/ubuntu_installation.png 1.5x, /how-to-install-ubuntu-on-synology/images/ubuntu_installation.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/ubuntu_installation.png>
+</a><figcaption class=image-caption>Installation system...</figcaption>
+</figure></p>
+<p>Your installation process has been completed.
+<figure><a class=lightgallery href=/how-to-install-ubuntu-on-synology/images/finished.png title=/how-to-install-ubuntu-on-synology/images/finished.png data-thumbnail=/how-to-install-ubuntu-on-synology/images/finished.png data-sub-html="<h2>Installation completed</h2>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/finished.png data-srcset="/how-to-install-ubuntu-on-synology/images/finished.png, images/finished.png 1.5x, /how-to-install-ubuntu-on-synology/images/finished.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/finished.png>
+</a><figcaption class=image-caption>Installation completed</figcaption>
+</figure></p>
+<h2 id=post-installation-recommendations>Post-installation recommendations</h2>
+<p>When the installation process is done, it is strongly recommended to install a guest agent. It is used to exchange information between the host and guest, and to execute a command in the guest, allowing properly shut down or restart your machine from the Virtual Machine Manager application.</p>
+<p>The command is here:</p>
+<p><code>sudo apt-get install qemu-guest-agent</code></p>
+<p><figure><a class=lightgallery href=/how-to-install-ubuntu-on-synology/images/apt-get-install-1.png title=/how-to-install-ubuntu-on-synology/images/apt-get-install-1.png data-thumbnail=/how-to-install-ubuntu-on-synology/images/apt-get-install-1.png data-sub-html="<h2>Installing qemu-guest-agent</h2>">
+<img class=lazyload src=/svg/loading.min.svg data-src=images/apt-get-install-1.png data-srcset="/how-to-install-ubuntu-on-synology/images/apt-get-install-1.png, images/apt-get-install-1.png 1.5x, /how-to-install-ubuntu-on-synology/images/apt-get-install-1.png 2x" data-sizes=auto alt=/how-to-install-ubuntu-on-synology/images/apt-get-install-1.png>
+</a><figcaption class=image-caption>Installing qemu-guest-agent</figcaption>
+</figure></p>
+<p>And it is all, enjoy your new virtual machine.</p>
+</div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2021-09-20&nbsp;<a class=git-hash href=https://github.com/pajikos/commit/f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43 target=_blank rel="noopener noreferrer" title="commit by Pavel Sklenar(pavel.sklenar@cloudfield.cz) f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43: Initial migration commit">
+<i class="fas fa-hashtag fa-fw"></i>f5d3ae4</a></span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=/how-to-install-ubuntu-on-synology/index.md target=_blank rel="noopener noreferrer">Read Markdown</a>
+</span></div>
+<div class=post-info-share>
+<span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/how-to-install-ubuntu-on-synology/ data-title="How to install Ubuntu on Synology"><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/how-to-install-ubuntu-on-synology/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/how-to-install-ubuntu-on-synology/ data-title="How to install Ubuntu on Synology" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/how-to-install-ubuntu-on-synology/ data-title="How to install Ubuntu on Synology"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/how-to-install-ubuntu-on-synology/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/how-to-install-ubuntu-on-synology/ data-title="How to install Ubuntu on Synology"><i class="fab fa-evernote fa-fw"></i></a></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=/spring-security-radius-login/ class=prev rel=prev title="Spring Security with Radius Login in Spring Boot"><i class="fas fa-angle-left fa-fw"></i>Spring Security with Radius Login in Spring Boot</a>
+<a href=/how-to-create-pkcs-12-for-your-application/ class=next rel=next title="How To Create PKCS #12 For Your Application">How To Create PKCS #12 For Your Application<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id=comments><div id=disqus_thread class=comment></div><noscript>
+Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.
+</noscript><div id=valine class=comment></div><noscript>
+Please enable JavaScript to view the comments powered by <a href=https://valine.js.org/>Valine</a>.
+</noscript></div></article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><link rel=stylesheet href=/lib/valine/valine.min.css><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{valine:{appId:"QGzwQXOqs5JOhN4RGPOkR2mR-MdYXbMMI",appKey:"WBmoGyJtbqUswvfLh6L8iEBr",avatar:"mp",el:"#valine",emojiCDN:"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/",emojiMaps:{100:"1f4af.png",alien:"1f47d.png",anger:"1f4a2.png",angry:"1f620.png",anguished:"1f627.png",astonished:"1f632.png",black_heart:"1f5a4.png",blue_heart:"1f499.png",blush:"1f60a.png",bomb:"1f4a3.png",boom:"1f4a5.png",broken_heart:"1f494.png",brown_heart:"1f90e.png",clown_face:"1f921.png",cold_face:"1f976.png",cold_sweat:"1f630.png",confounded:"1f616.png",confused:"1f615.png",cry:"1f622.png",crying_cat_face:"1f63f.png",cupid:"1f498.png",dash:"1f4a8.png",disappointed:"1f61e.png",disappointed_relieved:"1f625.png",dizzy:"1f4ab.png",dizzy_face:"1f635.png",drooling_face:"1f924.png",exploding_head:"1f92f.png",expressionless:"1f611.png",face_vomiting:"1f92e.png",face_with_cowboy_hat:"1f920.png",face_with_hand_over_mouth:"1f92d.png",face_with_head_bandage:"1f915.png",face_with_monocle:"1f9d0.png",face_with_raised_eyebrow:"1f928.png",face_with_rolling_eyes:"1f644.png",face_with_symbols_on_mouth:"1f92c.png",face_with_thermometer:"1f912.png",fearful:"1f628.png",flushed:"1f633.png",frowning:"1f626.png",ghost:"1f47b.png",gift_heart:"1f49d.png",green_heart:"1f49a.png",grimacing:"1f62c.png",grin:"1f601.png",grinning:"1f600.png",hankey:"1f4a9.png",hear_no_evil:"1f649.png",heart:"2764-fe0f.png",heart_decoration:"1f49f.png",heart_eyes:"1f60d.png",heart_eyes_cat:"1f63b.png",heartbeat:"1f493.png",heartpulse:"1f497.png",heavy_heart_exclamation_mark_ornament:"2763-fe0f.png",hole:"1f573-fe0f.png",hot_face:"1f975.png",hugging_face:"1f917.png",hushed:"1f62f.png",imp:"1f47f.png",innocent:"1f607.png",japanese_goblin:"1f47a.png",japanese_ogre:"1f479.png",joy:"1f602.png",joy_cat:"1f639.png",kiss:"1f48b.png",kissing:"1f617.png",kissing_cat:"1f63d.png",kissing_closed_eyes:"1f61a.png",kissing_heart:"1f618.png",kissing_smiling_eyes:"1f619.png",laughing:"1f606.png",left_speech_bubble:"1f5e8-fe0f.png",love_letter:"1f48c.png",lying_face:"1f925.png",mask:"1f637.png",money_mouth_face:"1f911.png",nauseated_face:"1f922.png",nerd_face:"1f913.png",neutral_face:"1f610.png",no_mouth:"1f636.png",open_mouth:"1f62e.png",orange_heart:"1f9e1.png",partying_face:"1f973.png",pensive:"1f614.png",persevere:"1f623.png",pleading_face:"1f97a.png",pouting_cat:"1f63e.png",purple_heart:"1f49c.png",rage:"1f621.png",relaxed:"263a-fe0f.png",relieved:"1f60c.png",revolving_hearts:"1f49e.png",right_anger_bubble:"1f5ef-fe0f.png",robot_face:"1f916.png",rolling_on_the_floor_laughing:"1f923.png",scream:"1f631.png",scream_cat:"1f640.png",see_no_evil:"1f648.png",shushing_face:"1f92b.png",skull:"1f480.png",skull_and_crossbones:"2620-fe0f.png",sleeping:"1f634.png",sleepy:"1f62a.png",slightly_frowning_face:"1f641.png",slightly_smiling_face:"1f642.png",smile:"1f604.png",smile_cat:"1f638.png",smiley:"1f603.png",smiley_cat:"1f63a.png",smiling_face_with_3_hearts:"1f970.png",smiling_imp:"1f608.png",smirk:"1f60f.png",smirk_cat:"1f63c.png",sneezing_face:"1f927.png",sob:"1f62d.png",space_invader:"1f47e.png",sparkling_heart:"1f496.png",speak_no_evil:"1f64a.png",speech_balloon:"1f4ac.png","star-struck":"1f929.png",stuck_out_tongue:"1f61b.png",stuck_out_tongue_closed_eyes:"1f61d.png",stuck_out_tongue_winking_eye:"1f61c.png",sunglasses:"1f60e.png",sweat:"1f613.png",sweat_drops:"1f4a6.png",sweat_smile:"1f605.png",thinking_face:"1f914.png",thought_balloon:"1f4ad.png",tired_face:"1f62b.png",triumph:"1f624.png",two_hearts:"1f495.png",unamused:"1f612.png",upside_down_face:"1f643.png",weary:"1f629.png",white_frowning_face:"2639-fe0f.png",white_heart:"1f90d.png",wink:"1f609.png",woozy_face:"1f974.png",worried:"1f61f.png",yawning_face:"1f971.png",yellow_heart:"1f49b.png",yum:"1f60b.png",zany_face:"1f92a.png",zipper_mouth_face:"1f910.png",zzz:"1f4a4.png"},enableQQ:!1,highlight:!0,lang:"en",pageSize:10,placeholder:"Your comment ...",recordIP:!0,serverURLs:"https://leancloud.hugoCodeIT.com",visitor:!0}},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body>
+</html>
