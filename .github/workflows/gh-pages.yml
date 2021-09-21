@@ -9,11 +9,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-20.04
-    env:
-      APPLICATION_ID: 'FCUIGZY2I2'
-      API_KEY: '${{ secrets.ALGOLIA_ADMIN_KEY }}'
-      INDEX_NAME: 'index.en'
-      CONFIG: '{"index_name":"index.en","start_urls":[{"url":"https://blog.pavelsklenar.com","selectors_key":"blog"}],"selectors":{"blog":{"lvl0":"h1","lvl1":"h2","lvl2":"h3","lvl3":"h4","lvl4":"h5","lvl5":"#description","text":"#content"}}}'
     steps:
       - uses: actions/checkout@v2
         with:
@@ -28,10 +23,6 @@ jobs:
 
       - name: Build
         run: hugo --minify
-
-      - name: Algolia Docsearch Action
-        id: algolia
-        uses:  adapttive/algolia-docsearch-action@1.1.1
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
