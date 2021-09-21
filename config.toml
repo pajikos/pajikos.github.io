@@ -624,6 +624,7 @@ target = "content/about"
   isPlainText = true
   isHTML = false
 
+
 # Options to make hugo output files
 [outputs]
   home = ["HTML", "RSS", "JSON"]
