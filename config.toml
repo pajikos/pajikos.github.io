@@ -28,11 +28,11 @@ source = "content/test/tcp-port-scanner-using-spring-shell"
 target = "content/posts/tcp-port-scanner-using-spring-shell"
 
 [[module.mounts]]
-source = "content/external/iaac-aro/README.md"
+source = "content/cloud-samples/iaac-aro/README.md"
 target = "content/posts/iaac-aro/index.md"
 
 [[module.mounts]]
-source = "content/external/iaac-aro"
+source = "content/cloud-samples/iaac-aro"
 target = "content/posts/iaac-aro"
 
 

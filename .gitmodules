@@ -1,6 +1,6 @@
 [submodule "themes/CodeIT"]
 	path = themes/CodeIT
 	url = https://github.com/sunt-programator/CodeIT.git
-[submodule "content/external/iaac-aro"]
-	path = content/external/iaac-aro
-	url = https://github.com/pajikos/iaac-aro.git
+[submodule "content/cloud-samples"]
+	path = content/cloud-samples
+	url = https://github.com/pajikos/cloud-samples.git
