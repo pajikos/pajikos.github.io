@@ -82,6 +82,13 @@ Cancel
 <main class=main>
 <div class=container><div class="page home" posts><div class=home-profile><div class=home-avatar><a href=/posts/ title=Posts><img class=lazyload src=/svg/loading.min.svg data-src=/images/avatar.png data-srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" data-sizes=auto alt="Pavel Sklenar" title="Pavel Sklenar"></a></div><h2 class=home-subtitle><div id=id-1 class=typeit></div></h2><div class=links><a href=https://github.com/pajikos title=GitHub target=_blank rel="noopener noreferrer me"><i class="fab fa-github fa-fw"></i></a><a href=https://linkedin.com/in/pavelsklenar title=LinkedIn target=_blank rel="noopener noreferrer me"><i class="fab fa-linkedin fa-fw"></i></a><a href=https://medium.com/@sklenar.pav title=Medium target=_blank rel="noopener noreferrer me"><i class="fab fa-medium fa-fw"></i></a><a href=mailto:sklenar.pav@gmail.com title=Email rel=" me"><i class="far fa-envelope fa-fw"></i></a><a href=/index.xml title=RSS target=_blank rel="noopener noreferrer me"><i class="fas fa-rss fa-fw"></i></a></div></div>
 <article class="single summary" itemscope itemtype=http://schema.org/Article><h1 class=single-title itemprop="name headline">
+<a href=/tcp-port-scanner-using-spring-shell/>TCP Port Scanner Example using Spring Shell</a>
+</h1><div class=post-meta><span class=post-author><a href=/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-publish>published on <time datetime=2018-09-18>2018-09-18</time></span>&nbsp;<span class=post-category>included in <a href=/categories/java/><i class="far fa-folder fa-fw"></i>java</a></span></div><div class=content>This post is about using Spring Shell to make a simple application for scanning open TCP ports.
+Technologies used:
+Spring Boot 2.0.5.RELEASE Spring Shell 2.0.1.RELEASE Quick Overview:
+Final Project Structure Creating a new base Spring Boot project Needs for parallelism How check whether a port is open? Integrating with Spring Shell How it works Final Project Structure The final project structure" The final project structure</div><div class=post-footer>
+<a href=/tcp-port-scanner-using-spring-shell/>Read More</a></div>
+</article><article class="single summary" itemscope itemtype=http://schema.org/Article><h1 class=single-title itemprop="name headline">
 <a href=/how-to-create-pkcs-12-for-your-application/>How To Create PKCS #12 For Your Application</a>
 </h1><div class=post-meta><span class=post-author><a href=/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-publish>published on <time datetime=2018-08-18>2018-08-18</time></span>&nbsp;<span class=post-category>included in <a href=/categories/security/><i class="far fa-folder fa-fw"></i>security</a></span></div><div class=content>This post is about creating PKCS #12 to serve e.g. your content via HTTPS in your application itself or in another web container (such a Tomcat or another application server).
 The PKCS #12 format is a binary format for storing cryptography objects. It usually contains the server certificate, any intermediate certificates (i.e. chain of trust), and the private key, all of them in a single file. A PKCS #12 file may be encrypted and signed.</div><div class=post-footer>
@@ -115,12 +122,6 @@ Technologies used:
 Spring Boot 2.0.4.RELEASE Spring Integration 5.0.7.RELEASE (managed by Spring Boot) Spring 5.0.8.RELEASE (managed by Spring Boot) Quick overview:</div><div class=post-footer>
 <a href=/spring-integration-sftp-upload-example/>Read More</a><div class=post-tags>
 <i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/sftp/>sftp</a>,&nbsp;<a href=/tags/spring/>spring</a>,&nbsp;<a href=/tags/spring-boot/>spring-boot</a>,&nbsp;<a href=/tags/spring-integration/>spring-integration</a></div></div>
-</article><article class="single summary" itemscope itemtype=http://schema.org/Article><h1 class=single-title itemprop="name headline">
-<a href=/parallel-processing-java/>Parallel Processing in Java</a>
-</h1><div class=post-meta><span class=post-author><a href=/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-publish>published on <time datetime=2016-03-18>2016-03-18</time></span>&nbsp;<span class=post-category>included in <a href=/categories/java/><i class="far fa-folder fa-fw"></i>java</a></span></div><div class=content>This post shows how to implement parallelism in Java using its native java.util.concurrent classes.
-I mean especially using parallel Fork-Join Framework (available since Java 1.7), which is most suitable for processing of high complex (CPU intensive) tasks. I mean that case when you have one very complex task and you want to use all of your available computing resources to process your single task in the fastest time.
-The basic idea of the Fork-Join Framework concerns &ldquo;Divide and Conquer&rdquo;.</div><div class=post-footer>
-<a href=/parallel-processing-java/>Read More</a></div>
 </article><ul class=pagination><li class=page-item>
 <span class=page-link>
 <a href=/>1</a>

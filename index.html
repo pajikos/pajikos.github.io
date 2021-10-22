@@ -82,6 +82,13 @@ Cancel
 <main class=main>
 <div class=container><div class="page home" posts><div class=home-profile><div class=home-avatar><a href=/posts/ title=Posts><img class=lazyload src=/svg/loading.min.svg data-src=/images/avatar.png data-srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" data-sizes=auto alt="Pavel Sklenar" title="Pavel Sklenar"></a></div><h2 class=home-subtitle><div id=id-1 class=typeit></div></h2><div class=links><a href=https://github.com/pajikos title=GitHub target=_blank rel="noopener noreferrer me"><i class="fab fa-github fa-fw"></i></a><a href=https://linkedin.com/in/pavelsklenar title=LinkedIn target=_blank rel="noopener noreferrer me"><i class="fab fa-linkedin fa-fw"></i></a><a href=https://medium.com/@sklenar.pav title=Medium target=_blank rel="noopener noreferrer me"><i class="fab fa-medium fa-fw"></i></a><a href=mailto:sklenar.pav@gmail.com title=Email rel=" me"><i class="far fa-envelope fa-fw"></i></a><a href=/index.xml title=RSS target=_blank rel="noopener noreferrer me"><i class="fas fa-rss fa-fw"></i></a></div></div>
 <article class="single summary" itemscope itemtype=http://schema.org/Article><h1 class=single-title itemprop="name headline">
+<a href=/azure-functions-system-integration/>Transfer data between two systems using Azure functions</a>
+</h1><div class=post-meta><span class=post-author><a href=/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-publish>published on <time datetime=2021-10-22>2021-10-22</time></span>&nbsp;<span class=post-category>included in <a href=/categories/azure/><i class="far fa-folder fa-fw"></i>azure</a></span></div><div class=content>Introduction This simple demo shows possible integration between two systems (system A and system B) using Azure Functions.
+The architecture constraints:
+All updates from the system A must be transfered into the system B The system A is listening on HTTP with REST API The system B is listening on HTTP with REST API The system B is not fully compatible in message definitions, so field mapping must be used The mapping must be saved in DB (I chose CosmosDB) Due to missing push notification in the system A, its API must be periodically checked The system B may be occasionally offline, so some type of persistent bus should be used.</div><div class=post-footer>
+<a href=/azure-functions-system-integration/>Read More</a><div class=post-tags>
+<i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/cloud/>cloud</a>,&nbsp;<a href=/tags/azure/>azure</a>,&nbsp;<a href=/tags/functions/>functions</a>,&nbsp;<a href=/tags/cosmosdb/>cosmosdb</a>,&nbsp;<a href=/tags/service-bus/>service-bus</a></div></div>
+</article><article class="single summary" itemscope itemtype=http://schema.org/Article><h1 class=single-title itemprop="name headline">
 <a href=/iaac-aro/>Creating Azure Red Hat OpenShift 4 cluster</a>
 </h1><div class=post-meta><span class=post-author><a href=/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-publish>published on <time datetime=2021-09-23>2021-09-23</time></span>&nbsp;<span class=post-category>included in <a href=/categories/azure/><i class="far fa-folder fa-fw"></i>azure</a></span></div><div class=content>You can find here the guide:
 how to create an Azure Red Hat OpenShift 4 (ARO) cluster, how to setup connectivity to the new ARO cluster, how to deploy an example application. Note The full example with all resources could be found here on GitHub. Create Azure Red Hat OpenShift 4 (ARO) cluster Prepare environment Set the correct subsription:
@@ -116,13 +123,6 @@ In connection with Spring Security, we will be able to perform some additional a
 Technologies used:
 Spring Boot 2.0.5.RELEASE Spring Web + Security 5.</div><div class=post-footer>
 <a href=/securing-rest-api-with-client-certificate/>Read More</a></div>
-</article><article class="single summary" itemscope itemtype=http://schema.org/Article><h1 class=single-title itemprop="name headline">
-<a href=/tcp-port-scanner-using-spring-shell/>TCP Port Scanner Example using Spring Shell</a>
-</h1><div class=post-meta><span class=post-author><a href=/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-publish>published on <time datetime=2018-09-18>2018-09-18</time></span>&nbsp;<span class=post-category>included in <a href=/categories/java/><i class="far fa-folder fa-fw"></i>java</a></span></div><div class=content>This post is about using Spring Shell to make a simple application for scanning open TCP ports.
-Technologies used:
-Spring Boot 2.0.5.RELEASE Spring Shell 2.0.1.RELEASE Quick Overview:
-Final Project Structure Creating a new base Spring Boot project Needs for parallelism How check whether a port is open? Integrating with Spring Shell How it works Final Project Structure The final project structure" The final project structure</div><div class=post-footer>
-<a href=/tcp-port-scanner-using-spring-shell/>Read More</a></div>
 </article><ul class=pagination><li class="page-item active">
 <span class=page-link>
 <a href=/>1</a>
