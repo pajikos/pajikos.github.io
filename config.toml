@@ -35,6 +35,14 @@ target = "content/posts/iaac-aro/index.md"
 source = "content/cloud-samples/iaac-aro"
 target = "content/posts/iaac-aro"
 
+[[module.mounts]]
+source = "content/cloud-samples/azure-functions-system-integration/README.md"
+target = "content/posts/azure-functions-system-integration/index.md"
+
+[[module.mounts]]
+source = "content/cloud-samples/azure-functions-system-integration"
+target = "content/posts/azure-functions-system-integration"
+
 
 [[module.mounts]]
 source = "content/posts"
