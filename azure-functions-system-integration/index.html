@@ -21,7 +21,7 @@ The architecture constraints:
 <meta name=application-name content="blog.pavelsklenar.com">
 <meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
 <link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/azure-functions-system-integration/><link rel=prev href=https://blog.pavelsklenar.com/iaac-aro/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Transfer data between two systems using Azure functions","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/azure-functions-system-integration\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"cloud, azure, functions, cosmosdb, service-bus","wordcount":618,"url":"https:\/\/blog.pavelsklenar.com\/azure-functions-system-integration\/","datePublished":"2021-10-22T00:00:00+00:00","dateModified":"2021-10-22T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/azure-functions-system-integration/><link rel=prev href=https://blog.pavelsklenar.com/iaac-aro/><link rel=next href=https://blog.pavelsklenar.com/two-node-nomad-cluster/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Transfer data between two systems using Azure functions","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/azure-functions-system-integration\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"cloud, azure, functions, cosmosdb, service-bus","wordcount":618,"url":"https:\/\/blog.pavelsklenar.com\/azure-functions-system-integration\/","datePublished":"2021-10-22T00:00:00+00:00","dateModified":"2021-10-22T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
 <body header-desktop=fixed header-mobile=auto><script type=text/javascript>('false'==='true'&&window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
 <div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
 <div class=header-wrapper>
@@ -88,7 +88,7 @@ Cancel
 <h2 class=toc-title>Contents</h2>
 <div class=toc-content id=toc-content-auto></div>
 </div><article class="page single"><h1 class="single-title animated flipInX">Transfer data between two systems using Azure functions</h1><div class=post-meta>
-<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/azure/><i class="far fa-folder fa-fw"></i>azure</a></span></div>
+<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/azure/><i class="far fa-folder fa-fw"></i>azure</a></span></div>
 <div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-10-22>2021-10-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;618 words&nbsp;
 <i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
 </div><div class="details toc" id=toc-static kept>
@@ -229,31 +229,31 @@ az cosmosdb collection create <span class=se>\
 </code></pre></div><h2 id=deploy-functions-itself>Deploy functions itself</h2>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>func azure functionapp publish <span class=nv>$FUNC_APP_NAME</span>
 </code></pre></div><p>Basic overview of deployed functions:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>Functions in skl-func-app:
-    bus-to-system-b - [serviceBusTrigger]
-
-    system-a - [httpTrigger]
-        Invoke url: https://skl-func-app.azurewebsites.net/api/system-a
-
-    system-b - [httpTrigger]
-        Invoke url: https://skl-func-app.azurewebsites.net/api/system-b
-
-    system-a-to-bus - [timerTrigger]
-
-</code></pre></div><h2 id=debugging-and-testing>Debugging and testing</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>Functions in skl-func-app:
+</span><span class=go>    bus-to-system-b - [serviceBusTrigger]
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>    system-a - [httpTrigger]
+</span><span class=go>        Invoke url: https://skl-func-app.azurewebsites.net/api/system-a
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>    system-b - [httpTrigger]
+</span><span class=go>        Invoke url: https://skl-func-app.azurewebsites.net/api/system-b
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>    system-a-to-bus - [timerTrigger]
+</span><span class=go></span><span class=err>
+</span></code></pre></div><h2 id=debugging-and-testing>Debugging and testing</h2>
 <h3 id=running-functions-locally>Running functions locally</h3>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>func start
 </code></pre></div><p>When all functions starts, two endpoint will be created:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>Functions:
-
-	system-a: [GET,POST] http://localhost:7071/api/system-a
-
-	system-b: [POST] http://localhost:7071/api/system-b
-
-	bus-to-system-b: serviceBusTrigger
-
-	system-a-to-bus: timerTrigger
-</code></pre></div><p>URL <code>http://localhost:7071/api/system-a</code> simulates the REST API of the System A and <code>http://localhost:7071/api/system-b</code> simulates the REST API of the Bystem B.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>Functions:
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>	system-a: [GET,POST] http://localhost:7071/api/system-a
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>	system-b: [POST] http://localhost:7071/api/system-b
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>	bus-to-system-b: serviceBusTrigger
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>	system-a-to-bus: timerTrigger
+</span></code></pre></div><p>URL <code>http://localhost:7071/api/system-a</code> simulates the REST API of the System A and <code>http://localhost:7071/api/system-b</code> simulates the REST API of the Bystem B.</p>
 <h3 id=logs>Logs</h3>
 <p>Log stream in console is not currently supported in Linux Consumption Apps.</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>func azure functionapp logstream <span class=nv>$FUNC_APP_NAME</span> --browser
@@ -297,7 +297,8 @@ az cosmosdb collection create <span class=se>\
 <span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span>
 </section>
 </div>
-<div class=post-nav><a href=/iaac-aro/ class=prev rel=prev title="Creating Azure Red Hat OpenShift 4 cluster"><i class="fas fa-angle-left fa-fw"></i>Creating Azure Red Hat OpenShift 4 cluster</a></div>
+<div class=post-nav><a href=/iaac-aro/ class=prev rel=prev title="Creating Azure Red Hat OpenShift 4 cluster"><i class="fas fa-angle-left fa-fw"></i>Creating Azure Red Hat OpenShift 4 cluster</a>
+<a href=/two-node-nomad-cluster/ class=next rel=next title="Creating two node Nomad cluster">Creating two node Nomad cluster<i class="fas fa-angle-right fa-fw"></i></a></div>
 </div>
 <div id=comments><div id=disqus_thread class=comment></div><noscript>
 Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.

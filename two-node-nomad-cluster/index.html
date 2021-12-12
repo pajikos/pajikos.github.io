@@ -1,0 +1,426 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>Creating two node Nomad cluster - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="Creating two node Nomad cluster">
+<meta property="og:description" content="Nomad is an interesting alternative to Kubernetes. As authors of Nomad say, it is a suplement to Kubernetes and offers some great features.
+Here you can find a guide on how to create a fresh Nomad cluster with two nodes. The first node acts as a server and client, the second node acts as a client only. I know this architecture is not recommended for production purposes, but I would like to test it only.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://blog.pavelsklenar.com/two-node-nomad-cluster/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-12-12T00:00:00+00:00">
+<meta property="article:modified_time" content="2021-12-12T00:00:00+00:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png">
+<meta name=twitter:title content="Creating two node Nomad cluster">
+<meta name=twitter:description content="Nomad is an interesting alternative to Kubernetes. As authors of Nomad say, it is a suplement to Kubernetes and offers some great features.
+Here you can find a guide on how to create a fresh Nomad cluster with two nodes. The first node acts as a server and client, the second node acts as a client only. I know this architecture is not recommended for production purposes, but I would like to test it only.">
+<meta name=application-name content="blog.pavelsklenar.com">
+<meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/two-node-nomad-cluster/><link rel=prev href=https://blog.pavelsklenar.com/azure-functions-system-integration/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Creating two node Nomad cluster","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/two-node-nomad-cluster\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"kubernetes, nomad, docker, nebula","wordcount":1363,"url":"https:\/\/blog.pavelsklenar.com\/two-node-nomad-cluster\/","datePublished":"2021-12-12T00:00:00+00:00","dateModified":"2021-12-12T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>('false'==='true'&&window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=/posts/> Posts </a><a class=menu-item href=/tags/> Tags </a><a class=menu-item href=/categories/> Categories </a><a class=menu-item href=/about/> About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
+Cancel
+</a>
+</div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">Creating two node Nomad cluster</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/nomad/><i class="far fa-folder fa-fw"></i>nomad</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-12-12>2021-12-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1363 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div>
+</div><div class="details toc" id=toc-static kept>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li><a href=#install-nomad-and-other-requirements>Install Nomad and other requirements</a>
+<ul>
+<li><a href=#install-nomad>Install Nomad</a></li>
+<li><a href=#install-docker-engine>Install Docker Engine</a></li>
+<li><a href=#install-cni-plugin>Install CNI plugin</a></li>
+</ul>
+</li>
+<li><a href=#setup-nomad>Setup Nomad</a>
+<ul>
+<li><a href=#configure-the-first-node>Configure the first node</a></li>
+<li><a href=#configure-the-second-node>Configure the second node</a></li>
+</ul>
+</li>
+<li><a href=#start-nomad>Start Nomad</a></li>
+<li><a href=#run-example-application>Run example application</a></li>
+<li><a href=#install-consul>Install Consul</a>
+<ul>
+<li><a href=#install-consul-1>Install Consul</a>
+<ul>
+<li><a href=#configure-consul-on-the-first-node-nomad1>Configure Consul on the first node (nomad1)</a></li>
+<li><a href=#configure-consul-on-the-second-node-nomad2>Configure Consul on the second node (nomad2)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href=#run-job-with-service-discovery>Run job with service discovery</a>
+<ul>
+<li><a href=#test-consul-dns-service>Test Consul DNS service</a></li>
+</ul>
+</li>
+<li><a href=#resources>Resources</a></li>
+</ul>
+</nav></div>
+</div><div class=content id=content><p>Nomad is an interesting alternative to Kubernetes. As authors of Nomad say, it is a <a href=https://www.nomadproject.io/docs/nomad-vs-kubernetes/supplement target=_blank rel="noopener noreferrer">suplement to Kubernetes</a> and offers some great features.</p>
+<p>Here you can find a guide on how to create a fresh Nomad cluster with two nodes. The first node acts as a server and client, the second node acts as a client only.
+I know this architecture is <a href=https://github.com/hashicorp/nomad/issues/5053#issuecomment-451296159 target=_blank rel="noopener noreferrer">not recommended</a> for production purposes, but I would like to test it only.</p>
+<p><figure><a class=lightgallery href=/two-node-nomad-cluster/resources/nomad_with_nebula.png title="container detail-process" data-thumbnail=/two-node-nomad-cluster/resources/nomad_with_nebula.png data-sub-html="<h2>The architecture of demo</h2><p>container detail-process</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=resources/nomad_with_nebula.png data-srcset="/two-node-nomad-cluster/resources/nomad_with_nebula.png, resources/nomad_with_nebula.png 1.5x, /two-node-nomad-cluster/resources/nomad_with_nebula.png 2x" data-sizes=auto alt=/two-node-nomad-cluster/resources/nomad_with_nebula.png>
+</a><figcaption class=image-caption>The architecture of demo</figcaption>
+</figure></p>
+<p>Both nodes are not connected to the same network they are in west Europe but different cloud providers. To fulfill the connectivity requirements between nodes, I connect them to the same network using <a href=https://github.com/slackhq/nebula target=_blank rel="noopener noreferrer">Nebula</a>, a scalable overlay networking tool.
+If all nodes are visible directly, Nebula is not necessary.</p>
+<h2 id=install-nomad-and-other-requirements>Install Nomad and other requirements</h2>
+<p>All steps in this section must be installed on all nodes.</p>
+<h3 id=install-nomad>Install Nomad</h3>
+<p>Add the HashiCorp GPG key:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>curl -fsSL https://apt.releases.hashicorp.com/gpg <span class=p>|</span> sudo apt-key add -
+</code></pre></div><p>Add the official HashiCorp Linux repository:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo apt-add-repository <span class=s2>&#34;deb [arch=amd64] https://apt.releases.hashicorp.com </span><span class=k>$(</span>lsb_release -cs<span class=k>)</span><span class=s2> main&#34;</span>
+</code></pre></div><p>Update and install:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo apt-get update <span class=o>&amp;&amp;</span> sudo apt-get install nomad
+</code></pre></div><p>To verify Nomad was installed correctly, try the nomad command.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>nomad
+</code></pre></div><h3 id=install-docker-engine>Install Docker Engine</h3>
+<p>I would like to test Nomad with containers, so a container runtime is required to install as well. I chose Docker, the full install manual could be found on <a href=https://docs.docker.com/engine/install/ target=_blank rel="noopener noreferrer">Docker Install Page</a>, but quick steps are here:
+Update the apt package index and install packages to allow apt to use a repository over HTTPS:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo apt-get update
+sudo apt-get install <span class=se>\
+</span><span class=se></span>    ca-certificates <span class=se>\
+</span><span class=se></span>    curl <span class=se>\
+</span><span class=se></span>    gnupg <span class=se>\
+</span><span class=se></span>    lsb-release
+</code></pre></div><p>Add Docker’s official GPG key:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>curl -fsSL https://download.docker.com/linux/ubuntu/gpg <span class=p>|</span> sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+</code></pre></div><p>Use the following command to set up the stable repository. To add the nightly or test repository, add the word nightly or test (or both) after the word stable in the commands below. Learn about nightly and test channels.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash> <span class=nb>echo</span> <span class=se>\
+</span><span class=se></span>  <span class=s2>&#34;deb [arch=</span><span class=k>$(</span>dpkg --print-architecture<span class=k>)</span><span class=s2> signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+</span><span class=s2>  </span><span class=k>$(</span>lsb_release -cs<span class=k>)</span><span class=s2> stable&#34;</span> <span class=p>|</span> sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</code></pre></div><p>Update the apt package index, and install the latest version of Docker Engine and containerd, or go to the next step to install a specific version:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+</code></pre></div><h3 id=install-cni-plugin>Install CNI plugin</h3>
+<p>Install CNI plugin to be able to run Docker containers in Nomad with bridge networking. More info about Docker drivers in Nomad could be found <a href=https://www.nomadproject.io/docs/drivers/docker target=_blank rel="noopener noreferrer">here</a>. You can choose a version depending on <a href=https://github.com/containernetworking/plugins/releases target=_blank rel="noopener noreferrer">your system</a>:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>curl -L -o cni-plugins.tgz https://github.com/containernetworking/plugins/releases/download/v1.0.1/cni-plugins-linux-amd64-v1.0.1.tgz
+sudo mkdir -p /opt/cni/bin
+sudo tar -C /opt/cni/bin -xzf cni-plugins.tgz
+</code></pre></div><h2 id=setup-nomad>Setup Nomad</h2>
+<p>We need to configure Nomad before could be run. As I said before, nodes are connected using Nebula, so both nodes has two network interfaces, one with public IP (a default route) and one with internal private Nebula IP (preferred for intracluster communication).</p>
+<h3 id=configure-the-first-node>Configure the first node</h3>
+<p>The first node has the name <code>nomad1</code> nad here is the node&rsquo;s Nomad configuration file content (<code>/etc/nomad.d/nomad.hcl</code>).
+Full configuration options can be found at <a href=https://www.nomadproject.io/docs/configuration target=_blank rel="noopener noreferrer">Nomad Configuration page</a>.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-hcl data-lang=hcl>
+<span class=n>data_dir</span> <span class=o>=</span> <span class=s2>&#34;/opt/nomad/data&#34;</span>
+<span class=n>bind_addr</span> <span class=o>=</span> <span class=s2>&#34;0.0.0.0&#34;</span>
+
+<span class=n>name</span> <span class=o>=</span> <span class=s2>&#34;nomad1&#34;</span><span class=c1>
+</span><span class=c1>
+</span><span class=c1># Advertise on nebula1 interface only (nomad1 has more interfaces, one with public IP and one with private IP - nebula1 interface)
+</span><span class=c1></span><span class=k>advertise</span> {<span class=c1>
+</span><span class=c1>  # Defaults to the first private IP address.
+</span><span class=c1></span><span class=n>  http</span> <span class=o>=</span> <span class=s2>&#34;172.16.88.1&#34;</span>
+<span class=n>  rpc</span>  <span class=o>=</span> <span class=s2>&#34;172.16.88.1&#34;</span>
+<span class=n>  serf</span> <span class=o>=</span> <span class=s2>&#34;172.16.88.1&#34;</span>
+}<span class=c1>
+</span><span class=c1>
+</span><span class=c1># Enable server on nomad1
+</span><span class=c1></span><span class=k>server</span> {
+<span class=n>  enabled</span> <span class=o>=</span> <span class=kt>true</span>
+<span class=n>  bootstrap_expect</span> <span class=o>=</span> <span class=m>1</span>
+}<span class=c1>
+</span><span class=c1>
+</span><span class=c1># Enable client on nomad1
+</span><span class=c1></span><span class=k>client</span> {
+<span class=n>  enabled</span> <span class=o>=</span> <span class=kt>true</span>
+<span class=n>  servers</span> <span class=o>=</span> <span class=p>[</span><span class=s2>&#34;127.0.0.1&#34;</span><span class=p>]</span>
+}<span class=c1>
+</span><span class=c1>
+</span><span class=c1># Enable raw_exec driver
+</span><span class=c1></span><span class=k>plugin</span> <span class=s2>&#34;raw_exec&#34;</span> {
+  <span class=k>config</span> {
+<span class=n>    enabled</span> <span class=o>=</span> <span class=kt>true</span>
+  }
+}
+</code></pre></div><h3 id=configure-the-second-node>Configure the second node</h3>
+<p>The first node has name <code>nomad2</code> nad here is node&rsquo;s Nomad configuration file content (<code>/etc/nomad.d/nomad.hcl</code>):</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-hcl data-lang=hcl><span class=n>data_dir</span> <span class=o>=</span> <span class=s2>&#34;/opt/nomad/data&#34;</span>
+<span class=n>bind_addr</span> <span class=o>=</span> <span class=s2>&#34;0.0.0.0&#34;</span>
+<span class=n>name</span> <span class=o>=</span> <span class=s2>&#34;nomad2&#34;</span><span class=c1>
+</span><span class=c1>
+</span><span class=c1># Advertise on nebula2 interface only (nomad2 has more interfaces, one with public IP and one with private IP - nebula1 interface)
+</span><span class=c1></span><span class=k>advertise</span> {<span class=c1>
+</span><span class=c1>  # Defaults to the first private IP address.
+</span><span class=c1></span><span class=n>  http</span> <span class=o>=</span> <span class=s2>&#34;172.16.88.99&#34;</span>
+<span class=n>  rpc</span>  <span class=o>=</span> <span class=s2>&#34;172.16.88.99&#34;</span>
+<span class=n>  serf</span> <span class=o>=</span> <span class=s2>&#34;172.16.88.99&#34;</span>
+}<span class=c1>
+</span><span class=c1>
+</span><span class=c1># Enable client and setup server&#39;s IP to the nomad1 IP
+</span><span class=c1></span><span class=k>client</span> {
+<span class=n>  enabled</span> <span class=o>=</span> <span class=kt>true</span><span class=c1>
+</span><span class=c1>  #network_interface =
+</span><span class=c1></span><span class=n>  servers</span> <span class=o>=</span> <span class=p>[</span><span class=s2>&#34;172.16.88.1&#34;</span><span class=p>]</span>
+}<span class=c1>
+</span><span class=c1>
+</span><span class=c1># Enable raw_exec Nomad driver
+</span><span class=c1></span><span class=k>plugin</span> <span class=s2>&#34;raw_exec&#34;</span> {
+  <span class=k>config</span> {
+<span class=n>    enabled</span> <span class=o>=</span> <span class=kt>true</span>
+  }
+}<span class=c1>
+</span><span class=c1># Consul agent will be running locally
+</span><span class=c1></span><span class=k>consul</span> {
+<span class=n>  address</span> <span class=o>=</span> <span class=s2>&#34;127.0.0.1:8500&#34;</span>
+}
+</code></pre></div><h2 id=start-nomad>Start Nomad</h2>
+<p>Enable <code>nomad.service</code>, start it and check its status on both nodes.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo systemctl <span class=nb>enable</span> nomad.service
+sudo systemctl start nomad.service
+sudo systemctl status nomad.service
+</code></pre></div><p>If everything works fine, you can visit Nomad Admin UI and check Client status - http://node_ip_or_hostname:4646/ui/clients:</p>
+<p><figure><a class=lightgallery href=/two-node-nomad-cluster/resources/nomad1-admin.png title=nomad1-ui data-thumbnail=/two-node-nomad-cluster/resources/nomad1-admin.png data-sub-html="<h2>Nomad UI</h2><p>nomad1-ui</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=resources/nomad1-admin.png data-srcset="/two-node-nomad-cluster/resources/nomad1-admin.png, resources/nomad1-admin.png 1.5x, /two-node-nomad-cluster/resources/nomad1-admin.png 2x" data-sizes=auto alt=/two-node-nomad-cluster/resources/nomad1-admin.png>
+</a><figcaption class=image-caption>Nomad UI</figcaption>
+</figure></p>
+<h2 id=run-example-application>Run example application</h2>
+<p>I want to run nginx Docker image and listen on client&rsquo;s node port 8080, here is the full job example, just submit only:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-hcl data-lang=hcl><span class=k>job</span> <span class=s2>&#34;http-echo&#34;</span> {
+<span class=n>  datacenters</span> <span class=o>=</span> <span class=p>[</span><span class=s2>&#34;dc1&#34;</span><span class=p>]</span>
+  <span class=k>group</span> <span class=s2>&#34;echo&#34;</span> {
+    <span class=k>network</span> {
+<span class=n>      mode</span> <span class=o>=</span> <span class=s2>&#34;bridge&#34;</span> 
+      <span class=k>port</span> <span class=s2>&#34;http&#34;</span> {
+<span class=n>        static</span> <span class=o>=</span> <span class=m>8080</span>
+<span class=n>        to</span> <span class=o>=</span> <span class=m>80</span>
+      }
+    }
+<span class=n>    count</span> <span class=o>=</span> <span class=m>2</span>
+    <span class=k>task</span> <span class=s2>&#34;server&#34;</span> {
+<span class=n>      driver</span> <span class=o>=</span> <span class=s2>&#34;docker&#34;</span>
+      <span class=k>config</span> {
+<span class=n>        image</span> <span class=o>=</span> <span class=s2>&#34;nginx&#34;</span>
+<span class=n>        ports</span> <span class=o>=</span> <span class=p>[</span><span class=s2>&#34;http&#34;</span><span class=p>]</span>
+      }
+    }
+  }
+}
+</code></pre></div><p>If everything works fine, you will see the running job in Nomad UI:
+<figure><a class=lightgallery href=/two-node-nomad-cluster/resources/nomad-job.png title=nomad-ui-job data-thumbnail=/two-node-nomad-cluster/resources/nomad-job.png data-sub-html="<h2>Nomad UI with Jobs</h2><p>nomad-ui-job</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=resources/nomad-job.png data-srcset="/two-node-nomad-cluster/resources/nomad-job.png, resources/nomad-job.png 1.5x, /two-node-nomad-cluster/resources/nomad-job.png 2x" data-sizes=auto alt=/two-node-nomad-cluster/resources/nomad-job.png>
+</a><figcaption class=image-caption>Nomad UI with Jobs</figcaption>
+</figure></p>
+<p>Now you can visit the Nginx page on the client&rsquo;s public IP and port 8080 (two instances were required, so both client nodes should listen on port 8080):
+<figure><a class=lightgallery href=/two-node-nomad-cluster/resources/nginx-page.png title=nomad-nginx data-thumbnail=/two-node-nomad-cluster/resources/nginx-page.png data-sub-html="<h2>Nginx running in Nomad</h2><p>nomad-nginx</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=resources/nginx-page.png data-srcset="/two-node-nomad-cluster/resources/nginx-page.png, resources/nginx-page.png 1.5x, /two-node-nomad-cluster/resources/nginx-page.png 2x" data-sizes=auto alt=/two-node-nomad-cluster/resources/nginx-page.png>
+</a><figcaption class=image-caption>Nginx running in Nomad</figcaption>
+</figure></p>
+<h2 id=install-consul>Install Consul</h2>
+<p>Consul automates networking for simple and secure application delivery, as said by Hasicorp. I want to test an automatic service discovery when installing any job in Nomad, install and configure Consul required.</p>
+<h3 id=install-consul-1>Install Consul</h3>
+<p>Install Consul on both nodes first:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo apt-get update <span class=o>&amp;&amp;</span> sudo apt-get install consul
+</code></pre></div><h4 id=configure-consul-on-the-first-node-nomad1>Configure Consul on the first node (nomad1)</h4>
+<p>As the architecture diagram above shows, I want to run the Consul server and Consul agent on the same machine. This is not for production purposes and this is probably the reason why I didn&rsquo;t found any option how to run Consul in both modes concurrently using configuration file /etc/consul.d/consul.hcl and run as system service. So I run Cosnul from the command line, where <code>-dev</code> argument says, that&rsquo;s ok, run Consul as server and agent concurrently.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># temporary solution, for testing only</span>
+sudo consul agent -dev -client 0.0.0.0 -bind 172.16.88.1 <span class=p>&amp;</span>
+</code></pre></div><p>The Consul has UI as well:
+<figure><a class=lightgallery href=/two-node-nomad-cluster/resources/consul1.png title=consul-ui data-thumbnail=/two-node-nomad-cluster/resources/consul1.png data-sub-html="<h2>Consul UI</h2><p>consul-ui</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=resources/consul1.png data-srcset="/two-node-nomad-cluster/resources/consul1.png, resources/consul1.png 1.5x, /two-node-nomad-cluster/resources/consul1.png 2x" data-sizes=auto alt=/two-node-nomad-cluster/resources/consul1.png>
+</a><figcaption class=image-caption>Consul UI</figcaption>
+</figure></p>
+<h4 id=configure-consul-on-the-second-node-nomad2>Configure Consul on the second node (nomad2)</h4>
+<p>The second node acts as a Consul agent only, so the standard configuration could be used:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo vi /etc/consul.d/consul.hcl 
+</code></pre></div><p>I changed these line only (the full file content is in <code>resources/consul2.hcl</code>):</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=err>bind_addr</span> <span class=err>=</span> <span class=s2>&#34;172.16.88.99&#34;</span>
+<span class=err>retry_join</span> <span class=err>=</span> <span class=p>[</span><span class=s2>&#34;172.16.88.1&#34;</span><span class=p>]</span>
+</code></pre></div><p>Enable <code>consul.service</code>, start it and check its status:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo systemctl <span class=nb>enable</span> consul.service
+sudo systemctl start consul.service
+sudo systemctl status consul.service
+</code></pre></div><h2 id=run-job-with-service-discovery>Run job with service discovery</h2>
+<p>I changed my previous job as follow, see <code>service</code> section:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-hcl data-lang=hcl><span class=k>job</span> <span class=s2>&#34;http-echo&#34;</span> {
+<span class=n>  datacenters</span> <span class=o>=</span> <span class=p>[</span><span class=s2>&#34;dc1&#34;</span><span class=p>]</span>
+  <span class=k>group</span> <span class=s2>&#34;echo&#34;</span> {
+    <span class=k>network</span> {
+<span class=n>      mode</span> <span class=o>=</span> <span class=s2>&#34;bridge&#34;</span> 
+      <span class=k>port</span> <span class=s2>&#34;http&#34;</span> {
+<span class=n>        static</span> <span class=o>=</span> <span class=m>8080</span>
+<span class=n>        to</span> <span class=o>=</span> <span class=m>80</span>
+      }
+    }
+<span class=n>    count</span> <span class=o>=</span> <span class=m>2</span>
+    <span class=k>task</span> <span class=s2>&#34;server&#34;</span> {
+<span class=n>      driver</span> <span class=o>=</span> <span class=s2>&#34;docker&#34;</span>
+      <span class=k>config</span> {
+<span class=n>        image</span> <span class=o>=</span> <span class=s2>&#34;nginx&#34;</span>
+<span class=n>        ports</span> <span class=o>=</span> <span class=p>[</span><span class=s2>&#34;http&#34;</span><span class=p>]</span>
+      }
+    }
+    <span class=k>service</span> {
+<span class=n>      name</span> <span class=o>=</span> <span class=s2>&#34;http-echo&#34;</span>
+<span class=n>      port</span> <span class=o>=</span> <span class=s2>&#34;http&#34;</span>
+  
+      <span class=n>tags</span> <span class=o>=</span> <span class=p>[</span>
+        <span class=s2>&#34;macbook&#34;</span><span class=p>,</span>
+        <span class=s2>&#34;urlprefix-/http-echo&#34;</span><span class=p>,</span>
+      <span class=p>]</span>
+
+      <span class=k>check</span> {
+<span class=n>        type</span>     <span class=o>=</span> <span class=s2>&#34;http&#34;</span>
+<span class=n>        path</span>     <span class=o>=</span> <span class=s2>&#34;/&#34;</span>
+<span class=n>        interval</span> <span class=o>=</span> <span class=s2>&#34;2s&#34;</span>
+<span class=n>        timeout</span>  <span class=o>=</span> <span class=s2>&#34;2s&#34;</span>
+      }
+    }
+  }
+}
+</code></pre></div><h3 id=test-consul-dns-service>Test Consul DNS service</h3>
+<p>One of the Consul features is its DNS feature. Consul resolves domain names to IP of Nomad&rsquo;s client IP:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>dig @127.0.0.1 -p <span class=m>8600</span> http-echo.service.consul SRV
+</code></pre></div><p>and the result:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>; &lt;&lt;&gt;&gt; DiG 9.16.1-Ubuntu &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 http-echo.service.consul SRV
+</span><span class=go>; (1 server found)
+</span><span class=go>;; global options: +cmd
+</span><span class=go>;; Got answer:
+</span><span class=go>;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 63772
+</span><span class=go>;; flags: qr aa rd; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 5
+</span><span class=go>;; WARNING: recursion requested but not available
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>;; OPT PSEUDOSECTION:
+</span><span class=go>; EDNS: version: 0, flags:; udp: 4096
+</span><span class=go>;; QUESTION SECTION:
+</span><span class=go>;http-echo.service.consul.  IN  SRV
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>;; ANSWER SECTION:
+</span><span class=go>http-echo.service.consul. 0 IN  SRV 1 1 8080 0a000004.addr.dc1.consul.
+</span><span class=go>http-echo.service.consul. 0 IN  SRV 1 1 8080 adf900c1.addr.dc1.consul.
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>;; ADDITIONAL SECTION:
+</span><span class=go>0a000004.addr.dc1.consul. 0 IN  A xxx.xxx.xxx.xxx
+</span><span class=go>server2.microk8s.node.dc1.consul. 0 IN  TXT &#34;consul-network-segment=&#34;
+</span><span class=go>adf900c1.addr.dc1.consul. 0 IN  A yyy.yyy.yyy.yyy
+</span><span class=go>server1.node.dc1.consul. 0  IN  TXT &#34;consul-network-segment=&#34;
+</span></code></pre></div><p>Our testing http-echo job is visible in Consul UI as well:
+<figure><a class=lightgallery href=/two-node-nomad-cluster/resources/consul2.png title=consul-ui-job data-thumbnail=/two-node-nomad-cluster/resources/consul2.png data-sub-html="<h2>Consul UI Job Detail</h2><p>consul-ui-job</p>">
+<img class=lazyload src=/svg/loading.min.svg data-src=resources/consul2.png data-srcset="/two-node-nomad-cluster/resources/consul2.png, resources/consul2.png 1.5x, /two-node-nomad-cluster/resources/consul2.png 2x" data-sizes=auto alt=/two-node-nomad-cluster/resources/consul2.png>
+</a><figcaption class=image-caption>Consul UI Job Detail</figcaption>
+</figure></p>
+<h2 id=resources>Resources</h2>
+<ul>
+<li><a href=https://www.nomadproject.io/docs/nomad-vs-kubernetes/supplement target=_blank rel="noopener noreferrer">https://www.nomadproject.io/docs/nomad-vs-kubernetes/supplement</a></li>
+<li><a href=https://www.nomadproject.io/docs/nomad-vs-kubernetes/alternative target=_blank rel="noopener noreferrer">https://www.nomadproject.io/docs/nomad-vs-kubernetes/alternative</a></li>
+<li><a href=https://www.hashicorp.com/c2m target=_blank rel="noopener noreferrer">https://www.hashicorp.com/c2m</a></li>
+<li><a href=https://www.nomadproject.io/docs/nomad-vs-kubernetes target=_blank rel="noopener noreferrer">https://www.nomadproject.io/docs/nomad-vs-kubernetes</a></li>
+<li><a href=https://www.nomadproject.io/docs/job-specification target=_blank rel="noopener noreferrer">https://www.nomadproject.io/docs/job-specification</a></li>
+<li><a href=https://www.nomadproject.io/docs/configuration target=_blank rel="noopener noreferrer">https://www.nomadproject.io/docs/configuration</a></li>
+<li><a href=https://www.consul.io/docs/discovery/dns target=_blank rel="noopener noreferrer">https://www.consul.io/docs/discovery/dns</a></li>
+</ul>
+</div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2021-12-12</span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=/two-node-nomad-cluster/index.md target=_blank rel="noopener noreferrer">Read Markdown</a>
+</span></div>
+<div class=post-info-share>
+<span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/two-node-nomad-cluster/ data-title="Creating two node Nomad cluster" data-hashtags=kubernetes,nomad,docker,nebula><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/two-node-nomad-cluster/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/two-node-nomad-cluster/ data-title="Creating two node Nomad cluster" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/two-node-nomad-cluster/ data-title="Creating two node Nomad cluster"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/two-node-nomad-cluster/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/two-node-nomad-cluster/ data-title="Creating two node Nomad cluster"><i class="fab fa-evernote fa-fw"></i></a></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/kubernetes/>kubernetes</a>,&nbsp;<a href=/tags/nomad/>nomad</a>,&nbsp;<a href=/tags/docker/>docker</a>,&nbsp;<a href=/tags/nebula/>nebula</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=/azure-functions-system-integration/ class=prev rel=prev title="Transfer data between two systems using Azure functions"><i class="fas fa-angle-left fa-fw"></i>Transfer data between two systems using Azure functions</a></div>
+</div>
+<div id=comments><div id=disqus_thread class=comment></div><noscript>
+Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.
+</noscript></div></article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body>
+</html>

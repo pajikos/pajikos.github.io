@@ -88,7 +88,7 @@ Cancel
 <h2 class=toc-title>Contents</h2>
 <div class=toc-content id=toc-content-auto></div>
 </div><article class="page single"><h1 class="single-title animated flipInX">Creating Azure Red Hat OpenShift 4 cluster</h1><div class=post-meta>
-<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/azure/><i class="far fa-folder fa-fw"></i>azure</a></span></div>
+<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/azure/><i class="far fa-folder fa-fw"></i>azure</a></span></div>
 <div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-09-23>2021-09-23</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1315 words&nbsp;
 <i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div>
 </div><div class="details toc" id=toc-static kept>
@@ -367,11 +367,11 @@ az aro list-credentials <span class=se>\
 </span><span class=se></span>  --name <span class=nv>$CLUSTER</span> <span class=se>\
 </span><span class=se></span>  --resource-group <span class=nv>$RESOURCEGROUP</span>
 </code></pre></div><p>The following example output shows what the password will be in kubeadminPassword:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>{
-  &#34;kubeadminPassword&#34;: &#34;&lt;generated password&gt;&#34;,
-  &#34;kubeadminUsername&#34;: &#34;kubeadmin&#34;
-}
-</code></pre></div><p>You can find the cluster console URL by running the following command, which will look like this:
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>{
+</span><span class=go>  &#34;kubeadminPassword&#34;: &#34;&lt;generated password&gt;&#34;,
+</span><span class=go>  &#34;kubeadminUsername&#34;: &#34;kubeadmin&#34;
+</span><span class=go>}
+</span></code></pre></div><p>You can find the cluster console URL by running the following command, which will look like this:
 <a href=https://console-openshift-console.apps.xxxxx.westeurope.aroapp.io/ target=_blank rel="noopener noreferrer">https://console-openshift-console.apps.xxxxx.westeurope.aroapp.io/</a></p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>az aro show <span class=se>\
 </span><span class=se></span>    --name <span class=nv>$CLUSTER</span> <span class=se>\
