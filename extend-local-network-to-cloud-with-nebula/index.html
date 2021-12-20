@@ -10,7 +10,7 @@ Devices on the local network should be able to access devices on the Nebula netw
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://blog.pavelsklenar.com/extend-local-network-to-cloud-with-nebula/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2021-12-12T00:00:00+00:00">
-<meta property="article:modified_time" content="2021-12-12T21:21:49+01:00">
+<meta property="article:modified_time" content="2021-12-20T07:22:50+01:00">
 <meta name=twitter:card content="summary_large_image">
 <meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png">
 <meta name=twitter:title content="Extend local network to cloud with Nebula">
@@ -19,7 +19,7 @@ Devices on the local network should be able to access devices on the Nebula netw
 <meta name=application-name content="blog.pavelsklenar.com">
 <meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
 <link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/extend-local-network-to-cloud-with-nebula/><link rel=prev href=https://blog.pavelsklenar.com/azure-functions-system-integration/><link rel=next href=https://blog.pavelsklenar.com/two-node-nomad-cluster/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Extend local network to cloud with Nebula","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/extend-local-network-to-cloud-with-nebula\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"nebula, cloud","wordcount":606,"url":"https:\/\/blog.pavelsklenar.com\/extend-local-network-to-cloud-with-nebula\/","datePublished":"2021-12-12T00:00:00+00:00","dateModified":"2021-12-12T21:21:49+01:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/extend-local-network-to-cloud-with-nebula/><link rel=prev href=https://blog.pavelsklenar.com/azure-functions-system-integration/><link rel=next href=https://blog.pavelsklenar.com/two-node-nomad-cluster/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Extend local network to cloud with Nebula","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/extend-local-network-to-cloud-with-nebula\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"nebula, cloud","wordcount":732,"url":"https:\/\/blog.pavelsklenar.com\/extend-local-network-to-cloud-with-nebula\/","datePublished":"2021-12-12T00:00:00+00:00","dateModified":"2021-12-20T07:22:50+01:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
 <body header-desktop=fixed header-mobile=auto><script type=text/javascript>('false'==='true'&&window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
 <div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
 <div class=header-wrapper>
@@ -87,8 +87,8 @@ Cancel
 <div class=toc-content id=toc-content-auto></div>
 </div><article class="page single"><h1 class="single-title animated flipInX">Extend local network to cloud with Nebula</h1><div class=post-meta>
 <div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/network/><i class="far fa-folder fa-fw"></i>network</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-12-12>2021-12-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;606 words&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-12-12>2021-12-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;732 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
 </div><div class="details toc" id=toc-static kept>
 <div class="details-summary toc-title">
 <span>Contents</span>
@@ -183,7 +183,8 @@ Here, you can find the network address ranges:</p>
 <p>Check a default FORWARD policy</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo iptables -L -v -n <span class=p>|</span> grep <span class=s2>&#34;Chain FORWARD&#34;</span>
 </code></pre></div><p>If the previous command shows <code>policy ACCEPT</code>, you only need to add POSTROUTING rule:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo iptables -t nat -A POSTROUTING -o nebula1 -j MASQUERADE
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># All traffic to local network will be hidden behind IP of the enp3s0 interface (similar to SNAT)</span>
+sudo iptables -t nat -A POSTROUTING -o nebula1 -j MASQUERADE
 </code></pre></div><div class="details admonition tip open">
 <div class="details-summary admonition-title">
 <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
@@ -197,11 +198,17 @@ Here, you can find the network address ranges:</p>
 <p>If the default <code>FORWARD</code> policy is <code>DENY</code>, you need to enable forward traffic between nebula interface (<code>nebula1</code> on my machine) and interface with IP assigned from my local network range (<code>enp3s0</code> in my case)</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo iptables -A FORWARD -i nebula1 -o enp3s0 -j ACCEPT
 sudo iptables -A FORWARD -i enp3s0 -o nebula1 -m state --state ESTABLISHED,RELATED -j ACCEPT
+<span class=c1># All traffic to local network will be hidden behind IP of the enp3s0 interface (similar to SNAT)</span>
 sudo iptables -t nat -A POSTROUTING -o enp3s0 -j MASQUERADE
 </code></pre></div><p>The previous commands enable any traffic from the cloud server to any IP in a local network.
 To enable specific traffic from cloud server only, run instead of the first command (<code>sudo iptables -A FORWARD -i nebula1 -o enp3s0 -j ACCEPT</code>)</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># If you want to enable to call port 80 on IP 172.16.100.184 only</span>
 sudo iptables -A FORWARD -i nebula1 -p tcp -o enp3s0 -d 172.16.100.184 --dport <span class=m>80</span> -j ACCEPT
+</code></pre></div><p>If the default <code>FORWARD</code> policy is <code>DENY</code>, you need to enable ongoing forwarded traffic from the local network to the nebula network as well:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo iptables -A FORWARD -i enp3s0 -o nebula1 -j ACCEPT
+sudo iptables -A FORWARD -i nebula1 -o enp3s0 -m state --state ESTABLISHED,RELATED -j ACCEPT
+<span class=c1># Not needed, if run the following command, all traffic comes from any IP in the local network will be visible in nebula network as traffic from IP of the nebula1 interface</span>
+sudo iptables -t nat -A POSTROUTING -o nebula1 -j MASQUERADE
 </code></pre></div><h3 id=generate-nebula-certificate>Generate Nebula certificate</h3>
 <p>When generating Nebula certificate for local server, you need include <code>-subnets</code> argument with your local network CIDR, for example:</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>./nebula-cert sign -name <span class=s2>&#34;local-server&#34;</span> -ip <span class=s2>&#34;172.16.88.4/24&#34;</span> -groups <span class=s2>&#34;servers,home&#34;</span> -subnets <span class=s2>&#34;172.16.100.0/2
@@ -244,8 +251,8 @@ add <span class=nv>comment</span><span class=o>=</span><span class=s2>&#34;Desti
 <div class=post-info>
 <div class=post-info-line>
 <div class=post-info-mod>
-<span>Updated on 2021-12-12&nbsp;<a class=git-hash href=https://github.com/pajikos/pajikos.github.io/commit/b2fe4d769d8c4fbcee2e5904eaba100399b33c92 target=_blank rel="noopener noreferrer" title="commit by Pavel Sklenar(pavel.sklenar@cloudfield.cz) b2fe4d769d8c4fbcee2e5904eaba100399b33c92: Fixed date">
-<i class="fas fa-hashtag fa-fw"></i>b2fe4d7</a></span>
+<span>Updated on 2021-12-20&nbsp;<a class=git-hash href=https://github.com/pajikos/pajikos.github.io/commit/fc31381edeb10009daba5ca66c4ba97b662cac6c target=_blank rel="noopener noreferrer" title="commit by Pavel Sklenar(pavel.sklenar@cloudfield.cz) fc31381edeb10009daba5ca66c4ba97b662cac6c: Updated guide to forwarding traffic">
+<i class="fas fa-hashtag fa-fw"></i>fc31381</a></span>
 </div>
 <div class=post-info-license></div>
 </div>
