@@ -45,6 +45,7 @@ sudo iptables -L -v -n | grep "Chain FORWARD"
 
 If the previous command shows `policy ACCEPT`, you only need to add POSTROUTING rule:
 ```bash
+# All traffic to local network will be hidden behind IP of the enp3s0 interface (similar to SNAT)
 sudo iptables -t nat -A POSTROUTING -o nebula1 -j MASQUERADE
 ```
 
@@ -59,6 +60,7 @@ If the default `FORWARD` policy is `DENY`, you need to enable forward traffic be
 ```bash
 sudo iptables -A FORWARD -i nebula1 -o enp3s0 -j ACCEPT
 sudo iptables -A FORWARD -i enp3s0 -o nebula1 -m state --state ESTABLISHED,RELATED -j ACCEPT
+# All traffic to local network will be hidden behind IP of the enp3s0 interface (similar to SNAT)
 sudo iptables -t nat -A POSTROUTING -o enp3s0 -j MASQUERADE
 ```
 The previous commands enable any traffic from the cloud server to any IP in a local network.
@@ -67,6 +69,14 @@ To enable specific traffic from cloud server only, run instead of the first comm
 # If you want to enable to call port 80 on IP 172.16.100.184 only
 sudo iptables -A FORWARD -i nebula1 -p tcp -o enp3s0 -d 172.16.100.184 --dport 80 -j ACCEPT
 ```
+If the default `FORWARD` policy is `DENY`, you need to enable ongoing forwarded traffic from the local network to the nebula network as well:
+```bash
+sudo iptables -A FORWARD -i enp3s0 -o nebula1 -j ACCEPT
+sudo iptables -A FORWARD -i nebula1 -o enp3s0 -m state --state ESTABLISHED,RELATED -j ACCEPT
+# Not needed, if run the following command, all traffic comes from any IP in the local network will be visible in nebula network as traffic from IP of the nebula1 interface
+sudo iptables -t nat -A POSTROUTING -o nebula1 -j MASQUERADE
+```
+
 ### Generate Nebula certificate
 When generating Nebula certificate for local server, you need include `-subnets` argument with your local network CIDR, for example:
 ```bash
