@@ -1,6 +1,6 @@
 <!doctype html><html lang=en>
 <head>
-<meta name=generator content="Hugo 0.91.0">
+<meta name=generator content="Hugo 0.92.0">
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=robots content="noodp">
@@ -96,7 +96,7 @@ Devices on the local network should be able to access devices on the Nebula netw
 </article><article class="single summary" itemscope itemtype=http://schema.org/Article><h1 class=single-title itemprop="name headline">
 <a href=/azure-functions-system-integration/>Transfer data between two systems using Azure functions</a>
 </h1><div class=post-meta><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-publish>published on <time datetime=2021-10-22>2021-10-22</time></span>&nbsp;<span class=post-category>included in <a href=/categories/azure/><i class="far fa-folder fa-fw"></i>azure</a></span></div><div class=content>Introduction This simple demo shows possible integration between two systems (system A and system B) using Azure Functions.
-The architecture constraints:
+Note The full example with all resources could be found here on GitHub. The architecture constraints:
 All updates from the system A must be transfered into the system B The system A is listening on HTTP with REST API The system B is listening on HTTP with REST API The system B is not fully compatible in message definitions, so field mapping must be used The mapping must be saved in DB (I chose CosmosDB) Due to missing push notification in the system A, its API must be periodically checked The system B may be occasionally offline, so some type of persistent bus should be used.</div><div class=post-footer>
 <a href=/azure-functions-system-integration/>Read More</a><div class=post-tags>
 <i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/cloud/>cloud</a>,&nbsp;<a href=/tags/azure/>azure</a>,&nbsp;<a href=/tags/functions/>functions</a>,&nbsp;<a href=/tags/cosmosdb/>cosmosdb</a>,&nbsp;<a href=/tags/service-bus/>service-bus</a></div></div>
@@ -137,7 +137,7 @@ The high secure environments require to perform regularly checks to discover any
 </span>
 </li></ul></div></div>
 </main><footer class=footer>
-<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
 </div>
 </footer></div>
 <div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">

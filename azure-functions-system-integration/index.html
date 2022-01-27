@@ -6,7 +6,7 @@
 <meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
 <title>Transfer data between two systems using Azure functions - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="Transfer data between two systems using Azure functions">
 <meta property="og:description" content="Introduction This simple demo shows possible integration between two systems (system A and system B) using Azure Functions.
-The architecture constraints:
+Note  The full example with all resources could be found here on GitHub.   The architecture constraints:
  All updates from the system A must be transfered into the system B The system A is listening on HTTP with REST API The system B is listening on HTTP with REST API The system B is not fully compatible in message definitions, so field mapping must be used The mapping must be saved in DB (I chose CosmosDB) Due to missing push notification in the system A, its API must be periodically checked The system B may be occasionally offline, so some type of persistent bus should be used.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://blog.pavelsklenar.com/azure-functions-system-integration/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts">
@@ -16,12 +16,12 @@ The architecture constraints:
 <meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png">
 <meta name=twitter:title content="Transfer data between two systems using Azure functions">
 <meta name=twitter:description content="Introduction This simple demo shows possible integration between two systems (system A and system B) using Azure Functions.
-The architecture constraints:
+Note  The full example with all resources could be found here on GitHub.   The architecture constraints:
  All updates from the system A must be transfered into the system B The system A is listening on HTTP with REST API The system B is listening on HTTP with REST API The system B is not fully compatible in message definitions, so field mapping must be used The mapping must be saved in DB (I chose CosmosDB) Due to missing push notification in the system A, its API must be periodically checked The system B may be occasionally offline, so some type of persistent bus should be used.">
 <meta name=application-name content="blog.pavelsklenar.com">
 <meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
 <link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/azure-functions-system-integration/><link rel=prev href=https://blog.pavelsklenar.com/iaac-aro/><link rel=next href=https://blog.pavelsklenar.com/extend-local-network-to-cloud-with-nebula/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Transfer data between two systems using Azure functions","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/azure-functions-system-integration\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"cloud, azure, functions, cosmosdb, service-bus","wordcount":618,"url":"https:\/\/blog.pavelsklenar.com\/azure-functions-system-integration\/","datePublished":"2021-10-22T00:00:00+00:00","dateModified":"2021-10-22T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/azure-functions-system-integration/><link rel=prev href=https://blog.pavelsklenar.com/iaac-aro/><link rel=next href=https://blog.pavelsklenar.com/extend-local-network-to-cloud-with-nebula/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Transfer data between two systems using Azure functions","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/azure-functions-system-integration\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"cloud, azure, functions, cosmosdb, service-bus","wordcount":631,"url":"https:\/\/blog.pavelsklenar.com\/azure-functions-system-integration\/","datePublished":"2021-10-22T00:00:00+00:00","dateModified":"2021-10-22T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
 <body header-desktop=fixed header-mobile=auto><script type=text/javascript>('false'==='true'&&window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
 <div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
 <div class=header-wrapper>
@@ -89,7 +89,7 @@ Cancel
 <div class=toc-content id=toc-content-auto></div>
 </div><article class="page single"><h1 class="single-title animated flipInX">Transfer data between two systems using Azure functions</h1><div class=post-meta>
 <div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/azure/><i class="far fa-folder fa-fw"></i>azure</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-10-22>2021-10-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;618 words&nbsp;
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-10-22>2021-10-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;631 words&nbsp;
 <i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
 </div><div class="details toc" id=toc-static kept>
 <div class="details-summary toc-title">
@@ -119,6 +119,14 @@ Cancel
 </nav></div>
 </div><div class=content id=content><h2 id=introduction>Introduction</h2>
 <p>This simple demo shows possible integration between two systems (system A and system B) using Azure Functions.</p>
+<div class="details admonition note open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content>The full example with all resources could be found <a href=https://github.com/pajikos/cloud-samples/tree/master/azure-functions-system-integration target=_blank rel="noopener noreferrer">here</a> on GitHub.</div>
+</div>
+</div>
 <p>The architecture constraints:</p>
 <ul>
 <li>All updates from the system A must be transfered into the system B</li>
@@ -304,7 +312,7 @@ az cosmosdb collection create <span class=se>\
 Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.
 </noscript></div></article></div>
 </main><footer class=footer>
-<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
 </div>
 </footer></div>
 <div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
