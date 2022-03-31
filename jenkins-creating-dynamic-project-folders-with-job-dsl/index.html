@@ -1,234 +1,39 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=robots content="noodp">
-<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
-<title>Jenkins - Creating Dynamic Project Folders with Job DSL - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="Jenkins - Creating Dynamic Project Folders with Job DSL">
-<meta property="og:description" content="This post is about the dynamic creating of project folders in Jenkins using Job DSL Plugin. The newly created project folders will be accessible by a specific group or user only, so you are able to use your Jenkins instance by multiple teams and each team will have their own folder for their projects.
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Jenkins - Creating Dynamic Project Folders with Job DSL - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="Jenkins - Creating Dynamic Project Folders with Job DSL"><meta property="og:description" content="This post is about the dynamic creating of project folders in Jenkins using Job DSL Plugin. The newly created project folders will be accessible by a specific group or user only, so you are able to use your Jenkins instance by multiple teams and each team will have their own folder for their projects.
 Before we can start, the following plugins must be installed:
- Matrix Authorization Strategy Job DSL Plugin  Setting Up Correct Authorization Type The first step is related to set up a correct authorization type in the Configure Global Security menu:">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2020-01-01T00:00:00+00:00">
-<meta property="article:modified_time" content="2021-09-20T22:40:20+02:00">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png">
-<meta name=twitter:title content="Jenkins - Creating Dynamic Project Folders with Job DSL">
-<meta name=twitter:description content="This post is about the dynamic creating of project folders in Jenkins using Job DSL Plugin. The newly created project folders will be accessible by a specific group or user only, so you are able to use your Jenkins instance by multiple teams and each team will have their own folder for their projects.
+ Matrix Authorization Strategy Job DSL Plugin  Setting Up Correct Authorization Type The first step is related to set up a correct authorization type in the Configure Global Security menu:"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-01-01T00:00:00+00:00"><meta property="article:modified_time" content="2021-09-20T22:40:20+02:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png"><meta name=twitter:title content="Jenkins - Creating Dynamic Project Folders with Job DSL"><meta name=twitter:description content="This post is about the dynamic creating of project folders in Jenkins using Job DSL Plugin. The newly created project folders will be accessible by a specific group or user only, so you are able to use your Jenkins instance by multiple teams and each team will have their own folder for their projects.
 Before we can start, the following plugins must be installed:
- Matrix Authorization Strategy Job DSL Plugin  Setting Up Correct Authorization Type The first step is related to set up a correct authorization type in the Configure Global Security menu:">
-<meta name=application-name content="blog.pavelsklenar.com">
-<meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
-<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/><link rel=prev href=https://blog.pavelsklenar.com/vulnerability-scan-as-part-of-continuous-integration/><link rel=next href=https://blog.pavelsklenar.com/iaac-aro/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Jenkins - Creating Dynamic Project Folders with Job DSL","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/jenkins-creating-dynamic-project-folders-with-job-dsl\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","wordcount":575,"url":"https:\/\/blog.pavelsklenar.com\/jenkins-creating-dynamic-project-folders-with-job-dsl\/","datePublished":"2020-01-01T00:00:00+00:00","dateModified":"2021-09-20T22:40:20+02:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
-<body header-desktop=fixed header-mobile=auto><script type=text/javascript>('false'==='true'&&window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
-<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
-</div>
-<div class=menu>
-<div class=menu-inner><a class=menu-item href=/posts/> Posts </a><a class=menu-item href=/tags/> Tags </a><a class=menu-item href=/categories/> Categories </a><a class=menu-item href=/about/> About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+ Matrix Authorization Strategy Job DSL Plugin  Setting Up Correct Authorization Type The first step is related to set up a correct authorization type in the Configure Global Security menu:"><meta name=application-name content="blog.pavelsklenar.com"><meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/><link rel=prev href=https://blog.pavelsklenar.com/vulnerability-scan-as-part-of-continuous-integration/><link rel=next href=https://blog.pavelsklenar.com/iaac-aro/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Jenkins - Creating Dynamic Project Folders with Job DSL","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/jenkins-creating-dynamic-project-folders-with-job-dsl\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","wordcount":575,"url":"https:\/\/blog.pavelsklenar.com\/jenkins-creating-dynamic-project-folders-with-job-dsl\/","datePublished":"2020-01-01T00:00:00+00:00","dateModified":"2021-09-20T22:40:20+02:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>("false"==="true"&&window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><a class=menu-item href=/about/>About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
 <input type=text placeholder="Search titles or contents..." id=search-input-desktop>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-desktop>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
-<i class="fas fa-adjust fa-fw"></i>
-</a>
-</div>
-</div>
-</div>
-</header><header class=mobile id=header-mobile>
-<div class=header-container>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
-</div>
-<div class=menu-toggle id=menu-toggle-mobile>
-<span></span><span></span><span></span>
-</div>
-</div>
-<div class=menu id=menu-mobile><div class=search-wrapper>
-<div class="search mobile" id=search-mobile>
-<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-mobile>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</div>
-<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
-Cancel
-</a>
-</div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
-<i class="fas fa-adjust fa-fw"></i>
-</a></div>
-</div>
-</header>
-<div class="search-dropdown desktop">
-<div id=search-dropdown-desktop></div>
-</div>
-<div class="search-dropdown mobile">
-<div id=search-dropdown-mobile></div>
-</div>
-<main class=main>
-<div class=container><div class=toc id=toc-auto>
-<h2 class=toc-title>Contents</h2>
-<div class=toc-content id=toc-content-auto></div>
-</div><article class="page single"><h1 class="single-title animated flipInX">Jenkins - Creating Dynamic Project Folders with Job DSL</h1><div class=post-meta>
-<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/continuous-integration/><i class="far fa-folder fa-fw"></i>continuous-integration</a>&nbsp;<a href=/categories/groovy/><i class="far fa-folder fa-fw"></i>groovy</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-01-01>2020-01-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;575 words&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
-</div><div class="details toc" id=toc-static kept>
-<div class="details-summary toc-title">
-<span>Contents</span>
-<span><i class="details-icon fas fa-angle-right"></i></span>
-</div>
-<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
-<ul>
-<li>
-<ul>
-<li><a href=#setting-up-correct-authorization-type>Setting Up Correct Authorization Type</a></li>
-<li><a href=#creating-job-dsl-project>Creating Job DSL project</a></li>
-<li><a href=#integration-jenkins-with-remote-systems>Integration Jenkins with Remote Systems</a></li>
-</ul>
-</li>
-</ul>
-</nav></div>
-</div><div class=content id=content><p>This post is about the dynamic creating of project folders in Jenkins using Job DSL Plugin. The newly created project folders will be accessible by a specific group or user only, so you are able to use your Jenkins instance by multiple teams and each team will have their own folder for their projects.</p>
-<p>Before we can start, the following plugins must be installed:</p>
-<ul>
-<li><a href=https://plugins.jenkins.io/matrix-auth target=_blank rel="noopener noreferrer">Matrix Authorization Strategy</a></li>
-<li><a href=https://plugins.jenkins.io/job-dsl target=_blank rel="noopener noreferrer">Job DSL Plugin</a></li>
-</ul>
-<h3 id=setting-up-correct-authorization-type>Setting Up Correct Authorization Type</h3>
-<p>The first step is related to set up a correct authorization type in the Configure Global Security menu:</p>
-<p><img class=lazyload src=/svg/loading.min.svg data-src=images/2019-11-21-14_08_10-Configure-Global-Security-Jenkins-1024x430.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_08_10-Configure-Global-Security-Jenkins-1024x430.png, images/2019-11-21-14_08_10-Configure-Global-Security-Jenkins-1024x430.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_08_10-Configure-Global-Security-Jenkins-1024x430.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_08_10-Configure-Global-Security-Jenkins-1024x430.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_08_10-Configure-Global-Security-Jenkins-1024x430.png></p>
-<p>The menu Configure Global Security</p>
-<p>Here you have to select the Project-based Matrix Authorization Strategy type and at least grant Overall/Read permission to Authenticated Users to enable login for all successfully authenticated users. Then you have to grant Administrator rights to you or any group.</p>
-<p>If you skip the setting correct authorization type, folders will be created without any problems but the authorization setting will not be applied.</p>
-<p>After that, we can create a Job DSL project.</p>
-<h3 id=creating-job-dsl-project>Creating Job DSL project</h3>
-<p>We need to create a Freestyle project (here the project-generator name):</p>
-<p><img class=lazyload src=/svg/loading.min.svg data-src=images/2019-11-21-14_42_47-New-Item-Jenkins.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_42_47-New-Item-Jenkins.png, images/2019-11-21-14_42_47-New-Item-Jenkins.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_42_47-New-Item-Jenkins.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_42_47-New-Item-Jenkins.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_42_47-New-Item-Jenkins.png></p>
-<p>Creating a new freestyle project</p>
-<p>As our goal is about creating project folders, we create a new parameter using a checkbox &ldquo;This project is parameterized&rdquo;. Then we add a new String parameter PROJECT_NAME:</p>
-<p><img class=lazyload src=/svg/loading.min.svg data-src=images/2019-11-21-14_53_49-dsl-test-Config-Jenkins.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_53_49-dsl-test-Config-Jenkins.png, images/2019-11-21-14_53_49-dsl-test-Config-Jenkins.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_53_49-dsl-test-Config-Jenkins.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_53_49-dsl-test-Config-Jenkins.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_53_49-dsl-test-Config-Jenkins.png></p>
-<p>Adding a String Parameter to project-generator job</p>
-<p>After that, the most important part is here. In the Build section, add build step and select Process Job DSLs:</p>
-<p><img class=lazyload src=/svg/loading.min.svg data-src=images/2019-11-21-14_58_12-dsl-test-Config-Jenkins.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_58_12-dsl-test-Config-Jenkins.png, images/2019-11-21-14_58_12-dsl-test-Config-Jenkins.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_58_12-dsl-test-Config-Jenkins.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_58_12-dsl-test-Config-Jenkins.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_58_12-dsl-test-Config-Jenkins.png></p>
-<p>and paste the following groovy script into the text field:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-groovy data-lang=groovy><span class=kt>def</span> <span class=n>folderName</span> <span class=o>=</span> <span class=n>PROJECT_NAME</span><span class=o>.</span><span class=na>toUpperCase</span><span class=o>()</span>
-<span class=kt>def</span> <span class=n>adminGroup</span> <span class=o>=</span> <span class=s2>&#34;ROLE_${folderName}_ADMIN&#34;</span>
-<span class=kt>def</span> <span class=n>opsGroup</span> <span class=o>=</span> <span class=s2>&#34;ROLE_${folderName}_READER&#34;</span>
-<span class=n>folder</span><span class=o>(</span><span class=n>folderName</span><span class=o>)</span> <span class=o>{</span>
-    <span class=n>displayName</span><span class=o>(</span><span class=n>folderName</span><span class=o>)</span>
-  <span class=n>description</span><span class=o>(</span><span class=s2>&#34;Folder for project ${PROJECT_NAME} generated by ${JOB_NAME}&#34;</span><span class=o>)</span>
-    <span class=n>authorization</span> <span class=o>{</span>
-        <span class=n>permissions</span><span class=o>(</span><span class=n>opsGroup</span><span class=o>,</span> <span class=o>[</span>
-            <span class=s1>&#39;hudson.model.Item.Read&#39;</span><span class=o>,</span>
-            <span class=s1>&#39;hudson.model.Item.ViewStatus&#39;</span><span class=o>,</span>
-            <span class=s1>&#39;hudson.model.View.Read&#39;</span>
-        <span class=o>])</span>
-        <span class=n>permissionAll</span><span class=o>(</span><span class=n>adminGroup</span><span class=o>)</span> 
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></div><p>When we save the job and run Build with Parameters, the job will create a new folder based on the PROJECT_NAME parameter (e.g. PROJECT1) and will be accessible by role ROLE_PROJECT1_ADMIN (as folder administrators with all permissions) and by role ROLE_PROJECT1_READER as job status readers.</p>
-<p>The project-generator job page contains a list of created project folders:</p>
-<p><img class=lazyload src=/svg/loading.min.svg data-src=images/2019-11-21-15_09_25-project-generator-Jenkins.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-15_09_25-project-generator-Jenkins.png, images/2019-11-21-15_09_25-project-generator-Jenkins.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-15_09_25-project-generator-Jenkins.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-15_09_25-project-generator-Jenkins.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-15_09_25-project-generator-Jenkins.png></p>
-<p>List of all generated project folders</p>
-<p>When we go to the PROJECT1 folder and into its configuration, you can check assigned rights. All available rights to assign are these:</p>
-<ul>
-<li><code>com.cloudbees.plugins.credentials.CredentialsProvider.Create</code></li>
-<li><code>com.cloudbees.plugins.credentials.CredentialsProvider.Delete</code></li>
-<li><code>com.cloudbees.plugins.credentials.CredentialsProvider.ManageDomains</code></li>
-<li><code>com.cloudbees.plugins.credentials.CredentialsProvider.Update</code></li>
-<li><code>com.cloudbees.plugins.credentials.CredentialsProvider.View</code></li>
-<li><code>hudson.model.Item.Build</code></li>
-<li><code>hudson.model.Item.Cancel</code></li>
-<li><code>hudson.model.Item.Configure</code></li>
-<li><code>hudson.model.Item.Create</code></li>
-<li><code>hudson.model.Item.Delete</code></li>
-<li><code>hudson.model.Item.Discover</code></li>
-<li><code>hudson.model.Item.Move</code></li>
-<li><code>hudson.model.Item.Read</code></li>
-<li><code>hudson.model.Item.Release</code></li>
-<li><code>hudson.model.Item.ViewStatus</code></li>
-<li><code>hudson.model.Item.Workspace</code></li>
-<li><code>hudson.model.Run.Delete</code></li>
-<li><code>hudson.model.Run.Replay</code></li>
-<li><code>hudson.model.Run.Update</code></li>
-<li><code>hudson.model.View.Configure</code></li>
-<li><code>hudson.model.View.Create</code></li>
-<li><code>hudson.model.View.Delete</code></li>
-<li><code>hudson.model.View.Read</code></li>
-<li><code>hudson.scm.SCM.Tag</code></li>
-</ul>
-<p>When you try to login with user-defined in role e.g. ROLE_PROJECT1_ADMIN, you will see your folders only:</p>
-<p><img class=lazyload src=/svg/loading.min.svg data-src=images/image.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/image.png, images/image.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/image.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/image.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/image.png></p>
-<h3 id=integration-jenkins-with-remote-systems>Integration Jenkins with Remote Systems</h3>
-<p>If you need to integrate your job (i.e. project-generator) with some 3rd party systems as a final step of any approval process (e.g. in Jira), you may use Jenkins remote API to run our job.</p>
-<p>Before that, you need to generate a token to be used in the authentication during the call Jenkins API. You are able to generate a new token in the configuration page of any user:</p>
-<p><img class=lazyload src=/svg/loading.min.svg data-src=images/image-1.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/image-1.png, images/image-1.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/image-1.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/image-1.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/image-1.png></p>
-<p>Now you can make a call with curl from the command line (replace TOKEN string by your own token, JENKINS_URL by your Jenkins URL, USER by related username and JOB_NAME by e.g. project-generator):</p>
-<p>Option 1 (using form-data):</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>curl -X POST JENKINS_URL/job/JOB_NAME/build <span class=se>\
-</span><span class=se></span>  --user USER:TOKEN <span class=se>\
-</span><span class=se></span>  --form <span class=nv>json</span><span class=o>=</span><span class=s1>&#39;{&#34;parameter&#34;: [{&#34;name&#34;:&#34;PROJECT_NAME&#34;, &#34;value&#34;:&#34;PROJECT2&#34;}]}&#39;</span>
-</code></pre></div><p>Option 2 (using get parameters):</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>curl -X POST JENKINS_URL/job/JOB_NAME/buildWithParameters?PROJECT_NAME<span class=o>=</span>PROJECT2 <span class=se>\
-</span><span class=se></span>  --user USER:TOKEN
-</code></pre></div><p>The job will be executed with the project name parameter and now your Jenkins is ready for a new project and its own CI/CD build jobs.</p>
-</div><div class=post-footer id=post-footer>
-<div class=post-info>
-<div class=post-info-line>
-<div class=post-info-mod>
-<span>Updated on 2021-09-20&nbsp;<a class=git-hash href=https://github.com/pajikos/pajikos.github.io/commit/f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43 target=_blank rel="noopener noreferrer" title="commit by Pavel Sklenar(pavel.sklenar@cloudfield.cz) f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43: Initial migration commit">
-<i class="fas fa-hashtag fa-fw"></i>f5d3ae4</a></span>
-</div>
-<div class=post-info-license></div>
-</div>
-<div class=post-info-line>
-<div class=post-info-md><span>
-<a class=link-to-markdown href=/jenkins-creating-dynamic-project-folders-with-job-dsl/index.md target=_blank rel="noopener noreferrer">Read Markdown</a>
-</span></div>
-<div class=post-info-share>
-<span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/ data-title="Jenkins - Creating Dynamic Project Folders with Job DSL"><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/ data-title="Jenkins - Creating Dynamic Project Folders with Job DSL" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/ data-title="Jenkins - Creating Dynamic Project Folders with Job DSL"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/ data-title="Jenkins - Creating Dynamic Project Folders with Job DSL"><i class="fab fa-evernote fa-fw"></i></a></span>
-</div>
-</div>
-</div>
-<div class=post-info-more>
-<section class=post-tags></section>
-<section>
-<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span>
-</section>
-</div>
-<div class=post-nav><a href=/vulnerability-scan-as-part-of-continuous-integration/ class=prev rel=prev title="Vulnerability Scan as part of Continuous Integration"><i class="fas fa-angle-left fa-fw"></i>Vulnerability Scan as part of Continuous Integration</a>
-<a href=/iaac-aro/ class=next rel=next title="Creating Azure Red Hat OpenShift 4 cluster">Creating Azure Red Hat OpenShift 4 cluster<i class="fas fa-angle-right fa-fw"></i></a></div>
-</div>
-<div id=comments><div id=disqus_thread class=comment></div><noscript>
-Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.
-</noscript></div></article></div>
-</main><footer class=footer>
-<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
-</div>
-</footer></div>
-<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
-<i class="fas fa-arrow-up fa-fw"></i>
-</a><a href=# id=view-comments class=fixed-button title="View Comments">
-<i class="fas fa-comment fa-fw"></i>
-</a>
-</div><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body>
-</html>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Jenkins - Creating Dynamic Project Folders with Job DSL</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/continuous-integration/><i class="far fa-folder fa-fw"></i>continuous-integration</a>&nbsp;<a href=/categories/groovy/><i class="far fa-folder fa-fw"></i>groovy</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-01-01>2020-01-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;575 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#setting-up-correct-authorization-type>Setting Up Correct Authorization Type</a></li><li><a href=#creating-job-dsl-project>Creating Job DSL project</a></li><li><a href=#integration-jenkins-with-remote-systems>Integration Jenkins with Remote Systems</a></li></ul></li></ul></nav></div></div><div class=content id=content><p>This post is about the dynamic creating of project folders in Jenkins using Job DSL Plugin. The newly created project folders will be accessible by a specific group or user only, so you are able to use your Jenkins instance by multiple teams and each team will have their own folder for their projects.</p><p>Before we can start, the following plugins must be installed:</p><ul><li><a href=https://plugins.jenkins.io/matrix-auth target=_blank rel="noopener noreferrer">Matrix Authorization Strategy</a></li><li><a href=https://plugins.jenkins.io/job-dsl target=_blank rel="noopener noreferrer">Job DSL Plugin</a></li></ul><h3 id=setting-up-correct-authorization-type>Setting Up Correct Authorization Type</h3><p>The first step is related to set up a correct authorization type in the Configure Global Security menu:</p><p><img class=lazyload src=/svg/loading.min.svg data-src=images/2019-11-21-14_08_10-Configure-Global-Security-Jenkins-1024x430.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_08_10-Configure-Global-Security-Jenkins-1024x430.png, images/2019-11-21-14_08_10-Configure-Global-Security-Jenkins-1024x430.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_08_10-Configure-Global-Security-Jenkins-1024x430.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_08_10-Configure-Global-Security-Jenkins-1024x430.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_08_10-Configure-Global-Security-Jenkins-1024x430.png></p><p>The menu Configure Global Security</p><p>Here you have to select the Project-based Matrix Authorization Strategy type and at least grant Overall/Read permission to Authenticated Users to enable login for all successfully authenticated users. Then you have to grant Administrator rights to you or any group.</p><p>If you skip the setting correct authorization type, folders will be created without any problems but the authorization setting will not be applied.</p><p>After that, we can create a Job DSL project.</p><h3 id=creating-job-dsl-project>Creating Job DSL project</h3><p>We need to create a Freestyle project (here the project-generator name):</p><p><img class=lazyload src=/svg/loading.min.svg data-src=images/2019-11-21-14_42_47-New-Item-Jenkins.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_42_47-New-Item-Jenkins.png, images/2019-11-21-14_42_47-New-Item-Jenkins.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_42_47-New-Item-Jenkins.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_42_47-New-Item-Jenkins.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_42_47-New-Item-Jenkins.png></p><p>Creating a new freestyle project</p><p>As our goal is about creating project folders, we create a new parameter using a checkbox &ldquo;This project is parameterized&rdquo;. Then we add a new String parameter PROJECT_NAME:</p><p><img class=lazyload src=/svg/loading.min.svg data-src=images/2019-11-21-14_53_49-dsl-test-Config-Jenkins.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_53_49-dsl-test-Config-Jenkins.png, images/2019-11-21-14_53_49-dsl-test-Config-Jenkins.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_53_49-dsl-test-Config-Jenkins.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_53_49-dsl-test-Config-Jenkins.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_53_49-dsl-test-Config-Jenkins.png></p><p>Adding a String Parameter to project-generator job</p><p>After that, the most important part is here. In the Build section, add build step and select Process Job DSLs:</p><p><img class=lazyload src=/svg/loading.min.svg data-src=images/2019-11-21-14_58_12-dsl-test-Config-Jenkins.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_58_12-dsl-test-Config-Jenkins.png, images/2019-11-21-14_58_12-dsl-test-Config-Jenkins.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_58_12-dsl-test-Config-Jenkins.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_58_12-dsl-test-Config-Jenkins.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-14_58_12-dsl-test-Config-Jenkins.png></p><p>and paste the following groovy script into the text field:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-groovy data-lang=groovy><span class=line><span class=cl><span class=kt>def</span> <span class=n>folderName</span> <span class=o>=</span> <span class=n>PROJECT_NAME</span><span class=o>.</span><span class=na>toUpperCase</span><span class=o>()</span>
+</span></span><span class=line><span class=cl><span class=kt>def</span> <span class=n>adminGroup</span> <span class=o>=</span> <span class=s2>&#34;ROLE_${folderName}_ADMIN&#34;</span>
+</span></span><span class=line><span class=cl><span class=kt>def</span> <span class=n>opsGroup</span> <span class=o>=</span> <span class=s2>&#34;ROLE_${folderName}_READER&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>folder</span><span class=o>(</span><span class=n>folderName</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>displayName</span><span class=o>(</span><span class=n>folderName</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>  <span class=n>description</span><span class=o>(</span><span class=s2>&#34;Folder for project ${PROJECT_NAME} generated by ${JOB_NAME}&#34;</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>authorization</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>permissions</span><span class=o>(</span><span class=n>opsGroup</span><span class=o>,</span> <span class=o>[</span>
+</span></span><span class=line><span class=cl>            <span class=s1>&#39;hudson.model.Item.Read&#39;</span><span class=o>,</span>
+</span></span><span class=line><span class=cl>            <span class=s1>&#39;hudson.model.Item.ViewStatus&#39;</span><span class=o>,</span>
+</span></span><span class=line><span class=cl>            <span class=s1>&#39;hudson.model.View.Read&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=o>])</span>
+</span></span><span class=line><span class=cl>        <span class=n>permissionAll</span><span class=o>(</span><span class=n>adminGroup</span><span class=o>)</span> 
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p>When we save the job and run Build with Parameters, the job will create a new folder based on the PROJECT_NAME parameter (e.g. PROJECT1) and will be accessible by role ROLE_PROJECT1_ADMIN (as folder administrators with all permissions) and by role ROLE_PROJECT1_READER as job status readers.</p><p>The project-generator job page contains a list of created project folders:</p><p><img class=lazyload src=/svg/loading.min.svg data-src=images/2019-11-21-15_09_25-project-generator-Jenkins.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-15_09_25-project-generator-Jenkins.png, images/2019-11-21-15_09_25-project-generator-Jenkins.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-15_09_25-project-generator-Jenkins.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-15_09_25-project-generator-Jenkins.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/2019-11-21-15_09_25-project-generator-Jenkins.png></p><p>List of all generated project folders</p><p>When we go to the PROJECT1 folder and into its configuration, you can check assigned rights. All available rights to assign are these:</p><ul><li><code>com.cloudbees.plugins.credentials.CredentialsProvider.Create</code></li><li><code>com.cloudbees.plugins.credentials.CredentialsProvider.Delete</code></li><li><code>com.cloudbees.plugins.credentials.CredentialsProvider.ManageDomains</code></li><li><code>com.cloudbees.plugins.credentials.CredentialsProvider.Update</code></li><li><code>com.cloudbees.plugins.credentials.CredentialsProvider.View</code></li><li><code>hudson.model.Item.Build</code></li><li><code>hudson.model.Item.Cancel</code></li><li><code>hudson.model.Item.Configure</code></li><li><code>hudson.model.Item.Create</code></li><li><code>hudson.model.Item.Delete</code></li><li><code>hudson.model.Item.Discover</code></li><li><code>hudson.model.Item.Move</code></li><li><code>hudson.model.Item.Read</code></li><li><code>hudson.model.Item.Release</code></li><li><code>hudson.model.Item.ViewStatus</code></li><li><code>hudson.model.Item.Workspace</code></li><li><code>hudson.model.Run.Delete</code></li><li><code>hudson.model.Run.Replay</code></li><li><code>hudson.model.Run.Update</code></li><li><code>hudson.model.View.Configure</code></li><li><code>hudson.model.View.Create</code></li><li><code>hudson.model.View.Delete</code></li><li><code>hudson.model.View.Read</code></li><li><code>hudson.scm.SCM.Tag</code></li></ul><p>When you try to login with user-defined in role e.g. ROLE_PROJECT1_ADMIN, you will see your folders only:</p><p><img class=lazyload src=/svg/loading.min.svg data-src=images/image.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/image.png, images/image.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/image.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/image.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/image.png></p><h3 id=integration-jenkins-with-remote-systems>Integration Jenkins with Remote Systems</h3><p>If you need to integrate your job (i.e. project-generator) with some 3rd party systems as a final step of any approval process (e.g. in Jira), you may use Jenkins remote API to run our job.</p><p>Before that, you need to generate a token to be used in the authentication during the call Jenkins API. You are able to generate a new token in the configuration page of any user:</p><p><img class=lazyload src=/svg/loading.min.svg data-src=images/image-1.png data-srcset="/jenkins-creating-dynamic-project-folders-with-job-dsl/images/image-1.png, images/image-1.png 1.5x, /jenkins-creating-dynamic-project-folders-with-job-dsl/images/image-1.png 2x" data-sizes=auto alt=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/image-1.png title=/jenkins-creating-dynamic-project-folders-with-job-dsl/images/image-1.png></p><p>Now you can make a call with curl from the command line (replace TOKEN string by your own token, JENKINS_URL by your Jenkins URL, USER by related username and JOB_NAME by e.g. project-generator):</p><p>Option 1 (using form-data):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>curl -X POST JENKINS_URL/job/JOB_NAME/build <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --user USER:TOKEN <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --form <span class=nv>json</span><span class=o>=</span><span class=s1>&#39;{&#34;parameter&#34;: [{&#34;name&#34;:&#34;PROJECT_NAME&#34;, &#34;value&#34;:&#34;PROJECT2&#34;}]}&#39;</span>
+</span></span></code></pre></div><p>Option 2 (using get parameters):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>curl -X POST JENKINS_URL/job/JOB_NAME/buildWithParameters?PROJECT_NAME<span class=o>=</span>PROJECT2 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --user USER:TOKEN
+</span></span></code></pre></div><p>The job will be executed with the project name parameter and now your Jenkins is ready for a new project and its own CI/CD build jobs.</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2021-09-20&nbsp;<a class=git-hash href=https://github.com/pajikos/pajikos.github.io/commit/f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43 target=_blank rel="noopener noreferrer" title="commit by Pavel Sklenar(pavel.sklenar@cloudfield.cz) f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43: Initial migration commit">
+<i class="fas fa-hashtag fa-fw"></i>f5d3ae4</a></span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/jenkins-creating-dynamic-project-folders-with-job-dsl/index.md target=_blank rel="noopener noreferrer">Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/ data-title="Jenkins - Creating Dynamic Project Folders with Job DSL"><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/ data-title="Jenkins - Creating Dynamic Project Folders with Job DSL" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/ data-title="Jenkins - Creating Dynamic Project Folders with Job DSL"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/ data-title="Jenkins - Creating Dynamic Project Folders with Job DSL"><i class="fab fa-evernote fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/vulnerability-scan-as-part-of-continuous-integration/ class=prev rel=prev title="Vulnerability Scan as part of Continuous Integration"><i class="fas fa-angle-left fa-fw"></i>Vulnerability Scan as part of Continuous Integration</a>
+<a href=/iaac-aro/ class=next rel=next title="Creating Azure Red Hat OpenShift 4 cluster">Creating Azure Red Hat OpenShift 4 cluster<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=disqus_thread class=comment></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body></html>

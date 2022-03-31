@@ -1,204 +1,37 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=robots content="noodp">
-<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
-<title>10 Useful Docker Commands - Tips and Tricks - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="10 Useful Docker Commands - Tips and Tricks">
-<meta property="og:description" content="Set HTTP proxy in your Dockerfile Your Dockerfile usually starts most probably like this:
-FROMtifayuki/java:8MAINTAINER...RUN apt-get update \ wget download.java.net/glassfish/4.0/release/glassfish-4.0.zip \ ...At first, you are apt-getting some missing applications and preparing your environment. Sometimes some applications need to be downloaded from the internet. You may encounter a problem when you are behind a proxy. Fortunately, you can use an [ENV](https://docs.docker.com/reference/builder/) command to set a HTTP/HTTPS proxy address, which will be in the environment of all &ldquo;descendent&rdquo; Dockerfile commands.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2015-07-10T00:00:00+00:00">
-<meta property="article:modified_time" content="2021-09-20T22:40:20+02:00">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png">
-<meta name=twitter:title content="10 Useful Docker Commands - Tips and Tricks">
-<meta name=twitter:description content="Set HTTP proxy in your Dockerfile Your Dockerfile usually starts most probably like this:
-FROMtifayuki/java:8MAINTAINER...RUN apt-get update \ wget download.java.net/glassfish/4.0/release/glassfish-4.0.zip \ ...At first, you are apt-getting some missing applications and preparing your environment. Sometimes some applications need to be downloaded from the internet. You may encounter a problem when you are behind a proxy. Fortunately, you can use an [ENV](https://docs.docker.com/reference/builder/) command to set a HTTP/HTTPS proxy address, which will be in the environment of all &ldquo;descendent&rdquo; Dockerfile commands.">
-<meta name=application-name content="blog.pavelsklenar.com">
-<meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
-<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/><link rel=next href=https://blog.pavelsklenar.com/5-useful-docker-tip-and-tricks-on-windows/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"10 Useful Docker Commands - Tips and Tricks","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/10-useful-docker-commands-tip-tricks\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"commands, docker","wordcount":663,"url":"https:\/\/blog.pavelsklenar.com\/10-useful-docker-commands-tip-tricks\/","datePublished":"2015-07-10T00:00:00+00:00","dateModified":"2021-09-20T22:40:20+02:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
-<body header-desktop=fixed header-mobile=auto><script type=text/javascript>('false'==='true'&&window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
-<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
-</div>
-<div class=menu>
-<div class=menu-inner><a class=menu-item href=/posts/> Posts </a><a class=menu-item href=/tags/> Tags </a><a class=menu-item href=/categories/> Categories </a><a class=menu-item href=/about/> About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>10 Useful Docker Commands - Tips and Tricks - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="10 Useful Docker Commands - Tips and Tricks"><meta property="og:description" content="Set HTTP proxy in your Dockerfile Your Dockerfile usually starts most probably like this:
+FROMtifayuki/java:8MAINTAINER...RUN apt-get update \ wget download.java.net/glassfish/4.0/release/glassfish-4.0.zip \ ...At first, you are apt-getting some missing applications and preparing your environment. Sometimes some applications need to be downloaded from the internet. You may encounter a problem when you are behind a proxy. Fortunately, you can use an [ENV](https://docs.docker.com/reference/builder/) command to set a HTTP/HTTPS proxy address, which will be in the environment of all &ldquo;descendent&rdquo; Dockerfile commands."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-07-10T00:00:00+00:00"><meta property="article:modified_time" content="2021-09-20T22:40:20+02:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png"><meta name=twitter:title content="10 Useful Docker Commands - Tips and Tricks"><meta name=twitter:description content="Set HTTP proxy in your Dockerfile Your Dockerfile usually starts most probably like this:
+FROMtifayuki/java:8MAINTAINER...RUN apt-get update \ wget download.java.net/glassfish/4.0/release/glassfish-4.0.zip \ ...At first, you are apt-getting some missing applications and preparing your environment. Sometimes some applications need to be downloaded from the internet. You may encounter a problem when you are behind a proxy. Fortunately, you can use an [ENV](https://docs.docker.com/reference/builder/) command to set a HTTP/HTTPS proxy address, which will be in the environment of all &ldquo;descendent&rdquo; Dockerfile commands."><meta name=application-name content="blog.pavelsklenar.com"><meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/><link rel=next href=https://blog.pavelsklenar.com/5-useful-docker-tip-and-tricks-on-windows/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"10 Useful Docker Commands - Tips and Tricks","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/10-useful-docker-commands-tip-tricks\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"commands, docker","wordcount":663,"url":"https:\/\/blog.pavelsklenar.com\/10-useful-docker-commands-tip-tricks\/","datePublished":"2015-07-10T00:00:00+00:00","dateModified":"2021-09-20T22:40:20+02:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>("false"==="true"&&window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><a class=menu-item href=/about/>About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
 <input type=text placeholder="Search titles or contents..." id=search-input-desktop>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-desktop>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
-<i class="fas fa-adjust fa-fw"></i>
-</a>
-</div>
-</div>
-</div>
-</header><header class=mobile id=header-mobile>
-<div class=header-container>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
-</div>
-<div class=menu-toggle id=menu-toggle-mobile>
-<span></span><span></span><span></span>
-</div>
-</div>
-<div class=menu id=menu-mobile><div class=search-wrapper>
-<div class="search mobile" id=search-mobile>
-<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-mobile>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</div>
-<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
-Cancel
-</a>
-</div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
-<i class="fas fa-adjust fa-fw"></i>
-</a></div>
-</div>
-</header>
-<div class="search-dropdown desktop">
-<div id=search-dropdown-desktop></div>
-</div>
-<div class="search-dropdown mobile">
-<div id=search-dropdown-mobile></div>
-</div>
-<main class=main>
-<div class=container><div class=toc id=toc-auto>
-<h2 class=toc-title>Contents</h2>
-<div class=toc-content id=toc-content-auto></div>
-</div><article class="page single"><h1 class="single-title animated flipInX">10 Useful Docker Commands - Tips and Tricks</h1><div class=post-meta>
-<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/docker/><i class="far fa-folder fa-fw"></i>docker</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2015-07-10>2015-07-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;663 words&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
-</div><div class="details toc" id=toc-static kept>
-<div class="details-summary toc-title">
-<span>Contents</span>
-<span><i class="details-icon fas fa-angle-right"></i></span>
-</div>
-<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
-<ul>
-<li><a href=#set-http-proxy-in-your-dockerfile>Set HTTP proxy in your Dockerfile</a></li>
-<li><a href=#mountone-folder-into-multiple-locations>Mount one folder into multiple locations</a></li>
-<li><a href=#long-running-worker-process>Long-running worker process</a></li>
-<li><a href=#lists-of-all-existing-containers-not-only-running>Lists of all existing containers (not only running)</a></li>
-<li><a href=#stop-all-running-containers>Stop all running containers</a></li>
-<li><a href=#delete-all-existing-containers>Delete all existing containers</a></li>
-<li><a href=#delete-all-existing-images>Delete all existing images</a></li>
-<li><a href=#attach-to-a-running-container>Attach to a running container</a></li>
-<li><a href=#using-docker-logs-command>Using Docker logs command</a></li>
-<li><a href=#replace-cmd-command-in-a-dockerfile>Replace CMD command in a Dockerfile</a></li>
-</ul>
-</nav></div>
-</div><div class=content id=content><h2 id=set-http-proxy-in-your-dockerfile>Set HTTP proxy in your Dockerfile</h2>
-<p>Your Dockerfile usually starts most probably like this:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=k>FROM</span><span class=s> tifayuki/java:8</span><span class=err>
-</span><span class=err></span><span class=k>MAINTAINER</span><span class=s> ...</span><span class=err>
-</span><span class=err></span><span class=k>RUN</span> apt-get update <span class=se>\
-</span><span class=se></span>wget download.java.net/glassfish/4.0/release/glassfish-4.0.zip <span class=se>\
-</span><span class=se></span>...<span class=err>
-</span></code></pre></div><p>At first, you are apt-getting some missing applications and preparing your environment. Sometimes some applications need to be downloaded from the internet. You may encounter a problem when you are behind a proxy. Fortunately, you can use an <code>[ENV](https://docs.docker.com/reference/builder/)</code> command to set a HTTP/HTTPS proxy address, which will be in the environment of all &ldquo;descendent&rdquo; Dockerfile commands. So the updated Dockerfile example:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=k>FROM</span><span class=s> tifayuki/java:8</span><span class=err>
-</span><span class=err></span><span class=k>MAINTAINER</span><span class=s> ...</span><span class=err>
-</span><span class=err></span><span class=k>ENV</span> http_proxy http://server:port<span class=err>
-</span><span class=err></span><span class=k>ENV</span> https_proxy http://server:port<span class=err>
-</span><span class=err></span><span class=c>#... some other online commands</span><span class=err>
-</span></code></pre></div><h2 id=mountone-folder-into-multiple-locations>Mount one folder into multiple locations</h2>
-<p>The Docker architecture is based on <a href=https://en.wikipedia.org/wiki/Union_mount target=_blank rel="noopener noreferrer">union mount</a>, namely <a href=https://en.wikipedia.org/wiki/UnionFS title=UnionFS target=_blank rel="noopener noreferrer">UnionFS</a>, which gives you an ability to mount volumes (folders) to any location in your image, let&rsquo;s see the following example (using this image <a href=https://github.com/tutumcloud/glassfish target=_blank rel="noopener noreferrer">tutum/glassfish</a>):</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker run -d -p 4848:4848 -p 8080:8080 -p 8181:8181 -v /data/output/gf-logs:/opt/glassfish4/glassfish/domains/domain1/logs -v /data/output/gf-logs:/var/log tutum/glassfish
-</code></pre></div><p>See both of <code>-v</code> params, they are mounting the same folder (/data/output/gf-logs)  into exactly two existing locations (Glassfish server log and /var/log/).</p>
-<p>Finally, you have only one folder with all logs from your Glassfish.</p>
-<h2 id=long-running-worker-process>Long-running worker process</h2>
-<p>If you are new to the docker environment, you may be surprised, that Docker containers only run as long as the command you specify is active. E.g. this ubuntu instance immediately exits after echoing &ldquo;Hello World&rdquo;:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker run ubuntu /bin/echo <span class=s1>&#39;Hello world&#39;</span>
-</code></pre></div><p>If you want to create a container that runs as a daemon (like most of the applications), you need to specify a long-running command, e.g. the command that echoes &ldquo;hello world&rdquo; forever:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker run -d ubuntu /bin/sh -c <span class=s2>&#34;while true; do echo hello world; sleep 1; done&#34;</span>
-</code></pre></div><h2 id=lists-of-all-existing-containers-not-only-running>Lists of all existing containers (not only running)</h2>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>$ docker ps -a
-</code></pre></div><h2 id=stop-all-running-containers>Stop all running containers</h2>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker stop <span class=k>$(</span>docker ps -a -q<span class=k>)</span>
-</code></pre></div><h2 id=delete-all-existing-containers>Delete all existing containers</h2>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker rm <span class=k>$(</span>docker ps -a -q<span class=k>)</span>
-</code></pre></div><p>If some containers are still running as a daemon, use <code>-f</code> (force) param immediately after rm command.</p>
-<h2 id=delete-all-existing-images>Delete all existing images</h2>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker rmi <span class=k>$(</span>docker images -q -a<span class=k>)</span>
-</code></pre></div><h2 id=attach-to-a-running-container>Attach to a running container</h2>
-<p><a href=https://docs.docker.com/reference/commandline/attach/ target=_blank rel="noopener noreferrer">Docker Command Line API</a> has a special command to attach to a running container. This command is not applicable in all cases, especially if a docker container has been already started using <code>/bin/bash</code> command, e.g. already known long running process:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker run -d  ubuntu /bin/sh -c <span class=s2>&#34;while true; do echo hello world; sleep 1; done&#34;</span>
-</code></pre></div><p>Trying to use <code>attach</code> command does not start a new instance of a shell, instead of that, you will see an ongoing output of the first command, i.e.&ldquo;hello world&rdquo;. Since Docker version 1.3 you are able to create a new instance of a shell using exec command:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo docker <span class=nb>exec</span> -i -t <span class=m>878978547</span> bash
-</code></pre></div><h2 id=using-docker-logs-command>Using Docker logs command</h2>
-<p>In a case of running a Docker container as a daemon (<code>docker run -d</code> &mldr;) it may be useful to know what appears on the console output of the running container.</p>
-<p>The <code>docker logs</code> retrieves logs present at the time of execution.  You need to run this command repeatedly to see the actual output. This is not good enough.</p>
-<p>Fortunately, it exists a helpful param <code>-f, --follow,</code> which follows log output and continues streaming the new output from the container’s <code>STDOUT</code> and <code>STDERR</code>.:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker logs -f <span class=m>878978547</span>
-</code></pre></div><p><strong>NOTE</strong>: this command is available only for containers with <code>json-file</code> logging driver.</p>
-<h2 id=replace-cmd-command-in-a-dockerfile>Replace CMD command in a Dockerfile</h2>
-<p>You should know, that it exists two similar commands in a Dockerfile, i.e. <code>CMD</code> and <code>RUN</code>.</p>
-<p><code>RUN</code> actually runs a command and commits the result at build time.</p>
-<p>The <code>CMD</code> instruction should be used in a Dockerfile only once to run the software contained by your image at runtime. (mostly the last command in a Dockerfile).</p>
-<blockquote>
-<p>The main purpose of a CMD is to provide defaults for an executing container. (<a href=https://docs.docker.com/reference/builder/ target=_blank rel="noopener noreferrer">source</a>)</p>
-</blockquote>
-<p>You are able to replace a default CMD command from a Dockerfile, e.g. you need to customize this command:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker run myImage <span class=s2>&#34;{CMD} -extraParam&#34;</span>
-</code></pre></div><p>Again, CMD instruction in a Dockerfile is overwritten with your command from the command line.</p>
-</div><div class=post-footer id=post-footer>
-<div class=post-info>
-<div class=post-info-line>
-<div class=post-info-mod>
-<span>Updated on 2021-09-20&nbsp;<a class=git-hash href=https://github.com/pajikos/pajikos.github.io/commit/f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43 target=_blank rel="noopener noreferrer" title="commit by Pavel Sklenar(pavel.sklenar@cloudfield.cz) f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43: Initial migration commit">
-<i class="fas fa-hashtag fa-fw"></i>f5d3ae4</a></span>
-</div>
-<div class=post-info-license></div>
-</div>
-<div class=post-info-line>
-<div class=post-info-md><span>
-<a class=link-to-markdown href=/10-useful-docker-commands-tip-tricks/index.md target=_blank rel="noopener noreferrer">Read Markdown</a>
-</span></div>
-<div class=post-info-share>
-<span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/ data-title="10 Useful Docker Commands - Tips and Tricks" data-hashtags=commands,docker><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/ data-title="10 Useful Docker Commands - Tips and Tricks" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/ data-title="10 Useful Docker Commands - Tips and Tricks"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/ data-title="10 Useful Docker Commands - Tips and Tricks"><i class="fab fa-evernote fa-fw"></i></a></span>
-</div>
-</div>
-</div>
-<div class=post-info-more>
-<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/commands/>commands</a>,&nbsp;<a href=/tags/docker/>docker</a></section>
-<section>
-<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span>
-</section>
-</div>
-<div class=post-nav>
-<a href=/5-useful-docker-tip-and-tricks-on-windows/ class=next rel=next title="5 Useful Docker Tips and Tricks on Windows">5 Useful Docker Tips and Tricks on Windows<i class="fas fa-angle-right fa-fw"></i></a></div>
-</div>
-<div id=comments><div id=disqus_thread class=comment></div><noscript>
-Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.
-</noscript></div></article></div>
-</main><footer class=footer>
-<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
-</div>
-</footer></div>
-<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
-<i class="fas fa-arrow-up fa-fw"></i>
-</a><a href=# id=view-comments class=fixed-button title="View Comments">
-<i class="fas fa-comment fa-fw"></i>
-</a>
-</div><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body>
-</html>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">10 Useful Docker Commands - Tips and Tricks</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/docker/><i class="far fa-folder fa-fw"></i>docker</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2015-07-10>2015-07-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;663 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#set-http-proxy-in-your-dockerfile>Set HTTP proxy in your Dockerfile</a></li><li><a href=#mountone-folder-into-multiple-locations>Mount one folder into multiple locations</a></li><li><a href=#long-running-worker-process>Long-running worker process</a></li><li><a href=#lists-of-all-existing-containers-not-only-running>Lists of all existing containers (not only running)</a></li><li><a href=#stop-all-running-containers>Stop all running containers</a></li><li><a href=#delete-all-existing-containers>Delete all existing containers</a></li><li><a href=#delete-all-existing-images>Delete all existing images</a></li><li><a href=#attach-to-a-running-container>Attach to a running container</a></li><li><a href=#using-docker-logs-command>Using Docker logs command</a></li><li><a href=#replace-cmd-command-in-a-dockerfile>Replace CMD command in a Dockerfile</a></li></ul></nav></div></div><div class=content id=content><h2 id=set-http-proxy-in-your-dockerfile>Set HTTP proxy in your Dockerfile</h2><p>Your Dockerfile usually starts most probably like this:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=s> tifayuki/java:8</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>MAINTAINER</span><span class=s> ...</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> apt-get update <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>wget download.java.net/glassfish/4.0/release/glassfish-4.0.zip <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>...<span class=err>
+</span></span></span></code></pre></div><p>At first, you are apt-getting some missing applications and preparing your environment. Sometimes some applications need to be downloaded from the internet. You may encounter a problem when you are behind a proxy. Fortunately, you can use an <code>[ENV](https://docs.docker.com/reference/builder/)</code> command to set a HTTP/HTTPS proxy address, which will be in the environment of all &ldquo;descendent&rdquo; Dockerfile commands. So the updated Dockerfile example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=s> tifayuki/java:8</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>MAINTAINER</span><span class=s> ...</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> http_proxy http://server:port<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> https_proxy http://server:port<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>#... some other online commands</span><span class=err>
+</span></span></span></code></pre></div><h2 id=mountone-folder-into-multiple-locations>Mount one folder into multiple locations</h2><p>The Docker architecture is based on <a href=https://en.wikipedia.org/wiki/Union_mount target=_blank rel="noopener noreferrer">union mount</a>, namely <a href=https://en.wikipedia.org/wiki/UnionFS title=UnionFS target=_blank rel="noopener noreferrer">UnionFS</a>, which gives you an ability to mount volumes (folders) to any location in your image, let&rsquo;s see the following example (using this image <a href=https://github.com/tutumcloud/glassfish target=_blank rel="noopener noreferrer">tutum/glassfish</a>):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker run -d -p 4848:4848 -p 8080:8080 -p 8181:8181 -v /data/output/gf-logs:/opt/glassfish4/glassfish/domains/domain1/logs -v /data/output/gf-logs:/var/log tutum/glassfish
+</span></span></code></pre></div><p>See both of <code>-v</code> params, they are mounting the same folder (/data/output/gf-logs)  into exactly two existing locations (Glassfish server log and /var/log/).</p><p>Finally, you have only one folder with all logs from your Glassfish.</p><h2 id=long-running-worker-process>Long-running worker process</h2><p>If you are new to the docker environment, you may be surprised, that Docker containers only run as long as the command you specify is active. E.g. this ubuntu instance immediately exits after echoing &ldquo;Hello World&rdquo;:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker run ubuntu /bin/echo <span class=s1>&#39;Hello world&#39;</span>
+</span></span></code></pre></div><p>If you want to create a container that runs as a daemon (like most of the applications), you need to specify a long-running command, e.g. the command that echoes &ldquo;hello world&rdquo; forever:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker run -d ubuntu /bin/sh -c <span class=s2>&#34;while true; do echo hello world; sleep 1; done&#34;</span>
+</span></span></code></pre></div><h2 id=lists-of-all-existing-containers-not-only-running>Lists of all existing containers (not only running)</h2><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ docker ps -a
+</span></span></code></pre></div><h2 id=stop-all-running-containers>Stop all running containers</h2><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker stop <span class=k>$(</span>docker ps -a -q<span class=k>)</span>
+</span></span></code></pre></div><h2 id=delete-all-existing-containers>Delete all existing containers</h2><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker rm <span class=k>$(</span>docker ps -a -q<span class=k>)</span>
+</span></span></code></pre></div><p>If some containers are still running as a daemon, use <code>-f</code> (force) param immediately after rm command.</p><h2 id=delete-all-existing-images>Delete all existing images</h2><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker rmi <span class=k>$(</span>docker images -q -a<span class=k>)</span>
+</span></span></code></pre></div><h2 id=attach-to-a-running-container>Attach to a running container</h2><p><a href=https://docs.docker.com/reference/commandline/attach/ target=_blank rel="noopener noreferrer">Docker Command Line API</a> has a special command to attach to a running container. This command is not applicable in all cases, especially if a docker container has been already started using <code>/bin/bash</code> command, e.g. already known long running process:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker run -d  ubuntu /bin/sh -c <span class=s2>&#34;while true; do echo hello world; sleep 1; done&#34;</span>
+</span></span></code></pre></div><p>Trying to use <code>attach</code> command does not start a new instance of a shell, instead of that, you will see an ongoing output of the first command, i.e.&ldquo;hello world&rdquo;. Since Docker version 1.3 you are able to create a new instance of a shell using exec command:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo docker <span class=nb>exec</span> -i -t <span class=m>878978547</span> bash
+</span></span></code></pre></div><h2 id=using-docker-logs-command>Using Docker logs command</h2><p>In a case of running a Docker container as a daemon (<code>docker run -d</code> &mldr;) it may be useful to know what appears on the console output of the running container.</p><p>The <code>docker logs</code> retrieves logs present at the time of execution.  You need to run this command repeatedly to see the actual output. This is not good enough.</p><p>Fortunately, it exists a helpful param <code>-f, --follow,</code> which follows log output and continues streaming the new output from the container’s <code>STDOUT</code> and <code>STDERR</code>.:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker logs -f <span class=m>878978547</span>
+</span></span></code></pre></div><p><strong>NOTE</strong>: this command is available only for containers with <code>json-file</code> logging driver.</p><h2 id=replace-cmd-command-in-a-dockerfile>Replace CMD command in a Dockerfile</h2><p>You should know, that it exists two similar commands in a Dockerfile, i.e. <code>CMD</code> and <code>RUN</code>.</p><p><code>RUN</code> actually runs a command and commits the result at build time.</p><p>The <code>CMD</code> instruction should be used in a Dockerfile only once to run the software contained by your image at runtime. (mostly the last command in a Dockerfile).</p><blockquote><p>The main purpose of a CMD is to provide defaults for an executing container. (<a href=https://docs.docker.com/reference/builder/ target=_blank rel="noopener noreferrer">source</a>)</p></blockquote><p>You are able to replace a default CMD command from a Dockerfile, e.g. you need to customize this command:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker run myImage <span class=s2>&#34;{CMD} -extraParam&#34;</span>
+</span></span></code></pre></div><p>Again, CMD instruction in a Dockerfile is overwritten with your command from the command line.</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2021-09-20&nbsp;<a class=git-hash href=https://github.com/pajikos/pajikos.github.io/commit/f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43 target=_blank rel="noopener noreferrer" title="commit by Pavel Sklenar(pavel.sklenar@cloudfield.cz) f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43: Initial migration commit">
+<i class="fas fa-hashtag fa-fw"></i>f5d3ae4</a></span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/10-useful-docker-commands-tip-tricks/index.md target=_blank rel="noopener noreferrer">Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/ data-title="10 Useful Docker Commands - Tips and Tricks" data-hashtags=commands,docker><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/ data-title="10 Useful Docker Commands - Tips and Tricks" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/ data-title="10 Useful Docker Commands - Tips and Tricks"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/10-useful-docker-commands-tip-tricks/ data-title="10 Useful Docker Commands - Tips and Tricks"><i class="fab fa-evernote fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/commands/>commands</a>,&nbsp;<a href=/tags/docker/>docker</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/5-useful-docker-tip-and-tricks-on-windows/ class=next rel=next title="5 Useful Docker Tips and Tricks on Windows">5 Useful Docker Tips and Tricks on Windows<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=disqus_thread class=comment></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body></html>

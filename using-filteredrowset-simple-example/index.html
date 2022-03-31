@@ -1,294 +1,140 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=robots content="noodp">
-<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
-<title>Using JDBC FilteredRowSet - Simple Example - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="Using JDBC FilteredRowSet - Simple Example">
-<meta property="og:description" content="This post shows how to use a FilteredRowSet object. It lets you filter the number of rows that are visible in a RowSet object so that you can work with only the relevant data that you need. You may decide how you want to &ldquo;filter&rdquo; the data and apply that filter to a FilteredRowSet object. In other words, the FilteredRowSet object makes visible only the rows of data that fit within the limits you set.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://blog.pavelsklenar.com/using-filteredrowset-simple-example/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2016-01-25T00:00:00+00:00">
-<meta property="article:modified_time" content="2021-09-20T22:40:20+02:00">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png">
-<meta name=twitter:title content="Using JDBC FilteredRowSet - Simple Example">
-<meta name=twitter:description content="This post shows how to use a FilteredRowSet object. It lets you filter the number of rows that are visible in a RowSet object so that you can work with only the relevant data that you need. You may decide how you want to &ldquo;filter&rdquo; the data and apply that filter to a FilteredRowSet object. In other words, the FilteredRowSet object makes visible only the rows of data that fit within the limits you set.">
-<meta name=application-name content="blog.pavelsklenar.com">
-<meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
-<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/><link rel=prev href=https://blog.pavelsklenar.com/make-your-device-public-without-any-public-ipv4/><link rel=next href=https://blog.pavelsklenar.com/parallel-processing-java/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Using JDBC FilteredRowSet - Simple Example","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/using-filteredrowset-simple-example\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"filteredrowset, jdbc, rowset","wordcount":768,"url":"https:\/\/blog.pavelsklenar.com\/using-filteredrowset-simple-example\/","datePublished":"2016-01-25T00:00:00+00:00","dateModified":"2021-09-20T22:40:20+02:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
-<body header-desktop=fixed header-mobile=auto><script type=text/javascript>('false'==='true'&&window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
-<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
-</div>
-<div class=menu>
-<div class=menu-inner><a class=menu-item href=/posts/> Posts </a><a class=menu-item href=/tags/> Tags </a><a class=menu-item href=/categories/> Categories </a><a class=menu-item href=/about/> About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Using JDBC FilteredRowSet - Simple Example - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="Using JDBC FilteredRowSet - Simple Example"><meta property="og:description" content="This post shows how to use a FilteredRowSet object. It lets you filter the number of rows that are visible in a RowSet object so that you can work with only the relevant data that you need. You may decide how you want to &ldquo;filter&rdquo; the data and apply that filter to a FilteredRowSet object. In other words, the FilteredRowSet object makes visible only the rows of data that fit within the limits you set."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.pavelsklenar.com/using-filteredrowset-simple-example/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-01-25T00:00:00+00:00"><meta property="article:modified_time" content="2021-09-20T22:40:20+02:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png"><meta name=twitter:title content="Using JDBC FilteredRowSet - Simple Example"><meta name=twitter:description content="This post shows how to use a FilteredRowSet object. It lets you filter the number of rows that are visible in a RowSet object so that you can work with only the relevant data that you need. You may decide how you want to &ldquo;filter&rdquo; the data and apply that filter to a FilteredRowSet object. In other words, the FilteredRowSet object makes visible only the rows of data that fit within the limits you set."><meta name=application-name content="blog.pavelsklenar.com"><meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/><link rel=prev href=https://blog.pavelsklenar.com/make-your-device-public-without-any-public-ipv4/><link rel=next href=https://blog.pavelsklenar.com/parallel-processing-java/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Using JDBC FilteredRowSet - Simple Example","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/using-filteredrowset-simple-example\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"filteredrowset, jdbc, rowset","wordcount":768,"url":"https:\/\/blog.pavelsklenar.com\/using-filteredrowset-simple-example\/","datePublished":"2016-01-25T00:00:00+00:00","dateModified":"2021-09-20T22:40:20+02:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>("false"==="true"&&window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><a class=menu-item href=/about/>About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
 <input type=text placeholder="Search titles or contents..." id=search-input-desktop>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-desktop>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
-<i class="fas fa-adjust fa-fw"></i>
-</a>
-</div>
-</div>
-</div>
-</header><header class=mobile id=header-mobile>
-<div class=header-container>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
-</div>
-<div class=menu-toggle id=menu-toggle-mobile>
-<span></span><span></span><span></span>
-</div>
-</div>
-<div class=menu id=menu-mobile><div class=search-wrapper>
-<div class="search mobile" id=search-mobile>
-<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-mobile>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</div>
-<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
-Cancel
-</a>
-</div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
-<i class="fas fa-adjust fa-fw"></i>
-</a></div>
-</div>
-</header>
-<div class="search-dropdown desktop">
-<div id=search-dropdown-desktop></div>
-</div>
-<div class="search-dropdown mobile">
-<div id=search-dropdown-mobile></div>
-</div>
-<main class=main>
-<div class=container><div class=toc id=toc-auto>
-<h2 class=toc-title>Contents</h2>
-<div class=toc-content id=toc-content-auto></div>
-</div><article class="page single"><h1 class="single-title animated flipInX">Using JDBC FilteredRowSet - Simple Example</h1><div class=post-meta>
-<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/java/><i class="far fa-folder fa-fw"></i>java</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2016-01-25>2016-01-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;768 words&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
-</div><div class="details toc" id=toc-static kept>
-<div class="details-summary toc-title">
-<span>Contents</span>
-<span><i class="details-icon fas fa-angle-right"></i></span>
-</div>
-<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
-<ul>
-<li><a href=#create-a-new-filter>Create a new filter</a></li>
-<li><a href=#use-yourfilter>Use your filter</a></li>
-<li><a href=#resources>Resources</a></li>
-</ul>
-</nav></div>
-</div><div class=content id=content><p>This post shows how to use a <a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/FilteredRowSet.html target=_blank rel="noopener noreferrer">FilteredRowSet</a> object. It lets you filter the number of rows that are visible in a <code>RowSet</code> object so that you can work with only the relevant data that you need. You may decide how you want to &ldquo;filter&rdquo; the data and apply that filter to a <code>FilteredRowSet</code> object. In other words, the <code>FilteredRowSet</code> object makes visible only the rows of data that fit within the limits you set.</p>
-<p>You may know a <a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/JdbcRowSet.html target=_blank rel="noopener noreferrer"><code>JdbcRowSet</code></a> object, which always has a connection to its data source, so you can do filtering with a query to the data source (using <code>WHERE</code> clause which defines the filtering criteria). A <code>FilteredRowSet</code> object provides a way for a <a href=http://javarevisited.blogspot.cz/2014/04/Connected-vs-disconnected-rowsetprovider-rowsetfactory-and-rowset-JDBC-Java.html target=_blank rel="noopener noreferrer">disconnected <code>RowSet</code></a> object for filtering without having to execute a query on the data source, consequently avoiding having to get a connection to the data source and sending queries to it.</p>
-<p><figure><a class=lightgallery href=/using-filteredrowset-simple-example/images/RowSet-Classes-in-JDBC-Java.png title="RowSet Classes in JDBC Java, FilteredRowSet" data-thumbnail=/using-filteredrowset-simple-example/images/RowSet-Classes-in-JDBC-Java.png data-sub-html="<h2>RowSet Classes in JDBC Java (source: http://javarevisited.blogspot.cz/2014/04/Connected-vs-disconnected-rowsetprovider-rowsetfactory-and-rowset-JDBC-Java.html)</h2><p>RowSet Classes in JDBC Java, FilteredRowSet</p>">
-<img class=lazyload src=/svg/loading.min.svg data-src=images/RowSet-Classes-in-JDBC-Java.png data-srcset="/using-filteredrowset-simple-example/images/RowSet-Classes-in-JDBC-Java.png, images/RowSet-Classes-in-JDBC-Java.png 1.5x, /using-filteredrowset-simple-example/images/RowSet-Classes-in-JDBC-Java.png 2x" data-sizes=auto alt=/using-filteredrowset-simple-example/images/RowSet-Classes-in-JDBC-Java.png>
-</a><figcaption class=image-caption>RowSet Classes in JDBC Java (source: http://javarevisited.blogspot.cz/2014/04/Connected-vs-disconnected-rowsetprovider-rowsetfactory-and-rowset-JDBC-Java.html)</figcaption>
-</figure></p>
-<p>There are two main steps to use the <a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/FilteredRowSet.html target=_blank rel="noopener noreferrer">FilteredRowSet:</a></p>
-<ol>
-<li>Create a new filter (an implementation of <a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/Predicate.html target=_blank rel="noopener noreferrer">Predicate</a> interface).</li>
-<li>Use your filter (setting a filter to your <a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/FilteredRowSet.html target=_blank rel="noopener noreferrer">FilteredRowSet).</a></li>
-</ol>
-<h2 id=create-a-new-filter>Create a new filter</h2>
-<p>You need to implement the <code>evaluate</code> method, which accepts a <code>Rowset object</code>. The <a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/Predicate.html target=_blank rel="noopener noreferrer">documentation</a> about this method says:</p>
-<blockquote>
-<p>This method is typically called a <code>FilteredRowSet</code> object internal methods (not public) that control the <code>RowSet</code> object&rsquo;s cursor moving from row to the next. In addition, if this internal method moves the cursor onto a row that has been deleted, the internal method will continue to ove the cursor until a valid row is found.</p>
-</blockquote>
-<p>Other methods, like <code>evaluate(Object value, int column)</code> and <code>evaluate(Object value, String columnName),</code> are called when you are inserting new rows to a <code>FilteredRowSet</code> instance.</p>
-<p>My example tries to match any regular expression pattern, which was set during a filter initialization. If a pattern found, method returned <code>true</code> (= yes, we want this row).</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=cm>/**
-</span><span class=cm> * Search Filter for {@link FilteredRowSet}
-</span><span class=cm> *
-</span><span class=cm> * @author pavel.sklenar
-</span><span class=cm> *
-</span><span class=cm> */</span>
-<span class=kd>class</span> <span class=nc>SearchFilter</span> <span class=kd>implements</span> <span class=n>Predicate</span> <span class=o>{</span>
-    <span class=kd>private</span> <span class=n>Pattern</span> <span class=n>pattern</span><span class=o>;</span>
- 
-    <span class=kd>public</span> <span class=nf>SearchFilter</span><span class=o>(</span><span class=n>String</span> <span class=n>searchRegex</span><span class=o>)</span> <span class=o>{</span>
-        <span class=k>if</span> <span class=o>(</span><span class=n>searchRegex</span> <span class=o>!=</span> <span class=kc>null</span> <span class=o>&amp;&amp;</span> <span class=o>!</span><span class=n>searchRegex</span><span class=o>.</span><span class=na>isEmpty</span><span class=o>())</span> <span class=o>{</span>
-            <span class=n>pattern</span> <span class=o>=</span> <span class=n>Pattern</span><span class=o>.</span><span class=na>compile</span><span class=o>(</span><span class=n>searchRegex</span><span class=o>);</span>
-        <span class=o>}</span>
-    <span class=o>}</span>
- 
-    <span class=kd>public</span> <span class=kt>boolean</span> <span class=nf>evaluate</span><span class=o>(</span><span class=n>RowSet</span> <span class=n>rs</span><span class=o>)</span> <span class=o>{</span>
-        <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=s>&#34;SearchFilter.evaluate called &#34;</span><span class=o>);</span>
-        <span class=k>try</span> <span class=o>{</span>
-            <span class=k>if</span> <span class=o>(!</span><span class=n>rs</span><span class=o>.</span><span class=na>isAfterLast</span><span class=o>())</span> <span class=o>{</span>
-                <span class=n>String</span> <span class=n>name</span> <span class=o>=</span> <span class=n>rs</span><span class=o>.</span><span class=na>getString</span><span class=o>(</span><span class=s>&#34;name&#34;</span><span class=o>);</span>
-                <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=n>String</span><span class=o>.</span><span class=na>format</span><span class=o>(</span>
-                        <span class=s>&#34;Searching for pattern &#39;%s&#39; in %s&#34;</span><span class=o>,</span> <span class=n>pattern</span><span class=o>.</span><span class=na>toString</span><span class=o>(),</span>
-                        <span class=n>name</span><span class=o>));</span>
-                <span class=n>Matcher</span> <span class=n>matcher</span> <span class=o>=</span> <span class=n>pattern</span><span class=o>.</span><span class=na>matcher</span><span class=o>(</span><span class=n>name</span><span class=o>);</span>
-                <span class=k>return</span> <span class=n>matcher</span><span class=o>.</span><span class=na>matches</span><span class=o>();</span>
-            <span class=o>}</span> <span class=k>else</span>
-                <span class=k>return</span> <span class=kc>false</span><span class=o>;</span>
-        <span class=o>}</span> <span class=k>catch</span> <span class=o>(</span><span class=n>Exception</span> <span class=n>e</span><span class=o>)</span> <span class=o>{</span>
-            <span class=n>e</span><span class=o>.</span><span class=na>printStackTrace</span><span class=o>();</span>
-            <span class=k>return</span> <span class=kc>false</span><span class=o>;</span>
-        <span class=o>}</span>
-    <span class=o>}</span>
- 
-    <span class=kd>public</span> <span class=kt>boolean</span> <span class=nf>evaluate</span><span class=o>(</span><span class=n>Object</span> <span class=n>value</span><span class=o>,</span> <span class=kt>int</span> <span class=n>column</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>SQLException</span> <span class=o>{</span>
-        <span class=k>throw</span> <span class=k>new</span> <span class=n>UnsupportedOperationException</span><span class=o>(</span><span class=s>&#34;Not supported yet.&#34;</span><span class=o>);</span>
-    <span class=o>}</span>
- 
-    <span class=kd>public</span> <span class=kt>boolean</span> <span class=nf>evaluate</span><span class=o>(</span><span class=n>Object</span> <span class=n>value</span><span class=o>,</span> <span class=n>String</span> <span class=n>columnName</span><span class=o>)</span>
-            <span class=kd>throws</span> <span class=n>SQLException</span> <span class=o>{</span>
-        <span class=k>throw</span> <span class=k>new</span> <span class=n>UnsupportedOperationException</span><span class=o>(</span><span class=s>&#34;Not supported yet.&#34;</span><span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></div><h2 id=use-yourfilter>Use your filter</h2>
-<p>You need to set your new instance of <code>Predicate</code> interface to your <code>FilteredRowSet</code> using method <code>setFilter:</code></p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=n>usersRS</span><span class=o>.</span><span class=na>setFilter</span><span class=o>(</span><span class=k>new</span> <span class=n>SearchFilter</span><span class=o>(</span><span class=s>&#34;^[A-L].*&#34;</span><span class=o>));</span>
-</code></pre></div><p>The complete example of my code is bellow. To run it, you need to add an H2 library (a memory database driver) to your classpath, e.g. available <a href=http://www.h2database.com/html/download.html target=_blank rel="noopener noreferrer">here</a>.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=cm>/**
-</span><span class=cm> * Example usage of {@link FilteredRowSet}
-</span><span class=cm> *
-</span><span class=cm> * @author pavel.sklenar
-</span><span class=cm> *
-</span><span class=cm> */</span>
-<span class=kd>public</span> <span class=kd>class</span> <span class=nc>FilteredRowSetTest</span> <span class=o>{</span>
- 
-    <span class=cm>/*
-</span><span class=cm>     * Sample names for test
-</span><span class=cm>     */</span>
-    <span class=kd>private</span> <span class=kd>static</span> <span class=kd>final</span> <span class=n>String</span><span class=o>[]</span> <span class=n>NAMES</span> <span class=o>=</span> <span class=o>{</span> <span class=s>&#34;Bill Gates&#34;</span><span class=o>,</span> <span class=s>&#34;Steve Jobs&#34;</span><span class=o>,</span>
-            <span class=s>&#34;Mark Zuckerberg&#34;</span><span class=o>,</span> <span class=s>&#34;Alan Turing&#34;</span><span class=o>,</span> <span class=s>&#34;Linus Torlvalds&#34;</span> <span class=o>};</span>
- 
-    <span class=cm>/**
-</span><span class=cm>     * The main class to run test
-</span><span class=cm>     */</span>
-    <span class=kd>public</span> <span class=kd>static</span> <span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=n>String</span><span class=o>[]</span> <span class=n>args</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>Exception</span> <span class=o>{</span>
-        <span class=n>Connection</span> <span class=n>c</span> <span class=o>=</span> <span class=n>DriverManager</span><span class=o>.</span><span class=na>getConnection</span><span class=o>(</span><span class=s>&#34;jdbc:h2:mem:db1&#34;</span><span class=o>,</span> <span class=s>&#34;test&#34;</span><span class=o>,</span>
-                <span class=s>&#34;test&#34;</span><span class=o>);</span>
-        <span class=c1>// Just only prepare data for test
-</span><span class=c1></span>        <span class=n>prepareData</span><span class=o>(</span><span class=n>c</span><span class=o>);</span>
-        <span class=n>RowSetFactory</span> <span class=n>rsf</span> <span class=o>=</span> <span class=n>RowSetProvider</span><span class=o>.</span><span class=na>newFactory</span><span class=o>();</span>
-        <span class=n>FilteredRowSet</span> <span class=n>usersRS</span> <span class=o>=</span> <span class=n>rsf</span><span class=o>.</span><span class=na>createFilteredRowSet</span><span class=o>();</span>
-        <span class=n>usersRS</span><span class=o>.</span><span class=na>setCommand</span><span class=o>(</span><span class=s>&#34;select * from USER&#34;</span><span class=o>);</span>
-        <span class=n>usersRS</span><span class=o>.</span><span class=na>execute</span><span class=o>(</span><span class=n>c</span><span class=o>);</span>
-        <span class=n>usersRS</span><span class=o>.</span><span class=na>setFilter</span><span class=o>(</span><span class=k>new</span> <span class=n>SearchFilter</span><span class=o>(</span><span class=s>&#34;^[A-L].*&#34;</span><span class=o>));</span>
-        <span class=n>dumpRS</span><span class=o>(</span><span class=n>usersRS</span><span class=o>);</span>
-    <span class=o>}</span>
-     
-    <span class=cm>/**
-</span><span class=cm>     * Dump {@link ResultSet}
-</span><span class=cm>     *
-</span><span class=cm>     * @param rs
-</span><span class=cm>     *            input{@link ResultSet} to dump
-</span><span class=cm>     * @throws SQLException
-</span><span class=cm>     * @throws Exception
-</span><span class=cm>     */</span>
-    <span class=kd>public</span> <span class=kd>static</span> <span class=kt>void</span> <span class=nf>dumpRS</span><span class=o>(</span><span class=n>ResultSet</span> <span class=n>rs</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>SQLException</span> <span class=o>{</span>
-        <span class=n>ResultSetMetaData</span> <span class=n>rsmd</span> <span class=o>=</span> <span class=n>rs</span><span class=o>.</span><span class=na>getMetaData</span><span class=o>();</span>
-        <span class=kt>int</span> <span class=n>cc</span> <span class=o>=</span> <span class=n>rsmd</span><span class=o>.</span><span class=na>getColumnCount</span><span class=o>();</span>
-        <span class=k>while</span> <span class=o>(</span><span class=n>rs</span><span class=o>.</span><span class=na>next</span><span class=o>())</span> <span class=o>{</span>
-            <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>1</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;=</span> <span class=n>cc</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
-                <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=n>rsmd</span><span class=o>.</span><span class=na>getColumnLabel</span><span class=o>(</span><span class=n>i</span><span class=o>)</span> <span class=o>+</span> <span class=s>&#34; = &#34;</span>
-                        <span class=o>+</span> <span class=n>rs</span><span class=o>.</span><span class=na>getObject</span><span class=o>(</span><span class=n>i</span><span class=o>)</span> <span class=o>+</span> <span class=s>&#34; &#34;</span><span class=o>);</span>
-            <span class=o>}</span>
-            <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=s>&#34;&#34;</span><span class=o>);</span>
-        <span class=o>}</span>
-    <span class=o>}</span>
- 
-    <span class=cm>/**
-</span><span class=cm>     * Prepare data for test
-</span><span class=cm>     *
-</span><span class=cm>     * @param c
-</span><span class=cm>     *            {@link Connection} will be used to prepare data
-</span><span class=cm>     * @throws SQLException
-</span><span class=cm>     */</span>
-    <span class=kd>private</span> <span class=kd>static</span> <span class=kt>void</span> <span class=nf>prepareData</span><span class=o>(</span><span class=n>Connection</span> <span class=n>c</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>SQLException</span> <span class=o>{</span>
-        <span class=n>c</span><span class=o>.</span><span class=na>createStatement</span><span class=o>().</span><span class=na>execute</span><span class=o>(</span><span class=s>&#34;create table USER (name varchar(256))&#34;</span><span class=o>);</span>
-        <span class=n>PreparedStatement</span> <span class=n>prepareStatement</span> <span class=o>=</span> <span class=n>c</span>
-                <span class=o>.</span><span class=na>prepareStatement</span><span class=o>(</span><span class=s>&#34;insert into USER (name) values (?)&#34;</span><span class=o>);</span>
-        <span class=k>for</span> <span class=o>(</span><span class=n>String</span> <span class=n>name</span> <span class=o>:</span> <span class=n>NAMES</span><span class=o>)</span> <span class=o>{</span>
-            <span class=n>prepareStatement</span><span class=o>.</span><span class=na>setString</span><span class=o>(</span><span class=n>1</span><span class=o>,</span> <span class=n>name</span><span class=o>);</span>
-            <span class=n>prepareStatement</span><span class=o>.</span><span class=na>execute</span><span class=o>();</span>
-        <span class=o>}</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></div><p><strong>Output of the previous code:</strong></p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>ContainFilter.evaluate called
-Searching for pattern &#39;^[A-L].*&#39; in Bill Gates
-NAME = Bill Gates
- 
-ContainFilter.evaluate called
-Searching for pattern &#39;^[A-L].*&#39; in Steve Jobs
-ContainFilter.evaluate called
-Searching for pattern &#39;^[A-L].*&#39; in Mark Zuckerberg
-ContainFilter.evaluate called
-Searching for pattern &#39;^[A-L].*&#39; in Alan Turing
-NAME = Alan Turing
- 
-ContainFilter.evaluate called
-Searching for pattern &#39;^[A-L].*&#39; in Linus Torlvalds
-NAME = Linus Torlvalds
-</code></pre></div><h2 id=resources>Resources</h2>
-<p><a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/FilteredRowSet.html target=_blank rel="noopener noreferrer">https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/FilteredRowSet.html</a></p>
-<p><a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/Predicate.html target=_blank rel="noopener noreferrer">https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/Predicate.html</a></p>
-<p><a href=https://docs.oracle.com/javase/tutorial/jdbc/basics/filteredrowset.html target=_blank rel="noopener noreferrer">https://docs.oracle.com/javase/tutorial/jdbc/basics/filteredrowset.html</a></p>
-<p><a href=http://javarevisited.blogspot.cz/2014/04/Connected-vs-disconnected-rowsetprovider-rowsetfactory-and-rowset-JDBC-Java.html target=_blank rel="noopener noreferrer">http://javarevisited.blogspot.cz/2014/04/Connected-vs-disconnected-rowsetprovider-rowsetfactory-and-rowset-JDBC-Java.html</a></p>
-</div><div class=post-footer id=post-footer>
-<div class=post-info>
-<div class=post-info-line>
-<div class=post-info-mod>
-<span>Updated on 2021-09-20&nbsp;<a class=git-hash href=https://github.com/pajikos/pajikos.github.io/commit/f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43 target=_blank rel="noopener noreferrer" title="commit by Pavel Sklenar(pavel.sklenar@cloudfield.cz) f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43: Initial migration commit">
-<i class="fas fa-hashtag fa-fw"></i>f5d3ae4</a></span>
-</div>
-<div class=post-info-license></div>
-</div>
-<div class=post-info-line>
-<div class=post-info-md><span>
-<a class=link-to-markdown href=/using-filteredrowset-simple-example/index.md target=_blank rel="noopener noreferrer">Read Markdown</a>
-</span></div>
-<div class=post-info-share>
-<span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/ data-title="Using JDBC FilteredRowSet - Simple Example" data-hashtags=filteredrowset,jdbc,rowset><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/ data-title="Using JDBC FilteredRowSet - Simple Example" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/ data-title="Using JDBC FilteredRowSet - Simple Example"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/ data-title="Using JDBC FilteredRowSet - Simple Example"><i class="fab fa-evernote fa-fw"></i></a></span>
-</div>
-</div>
-</div>
-<div class=post-info-more>
-<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/filteredrowset/>filteredrowset</a>,&nbsp;<a href=/tags/jdbc/>jdbc</a>,&nbsp;<a href=/tags/rowset/>rowset</a></section>
-<section>
-<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span>
-</section>
-</div>
-<div class=post-nav><a href=/make-your-device-public-without-any-public-ipv4/ class=prev rel=prev title="Make Your Device Public Without Any Public IPv4"><i class="fas fa-angle-left fa-fw"></i>Make Your Device Public Without Any Public IPv4</a>
-<a href=/parallel-processing-java/ class=next rel=next title="Parallel Processing in Java">Parallel Processing in Java<i class="fas fa-angle-right fa-fw"></i></a></div>
-</div>
-<div id=comments><div id=disqus_thread class=comment></div><noscript>
-Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.
-</noscript></div></article></div>
-</main><footer class=footer>
-<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
-</div>
-</footer></div>
-<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
-<i class="fas fa-arrow-up fa-fw"></i>
-</a><a href=# id=view-comments class=fixed-button title="View Comments">
-<i class="fas fa-comment fa-fw"></i>
-</a>
-</div><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body>
-</html>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Using JDBC FilteredRowSet - Simple Example</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/java/><i class="far fa-folder fa-fw"></i>java</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2016-01-25>2016-01-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;768 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#create-a-new-filter>Create a new filter</a></li><li><a href=#use-yourfilter>Use your filter</a></li><li><a href=#resources>Resources</a></li></ul></nav></div></div><div class=content id=content><p>This post shows how to use a <a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/FilteredRowSet.html target=_blank rel="noopener noreferrer">FilteredRowSet</a> object. It lets you filter the number of rows that are visible in a <code>RowSet</code> object so that you can work with only the relevant data that you need. You may decide how you want to &ldquo;filter&rdquo; the data and apply that filter to a <code>FilteredRowSet</code> object. In other words, the <code>FilteredRowSet</code> object makes visible only the rows of data that fit within the limits you set.</p><p>You may know a <a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/JdbcRowSet.html target=_blank rel="noopener noreferrer"><code>JdbcRowSet</code></a> object, which always has a connection to its data source, so you can do filtering with a query to the data source (using <code>WHERE</code> clause which defines the filtering criteria). A <code>FilteredRowSet</code> object provides a way for a <a href=http://javarevisited.blogspot.cz/2014/04/Connected-vs-disconnected-rowsetprovider-rowsetfactory-and-rowset-JDBC-Java.html target=_blank rel="noopener noreferrer">disconnected <code>RowSet</code></a> object for filtering without having to execute a query on the data source, consequently avoiding having to get a connection to the data source and sending queries to it.</p><p><figure><a class=lightgallery href=/using-filteredrowset-simple-example/images/RowSet-Classes-in-JDBC-Java.png title="RowSet Classes in JDBC Java, FilteredRowSet" data-thumbnail=/using-filteredrowset-simple-example/images/RowSet-Classes-in-JDBC-Java.png data-sub-html="<h2>RowSet Classes in JDBC Java (source: http://javarevisited.blogspot.cz/2014/04/Connected-vs-disconnected-rowsetprovider-rowsetfactory-and-rowset-JDBC-Java.html)</h2><p>RowSet Classes in JDBC Java, FilteredRowSet</p>"><img class=lazyload src=/svg/loading.min.svg data-src=images/RowSet-Classes-in-JDBC-Java.png data-srcset="/using-filteredrowset-simple-example/images/RowSet-Classes-in-JDBC-Java.png, images/RowSet-Classes-in-JDBC-Java.png 1.5x, /using-filteredrowset-simple-example/images/RowSet-Classes-in-JDBC-Java.png 2x" data-sizes=auto alt=/using-filteredrowset-simple-example/images/RowSet-Classes-in-JDBC-Java.png></a><figcaption class=image-caption>RowSet Classes in JDBC Java (source: http://javarevisited.blogspot.cz/2014/04/Connected-vs-disconnected-rowsetprovider-rowsetfactory-and-rowset-JDBC-Java.html)</figcaption></figure></p><p>There are two main steps to use the <a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/FilteredRowSet.html target=_blank rel="noopener noreferrer">FilteredRowSet:</a></p><ol><li>Create a new filter (an implementation of <a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/Predicate.html target=_blank rel="noopener noreferrer">Predicate</a> interface).</li><li>Use your filter (setting a filter to your <a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/FilteredRowSet.html target=_blank rel="noopener noreferrer">FilteredRowSet).</a></li></ol><h2 id=create-a-new-filter>Create a new filter</h2><p>You need to implement the <code>evaluate</code> method, which accepts a <code>Rowset object</code>. The <a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/Predicate.html target=_blank rel="noopener noreferrer">documentation</a> about this method says:</p><blockquote><p>This method is typically called a <code>FilteredRowSet</code> object internal methods (not public) that control the <code>RowSet</code> object&rsquo;s cursor moving from row to the next. In addition, if this internal method moves the cursor onto a row that has been deleted, the internal method will continue to ove the cursor until a valid row is found.</p></blockquote><p>Other methods, like <code>evaluate(Object value, int column)</code> and <code>evaluate(Object value, String columnName),</code> are called when you are inserting new rows to a <code>FilteredRowSet</code> instance.</p><p>My example tries to match any regular expression pattern, which was set during a filter initialization. If a pattern found, method returned <code>true</code> (= yes, we want this row).</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm> * Search Filter for {@link FilteredRowSet}
+</span></span></span><span class=line><span class=cl><span class=cm> *
+</span></span></span><span class=line><span class=cl><span class=cm> * @author pavel.sklenar
+</span></span></span><span class=line><span class=cl><span class=cm> *
+</span></span></span><span class=line><span class=cl><span class=cm> */</span>
+</span></span><span class=line><span class=cl><span class=kd>class</span> <span class=nc>SearchFilter</span> <span class=kd>implements</span> <span class=n>Predicate</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>private</span> <span class=n>Pattern</span> <span class=n>pattern</span><span class=o>;</span>
+</span></span><span class=line><span class=cl> 
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=nf>SearchFilter</span><span class=o>(</span><span class=n>String</span> <span class=n>searchRegex</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=o>(</span><span class=n>searchRegex</span> <span class=o>!=</span> <span class=kc>null</span> <span class=o>&amp;&amp;</span> <span class=o>!</span><span class=n>searchRegex</span><span class=o>.</span><span class=na>isEmpty</span><span class=o>())</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>pattern</span> <span class=o>=</span> <span class=n>Pattern</span><span class=o>.</span><span class=na>compile</span><span class=o>(</span><span class=n>searchRegex</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl> 
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>boolean</span> <span class=nf>evaluate</span><span class=o>(</span><span class=n>RowSet</span> <span class=n>rs</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=s>&#34;SearchFilter.evaluate called &#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>try</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=o>(!</span><span class=n>rs</span><span class=o>.</span><span class=na>isAfterLast</span><span class=o>())</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>String</span> <span class=n>name</span> <span class=o>=</span> <span class=n>rs</span><span class=o>.</span><span class=na>getString</span><span class=o>(</span><span class=s>&#34;name&#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>                <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=n>String</span><span class=o>.</span><span class=na>format</span><span class=o>(</span>
+</span></span><span class=line><span class=cl>                        <span class=s>&#34;Searching for pattern &#39;%s&#39; in %s&#34;</span><span class=o>,</span> <span class=n>pattern</span><span class=o>.</span><span class=na>toString</span><span class=o>(),</span>
+</span></span><span class=line><span class=cl>                        <span class=n>name</span><span class=o>));</span>
+</span></span><span class=line><span class=cl>                <span class=n>Matcher</span> <span class=n>matcher</span> <span class=o>=</span> <span class=n>pattern</span><span class=o>.</span><span class=na>matcher</span><span class=o>(</span><span class=n>name</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=n>matcher</span><span class=o>.</span><span class=na>matches</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>            <span class=o>}</span> <span class=k>else</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=kc>false</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span> <span class=k>catch</span> <span class=o>(</span><span class=n>Exception</span> <span class=n>e</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>e</span><span class=o>.</span><span class=na>printStackTrace</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=kc>false</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl> 
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>boolean</span> <span class=nf>evaluate</span><span class=o>(</span><span class=n>Object</span> <span class=n>value</span><span class=o>,</span> <span class=kt>int</span> <span class=n>column</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>SQLException</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>throw</span> <span class=k>new</span> <span class=n>UnsupportedOperationException</span><span class=o>(</span><span class=s>&#34;Not supported yet.&#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl> 
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>boolean</span> <span class=nf>evaluate</span><span class=o>(</span><span class=n>Object</span> <span class=n>value</span><span class=o>,</span> <span class=n>String</span> <span class=n>columnName</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>            <span class=kd>throws</span> <span class=n>SQLException</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>throw</span> <span class=k>new</span> <span class=n>UnsupportedOperationException</span><span class=o>(</span><span class=s>&#34;Not supported yet.&#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><h2 id=use-yourfilter>Use your filter</h2><p>You need to set your new instance of <code>Predicate</code> interface to your <code>FilteredRowSet</code> using method <code>setFilter:</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>usersRS</span><span class=o>.</span><span class=na>setFilter</span><span class=o>(</span><span class=k>new</span> <span class=n>SearchFilter</span><span class=o>(</span><span class=s>&#34;^[A-L].*&#34;</span><span class=o>));</span>
+</span></span></code></pre></div><p>The complete example of my code is bellow. To run it, you need to add an H2 library (a memory database driver) to your classpath, e.g. available <a href=http://www.h2database.com/html/download.html target=_blank rel="noopener noreferrer">here</a>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm> * Example usage of {@link FilteredRowSet}
+</span></span></span><span class=line><span class=cl><span class=cm> *
+</span></span></span><span class=line><span class=cl><span class=cm> * @author pavel.sklenar
+</span></span></span><span class=line><span class=cl><span class=cm> *
+</span></span></span><span class=line><span class=cl><span class=cm> */</span>
+</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>FilteredRowSetTest</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl> 
+</span></span><span class=line><span class=cl>    <span class=cm>/*
+</span></span></span><span class=line><span class=cl><span class=cm>     * Sample names for test
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span>
+</span></span><span class=line><span class=cl>    <span class=kd>private</span> <span class=kd>static</span> <span class=kd>final</span> <span class=n>String</span><span class=o>[]</span> <span class=n>NAMES</span> <span class=o>=</span> <span class=o>{</span> <span class=s>&#34;Bill Gates&#34;</span><span class=o>,</span> <span class=s>&#34;Steve Jobs&#34;</span><span class=o>,</span>
+</span></span><span class=line><span class=cl>            <span class=s>&#34;Mark Zuckerberg&#34;</span><span class=o>,</span> <span class=s>&#34;Alan Turing&#34;</span><span class=o>,</span> <span class=s>&#34;Linus Torlvalds&#34;</span> <span class=o>};</span>
+</span></span><span class=line><span class=cl> 
+</span></span><span class=line><span class=cl>    <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * The main class to run test
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kd>static</span> <span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=n>String</span><span class=o>[]</span> <span class=n>args</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>Exception</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>Connection</span> <span class=n>c</span> <span class=o>=</span> <span class=n>DriverManager</span><span class=o>.</span><span class=na>getConnection</span><span class=o>(</span><span class=s>&#34;jdbc:h2:mem:db1&#34;</span><span class=o>,</span> <span class=s>&#34;test&#34;</span><span class=o>,</span>
+</span></span><span class=line><span class=cl>                <span class=s>&#34;test&#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// Just only prepare data for test
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>prepareData</span><span class=o>(</span><span class=n>c</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=n>RowSetFactory</span> <span class=n>rsf</span> <span class=o>=</span> <span class=n>RowSetProvider</span><span class=o>.</span><span class=na>newFactory</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>        <span class=n>FilteredRowSet</span> <span class=n>usersRS</span> <span class=o>=</span> <span class=n>rsf</span><span class=o>.</span><span class=na>createFilteredRowSet</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>        <span class=n>usersRS</span><span class=o>.</span><span class=na>setCommand</span><span class=o>(</span><span class=s>&#34;select * from USER&#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=n>usersRS</span><span class=o>.</span><span class=na>execute</span><span class=o>(</span><span class=n>c</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=n>usersRS</span><span class=o>.</span><span class=na>setFilter</span><span class=o>(</span><span class=k>new</span> <span class=n>SearchFilter</span><span class=o>(</span><span class=s>&#34;^[A-L].*&#34;</span><span class=o>));</span>
+</span></span><span class=line><span class=cl>        <span class=n>dumpRS</span><span class=o>(</span><span class=n>usersRS</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>     
+</span></span><span class=line><span class=cl>    <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * Dump {@link ResultSet}
+</span></span></span><span class=line><span class=cl><span class=cm>     *
+</span></span></span><span class=line><span class=cl><span class=cm>     * @param rs
+</span></span></span><span class=line><span class=cl><span class=cm>     *            input{@link ResultSet} to dump
+</span></span></span><span class=line><span class=cl><span class=cm>     * @throws SQLException
+</span></span></span><span class=line><span class=cl><span class=cm>     * @throws Exception
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kd>static</span> <span class=kt>void</span> <span class=nf>dumpRS</span><span class=o>(</span><span class=n>ResultSet</span> <span class=n>rs</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>SQLException</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>ResultSetMetaData</span> <span class=n>rsmd</span> <span class=o>=</span> <span class=n>rs</span><span class=o>.</span><span class=na>getMetaData</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span> <span class=n>cc</span> <span class=o>=</span> <span class=n>rsmd</span><span class=o>.</span><span class=na>getColumnCount</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>        <span class=k>while</span> <span class=o>(</span><span class=n>rs</span><span class=o>.</span><span class=na>next</span><span class=o>())</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=n>1</span><span class=o>;</span> <span class=n>i</span> <span class=o>&lt;=</span> <span class=n>cc</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=n>rsmd</span><span class=o>.</span><span class=na>getColumnLabel</span><span class=o>(</span><span class=n>i</span><span class=o>)</span> <span class=o>+</span> <span class=s>&#34; = &#34;</span>
+</span></span><span class=line><span class=cl>                        <span class=o>+</span> <span class=n>rs</span><span class=o>.</span><span class=na>getObject</span><span class=o>(</span><span class=n>i</span><span class=o>)</span> <span class=o>+</span> <span class=s>&#34; &#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>            <span class=o>}</span>
+</span></span><span class=line><span class=cl>            <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=s>&#34;&#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl> 
+</span></span><span class=line><span class=cl>    <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * Prepare data for test
+</span></span></span><span class=line><span class=cl><span class=cm>     *
+</span></span></span><span class=line><span class=cl><span class=cm>     * @param c
+</span></span></span><span class=line><span class=cl><span class=cm>     *            {@link Connection} will be used to prepare data
+</span></span></span><span class=line><span class=cl><span class=cm>     * @throws SQLException
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span>
+</span></span><span class=line><span class=cl>    <span class=kd>private</span> <span class=kd>static</span> <span class=kt>void</span> <span class=nf>prepareData</span><span class=o>(</span><span class=n>Connection</span> <span class=n>c</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>SQLException</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>c</span><span class=o>.</span><span class=na>createStatement</span><span class=o>().</span><span class=na>execute</span><span class=o>(</span><span class=s>&#34;create table USER (name varchar(256))&#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=n>PreparedStatement</span> <span class=n>prepareStatement</span> <span class=o>=</span> <span class=n>c</span>
+</span></span><span class=line><span class=cl>                <span class=o>.</span><span class=na>prepareStatement</span><span class=o>(</span><span class=s>&#34;insert into USER (name) values (?)&#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=o>(</span><span class=n>String</span> <span class=n>name</span> <span class=o>:</span> <span class=n>NAMES</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>prepareStatement</span><span class=o>.</span><span class=na>setString</span><span class=o>(</span><span class=n>1</span><span class=o>,</span> <span class=n>name</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>            <span class=n>prepareStatement</span><span class=o>.</span><span class=na>execute</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p><strong>Output of the previous code:</strong></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>ContainFilter.evaluate called
+</span></span><span class=line><span class=cl>Searching for pattern &#39;^[A-L].*&#39; in Bill Gates
+</span></span><span class=line><span class=cl>NAME = Bill Gates
+</span></span><span class=line><span class=cl> 
+</span></span><span class=line><span class=cl>ContainFilter.evaluate called
+</span></span><span class=line><span class=cl>Searching for pattern &#39;^[A-L].*&#39; in Steve Jobs
+</span></span><span class=line><span class=cl>ContainFilter.evaluate called
+</span></span><span class=line><span class=cl>Searching for pattern &#39;^[A-L].*&#39; in Mark Zuckerberg
+</span></span><span class=line><span class=cl>ContainFilter.evaluate called
+</span></span><span class=line><span class=cl>Searching for pattern &#39;^[A-L].*&#39; in Alan Turing
+</span></span><span class=line><span class=cl>NAME = Alan Turing
+</span></span><span class=line><span class=cl> 
+</span></span><span class=line><span class=cl>ContainFilter.evaluate called
+</span></span><span class=line><span class=cl>Searching for pattern &#39;^[A-L].*&#39; in Linus Torlvalds
+</span></span><span class=line><span class=cl>NAME = Linus Torlvalds
+</span></span></code></pre></div><h2 id=resources>Resources</h2><p><a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/FilteredRowSet.html target=_blank rel="noopener noreferrer">https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/FilteredRowSet.html</a></p><p><a href=https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/Predicate.html target=_blank rel="noopener noreferrer">https://docs.oracle.com/javase/7/docs/api/javax/sql/rowset/Predicate.html</a></p><p><a href=https://docs.oracle.com/javase/tutorial/jdbc/basics/filteredrowset.html target=_blank rel="noopener noreferrer">https://docs.oracle.com/javase/tutorial/jdbc/basics/filteredrowset.html</a></p><p><a href=http://javarevisited.blogspot.cz/2014/04/Connected-vs-disconnected-rowsetprovider-rowsetfactory-and-rowset-JDBC-Java.html target=_blank rel="noopener noreferrer">http://javarevisited.blogspot.cz/2014/04/Connected-vs-disconnected-rowsetprovider-rowsetfactory-and-rowset-JDBC-Java.html</a></p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2021-09-20&nbsp;<a class=git-hash href=https://github.com/pajikos/pajikos.github.io/commit/f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43 target=_blank rel="noopener noreferrer" title="commit by Pavel Sklenar(pavel.sklenar@cloudfield.cz) f5d3ae45f5183f44c2c5404fa2bb327ad1e0ed43: Initial migration commit">
+<i class="fas fa-hashtag fa-fw"></i>f5d3ae4</a></span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/using-filteredrowset-simple-example/index.md target=_blank rel="noopener noreferrer">Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/ data-title="Using JDBC FilteredRowSet - Simple Example" data-hashtags=filteredrowset,jdbc,rowset><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/ data-title="Using JDBC FilteredRowSet - Simple Example" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/ data-title="Using JDBC FilteredRowSet - Simple Example"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/using-filteredrowset-simple-example/ data-title="Using JDBC FilteredRowSet - Simple Example"><i class="fab fa-evernote fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/filteredrowset/>filteredrowset</a>,&nbsp;<a href=/tags/jdbc/>jdbc</a>,&nbsp;<a href=/tags/rowset/>rowset</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/make-your-device-public-without-any-public-ipv4/ class=prev rel=prev title="Make Your Device Public Without Any Public IPv4"><i class="fas fa-angle-left fa-fw"></i>Make Your Device Public Without Any Public IPv4</a>
+<a href=/parallel-processing-java/ class=next rel=next title="Parallel Processing in Java">Parallel Processing in Java<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=disqus_thread class=comment></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body></html>

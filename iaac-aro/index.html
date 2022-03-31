@@ -1,468 +1,195 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=robots content="noodp">
-<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
-<title>Creating Azure Red Hat OpenShift 4 cluster - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="Creating Azure Red Hat OpenShift 4 cluster">
-<meta property="og:description" content="You can find here the guide:
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Creating Azure Red Hat OpenShift 4 cluster - blog.pavelsklenar.com</title><meta name=description content="Personal blog page"><meta property="og:title" content="Creating Azure Red Hat OpenShift 4 cluster"><meta property="og:description" content="You can find here the guide:
  how to create an Azure Red Hat OpenShift 4 (ARO) cluster, how to setup connectivity to the new ARO cluster, how to deploy an example application.  Note  The full example with all resources could be found here on GitHub.   Create Azure Red Hat OpenShift 4 (ARO) cluster Prepare environment Set the correct subsription:
-az account set -s TestingSubscription The file .">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://blog.pavelsklenar.com/iaac-aro/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2021-09-23T00:00:00+00:00">
-<meta property="article:modified_time" content="2021-09-23T00:00:00+00:00">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png">
-<meta name=twitter:title content="Creating Azure Red Hat OpenShift 4 cluster">
-<meta name=twitter:description content="You can find here the guide:
+az account set -s TestingSubscription The file ."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.pavelsklenar.com/iaac-aro/"><meta property="og:image" content="https://blog.pavelsklenar.com/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-09-23T00:00:00+00:00"><meta property="article:modified_time" content="2021-09-23T00:00:00+00:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://blog.pavelsklenar.com/logo.png"><meta name=twitter:title content="Creating Azure Red Hat OpenShift 4 cluster"><meta name=twitter:description content="You can find here the guide:
  how to create an Azure Red Hat OpenShift 4 (ARO) cluster, how to setup connectivity to the new ARO cluster, how to deploy an example application.  Note  The full example with all resources could be found here on GitHub.   Create Azure Red Hat OpenShift 4 (ARO) cluster Prepare environment Set the correct subsription:
-az account set -s TestingSubscription The file .">
-<meta name=application-name content="blog.pavelsklenar.com">
-<meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
-<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/iaac-aro/><link rel=prev href=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/><link rel=next href=https://blog.pavelsklenar.com/azure-functions-system-integration/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Creating Azure Red Hat OpenShift 4 cluster","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/iaac-aro\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"azure, aro, openshift","wordcount":1315,"url":"https:\/\/blog.pavelsklenar.com\/iaac-aro\/","datePublished":"2021-09-23T00:00:00+00:00","dateModified":"2021-09-23T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head>
-<body header-desktop=fixed header-mobile=auto><script type=text/javascript>('false'==='true'&&window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
-<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
-</div>
-<div class=menu>
-<div class=menu-inner><a class=menu-item href=/posts/> Posts </a><a class=menu-item href=/tags/> Tags </a><a class=menu-item href=/categories/> Categories </a><a class=menu-item href=/about/> About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+az account set -s TestingSubscription The file ."><meta name=application-name content="blog.pavelsklenar.com"><meta name=apple-mobile-web-app-title content="blog.pavelsklenar.com"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.pavelsklenar.com/iaac-aro/><link rel=prev href=https://blog.pavelsklenar.com/jenkins-creating-dynamic-project-folders-with-job-dsl/><link rel=next href=https://blog.pavelsklenar.com/azure-functions-system-integration/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.623091c4f3b927646c79b3db3772f496ee423628b9567bc0c74af55a4d50d1ba.css integrity="sha256-YjCRxPO5J2RsebPbN3L0lu5CNii5VnvAx0r1Wk1Q0bo="><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Creating Azure Red Hat OpenShift 4 cluster","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.pavelsklenar.com\/iaac-aro\/"},"image":[{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/Apple-Devices-Preview.png","width":3200,"height":2048}],"genre":"posts","keywords":"azure, aro, openshift","wordcount":1315,"url":"https:\/\/blog.pavelsklenar.com\/iaac-aro\/","datePublished":"2021-09-23T00:00:00+00:00","dateModified":"2021-09-23T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"Pavel Sklenar","logo":{"@type":"ImageObject","url":"https:\/\/blog.pavelsklenar.com\/images\/avatar.png","width":250,"height":250}},"author":{"@type":"Person","name":"Pavel Sklenar"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>("false"==="true"&&window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><a class=menu-item href=/about/>About </a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
 <input type=text placeholder="Search titles or contents..." id=search-input-desktop>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-desktop>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
-<i class="fas fa-adjust fa-fw"></i>
-</a>
-</div>
-</div>
-</div>
-</header><header class=mobile id=header-mobile>
-<div class=header-container>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a>
-</div>
-<div class=menu-toggle id=menu-toggle-mobile>
-<span></span><span></span><span></span>
-</div>
-</div>
-<div class=menu id=menu-mobile><div class=search-wrapper>
-<div class="search mobile" id=search-mobile>
-<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-mobile>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</div>
-<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
-Cancel
-</a>
-</div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
-<i class="fas fa-adjust fa-fw"></i>
-</a></div>
-</div>
-</header>
-<div class="search-dropdown desktop">
-<div id=search-dropdown-desktop></div>
-</div>
-<div class="search-dropdown mobile">
-<div id=search-dropdown-mobile></div>
-</div>
-<main class=main>
-<div class=container><div class=toc id=toc-auto>
-<h2 class=toc-title>Contents</h2>
-<div class=toc-content id=toc-content-auto></div>
-</div><article class="page single"><h1 class="single-title animated flipInX">Creating Azure Red Hat OpenShift 4 cluster</h1><div class=post-meta>
-<div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/azure/><i class="far fa-folder fa-fw"></i>azure</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-09-23>2021-09-23</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1315 words&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div>
-</div><div class="details toc" id=toc-static kept>
-<div class="details-summary toc-title">
-<span>Contents</span>
-<span><i class="details-icon fas fa-angle-right"></i></span>
-</div>
-<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
-<ul>
-<li><a href=#create-azure-red-hat-openshift-4-aro-cluster>Create Azure Red Hat OpenShift 4 (ARO) cluster</a>
-<ul>
-<li><a href=#prepare-environment>Prepare environment</a></li>
-<li><a href=#networking>Networking</a></li>
-<li><a href=#setup-permissions>Setup permissions</a></li>
-<li><a href=#creating-azure-red-hat-openshift-4-cluster>Creating Azure Red Hat OpenShift 4 cluster</a></li>
-<li><a href=#image-pull-secrets>Image pull secrets</a></li>
-<li><a href=#securing-aro>Securing ARO</a></li>
-</ul>
-</li>
-<li><a href=#setup-connectivity-to-aro-cluster>Setup connectivity to ARO cluster</a>
-<ul>
-<li><a href=#access-to-openshift-web-console>Access to OpenShift Web Console</a></li>
-<li><a href=#connect-with-cli-tools>Connect with CLI Tools</a></li>
-</ul>
-</li>
-<li><a href=#deploying-an-example-application>Deploying an example application</a></li>
-<li><a href=#resources>Resources</a></li>
-</ul>
-</nav></div>
-</div><div class=content id=content><p>You can find here the guide:</p>
-<ul>
-<li>how to create an Azure Red Hat OpenShift 4 (ARO) cluster,</li>
-<li>how to setup connectivity to the new ARO cluster,</li>
-<li>how to deploy an example application.</li>
-</ul>
-<div class="details admonition note open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content>The full example with all resources could be found <a href=https://github.com/pajikos/cloud-samples/tree/master/iaac-aro target=_blank rel="noopener noreferrer">here</a> on GitHub.</div>
-</div>
-</div>
-<h2 id=create-azure-red-hat-openshift-4-aro-cluster>Create Azure Red Hat OpenShift 4 (ARO) cluster</h2>
-<h3 id=prepare-environment>Prepare environment</h3>
-<p>Set the correct subsription:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>az account <span class=nb>set</span> -s TestingSubscription
-</code></pre></div><p>The file .env contains variables used in many places here to avoid typo bugs:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>source</span> .envrc
-</code></pre></div><p>Create a new resource group:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>az group create <span class=se>\
-</span><span class=se></span>  --name <span class=nv>$RESOURCEGROUP</span> <span class=se>\
-</span><span class=se></span>  --location <span class=nv>$LOCATION</span>
-</code></pre></div><p>To by able to deploy ARO, these providers must be registeted:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># Register the Microsoft.RedHatOpenShift resource provider:</span>
-az provider register -n Microsoft.RedHatOpenShift --wait
-<span class=c1># Register the Microsoft.Compute resource provider:</span>
-az provider register -n Microsoft.Compute --wait
-<span class=c1># Register the Microsoft.Storage resource provider:</span>
-az provider register -n Microsoft.Storage --wait
-<span class=c1># Register the Microsoft.Authorization resource provider:</span>
-az provider register -n Microsoft.Authorization --wait
-</code></pre></div><h3 id=networking>Networking</h3>
-<p>It will be created 2 subnets inside aro-vnet:</p>
-<ul>
-<li>master-subnet</li>
-<li>worker-subnet</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>Network Name</th>
-<th>Network Address</th>
-<th>Usable Host Range</th>
-<th>Broadcast Address</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>aro-vnet</td>
-<td>10.0.0.0/22</td>
-<td>10.0.0.1 - 10.0.3.254</td>
-<td>10.0.3.255</td>
-</tr>
-<tr>
-<td>master-subnet</td>
-<td>10.0.0.0/23</td>
-<td>10.0.0.1 - 10.0.1.254</td>
-<td>10.0.1.255</td>
-</tr>
-<tr>
-<td>worker-subnet</td>
-<td>10.0.2.0/23</td>
-<td>10.0.2.1 - 10.0.3.254</td>
-<td>10.0.3.255</td>
-</tr>
-</tbody>
-</table>
-<p>The ARO requires a special subnet for worker and master nodes, so create a new vnet first:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>az network vnet create <span class=se>\
-</span><span class=se></span>   --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
-</span><span class=se></span>   --name aro-vnet <span class=se>\
-</span><span class=se></span>   --address-prefixes 10.0.0.0/22
-</code></pre></div><p>Create subnet for master nodes:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>az network vnet subnet create <span class=se>\
-</span><span class=se></span>  --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
-</span><span class=se></span>  --vnet-name aro-vnet <span class=se>\
-</span><span class=se></span>  --name master-subnet <span class=se>\
-</span><span class=se></span>  --address-prefixes 10.0.0.0/23 <span class=se>\
-</span><span class=se></span>  --service-endpoints Microsoft.ContainerRegistry
-</code></pre></div><p>Create subnet for worker nodes:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>az network vnet subnet create <span class=se>\
-</span><span class=se></span>  --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
-</span><span class=se></span>  --vnet-name aro-vnet <span class=se>\
-</span><span class=se></span>  --name worker-subnet <span class=se>\
-</span><span class=se></span>  --address-prefixes 10.0.2.0/23 <span class=se>\
-</span><span class=se></span>  --service-endpoints Microsoft.ContainerRegistry
-</code></pre></div><p>Disable subnet private endpoint policies on the master subnet. This is required for the service to be able to connect to and manage the cluster:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>az network vnet subnet update <span class=se>\
-</span><span class=se></span>  --name master-subnet <span class=se>\
-</span><span class=se></span>  --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
-</span><span class=se></span>  --vnet-name aro-vnet <span class=se>\
-</span><span class=se></span>  --disable-private-link-service-network-policies <span class=nb>true</span>
-</code></pre></div><h3 id=setup-permissions>Setup permissions</h3>
-<p>Create a new service principal (AAD role owner reqiured):</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>az ad sp create-for-rbac -n <span class=s2>&#34;</span><span class=si>${</span><span class=nv>PREFIX</span><span class=si>}</span><span class=s2>arosp&#34;</span> --skip-assignment
-</code></pre></div><p>Take appId and password and set it:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nv>APPID</span><span class=o>=</span><span class=s2>&#34;changeit&#34;</span>
-<span class=nv>PASSWORD</span><span class=o>=</span><span class=s2>&#34;changeit&#34;</span>
-</code></pre></div><div class="details admonition tip open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content>More info about creating service principals: <a href=https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal#delegate-access-to-other-azure-resources target=_blank rel="noopener noreferrer">https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal#delegate-access-to-other-azure-resources</a></div>
-</div>
-</div>
-<p>Obtain the full registry ID and VNETID for adding roles:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nv>ACR_REGISTRY_ID</span><span class=o>=</span><span class=k>$(</span>az acr show --name <span class=nv>$ACR_NAME</span> --query id --output tsv<span class=k>)</span>
-<span class=nv>VNETID</span><span class=o>=</span><span class=k>$(</span>az network vnet show -g <span class=nv>$RESOURCEGROUP</span> --name aro-vnet --query id -o tsv<span class=k>)</span>
-</code></pre></div><p>Assign role to service principal (AAD role Owner required):</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># Assign SP Permission to VNET</span>
-az role assignment create --assignee <span class=nv>$APPID</span> --scope <span class=nv>$VNETID</span> --role <span class=s2>&#34;Network Contributor&#34;</span>
-<span class=c1># Assign SP Permission to ACR</span>
-az role assignment create --assignee <span class=nv>$APPID</span> --scope <span class=nv>$ACR_REGISTRY_ID</span> --role acrpull
-</code></pre></div><div class="details admonition tip open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content>For more info about accessing ACR with SP visit <a href=https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal target=_blank rel="noopener noreferrer">https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal</a></div>
-</div>
-</div>
-<h3 id=creating-azure-red-hat-openshift-4-cluster>Creating Azure Red Hat OpenShift 4 cluster</h3>
-<p>All command before were just preparing for ARO deployment:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>az aro create <span class=se>\
-</span><span class=se></span>  --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
-</span><span class=se></span>  --name <span class=nv>$CLUSTER</span> <span class=se>\
-</span><span class=se></span>  --vnet aro-vnet <span class=se>\
-</span><span class=se></span>  --master-subnet master-subnet <span class=se>\
-</span><span class=se></span>  --worker-subnet worker-subnet <span class=se>\
-</span><span class=se></span>  --client-id <span class=nv>$APPID</span> <span class=se>\
-</span><span class=se></span>  --client-secret <span class=nv>$PASSWORD</span>
-</code></pre></div><h3 id=image-pull-secrets>Image pull secrets</h3>
-<p>Kubernetes uses an image pull secret to store information needed to authenticate to your registry. To create the pull secret for an Azure container registry, you provide the service principal ID, password, and the registry URL.</p>
-<p>Create an image pull secret with the following kubectl command:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>oc create secret docker-registry acr-secret <span class=se>\
-</span><span class=se></span>    --namespace <span class=nb>test</span> <span class=se>\
-</span><span class=se></span>    --docker-server<span class=o>=</span><span class=nv>$ACR_NAME</span>.azurecr.io <span class=se>\
-</span><span class=se></span>    --docker-username<span class=o>=</span><span class=nv>$APPID</span> <span class=se>\
-</span><span class=se></span>    --docker-password<span class=o>=</span><span class=nv>$PASSWORD</span>
-</code></pre></div><div class="details admonition tip open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content><p>Tip for copy existing secret from another namespace to default namespace:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>oc get secret acr-secret --namespace<span class=o>=</span><span class=nb>test</span> -o yaml <span class=p>|</span> grep -v <span class=s1>&#39;^\s*namespace:\s&#39;</span> <span class=p>|</span> oc apply --namespace<span class=o>=</span>default -f -
-</code></pre></div></div>
-</div>
-</div>
-<p>Once you&rsquo;ve created the image pull secret, you can use it to create Kubernetes pods and deployments. Provide the name of the secret under imagePullSecrets in the deployment file. For example:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
-</span><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Pod</span><span class=w>
-</span><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>my-awesome-app-pod</span><span class=w>
-</span><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>awesomeapps</span><span class=w>
-</span><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>containers</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>main-app-container</span><span class=w>
-</span><span class=w>      </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>sklenaracr.azurecr.io/my-awesome-app:v1</span><span class=w>
-</span><span class=w>      </span><span class=nt>imagePullPolicy</span><span class=p>:</span><span class=w> </span><span class=l>IfNotPresent</span><span class=w>
-</span><span class=w>  </span><span class=nt>imagePullSecrets</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>acr-secret</span><span class=w>
-</span></code></pre></div><h3 id=securing-aro>Securing ARO</h3>
-<p>Create NSG and assign to aro-vnet:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># Create NSG</span>
-az network nsg create -g <span class=nv>$RESOURCEGROUP</span> -n <span class=s2>&#34;aro-nsg&#34;</span>
-<span class=c1># Assing it to master-subnet</span>
-az network vnet subnet update -g <span class=nv>$RESOURCEGROUP</span> -n master-subnet --vnet-name aro-vnet --network-security-group <span class=s2>&#34;aro-nsg&#34;</span>
-<span class=c1># Assign it to worker-subnet</span>
-az network vnet subnet update -g <span class=nv>$RESOURCEGROUP</span> -n worker-subnet --vnet-name aro-vnet --network-security-group <span class=s2>&#34;aro-nsg&#34;</span>
-</code></pre></div><p>Create NSG rule for API server:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;apiserver_in&#34;</span> --priority <span class=m>101</span> <span class=se>\
-</span><span class=se></span>    --source-address-prefixes <span class=s2>&#34;</span><span class=nv>$CURRENT_IP</span><span class=s2>&#34;</span> <span class=se>\
-</span><span class=se></span>    --destination-port-ranges <span class=s1>&#39;6443&#39;</span> <span class=se>\
-</span><span class=se></span>    --destination-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> --access Allow <span class=se>\
-</span><span class=se></span>    --description <span class=s2>&#34;API Server IN.&#34;</span>
-</code></pre></div><p>Setup inbound rules:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># Take ingress ip from ARO create stdout result:</span>
-<span class=c1>#&#34;ingressProfiles&#34;: [</span>
-<span class=c1>#    {</span>
-<span class=c1>#      &#34;ip&#34;: &#34;xxx.xxx.xxx.xxx&#34;,</span>
-<span class=c1>#      &#34;name&#34;: &#34;default&#34;,</span>
-<span class=c1>#      &#34;visibility&#34;: &#34;Public&#34;</span>
-<span class=c1>#    }</span>
-<span class=c1>#  ],</span>
-<span class=nv>INGRESS_IP</span><span class=o>=</span><span class=s2>&#34;xxx.xxx.xxx.xxx&#34;</span>
-<span class=c1>#or</span>
-<span class=nv>INGRESS_IP</span><span class=o>=</span><span class=k>$(</span>az aro show <span class=se>\
-</span><span class=se></span>    --name <span class=nv>$CLUSTER</span> <span class=se>\
-</span><span class=se></span>    --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
-</span><span class=se></span>    --query <span class=s2>&#34;ingressProfiles[0].ip&#34;</span> -o tsv<span class=k>)</span>
-
-az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;ingress-443&#34;</span> --priority <span class=m>501</span> <span class=se>\
-</span><span class=se></span>    --source-address-prefixes <span class=s2>&#34;</span><span class=nv>$CURRENT_IP</span><span class=s2>&#34;</span>  <span class=se>\
-</span><span class=se></span>    --destination-port-ranges <span class=s1>&#39;443&#39;</span> <span class=se>\
-</span><span class=se></span>    --destination-address-prefixes <span class=s2>&#34;</span><span class=nv>$INGRESS_IP</span><span class=s2>&#34;</span> --access Allow <span class=se>\
-</span><span class=se></span>    --description <span class=s2>&#34;Ingress Allow IN.&#34;</span>
-</code></pre></div><p>Setup outbound rules (All outbound traffic is enabled by default):</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># Allow ntp outbound</span>
-az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;OUT-ALLOW-NTP&#34;</span> <span class=se>\
-</span><span class=se></span>    --priority <span class=m>300</span> --source-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> <span class=s2>&#34;10.0.2.0/23&#34;</span> --destination-address-prefixes <span class=s2>&#34;Internet&#34;</span> <span class=se>\
-</span><span class=se></span>    --destination-port-ranges <span class=s1>&#39;123&#39;</span> --direction Outbound --access Allow --protocol Udp --description <span class=s2>&#34;NTP&#34;</span>
-
-<span class=c1># Allow https outbound</span>
-az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;OUT-ALLOW-HTTPS&#34;</span> <span class=se>\
-</span><span class=se></span>    --priority <span class=m>301</span> --source-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> <span class=s2>&#34;10.0.2.0/23&#34;</span> --destination-address-prefixes <span class=s2>&#34;Internet&#34;</span> <span class=se>\
-</span><span class=se></span>    --destination-port-ranges <span class=s1>&#39;443&#39;</span> --direction Outbound --access Allow --protocol Tcp --description <span class=s2>&#34;HTTPS&#34;</span>
-
-<span class=c1># Allow dns tcp outbound</span>
-az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;OUT-ALLOW-DNS-TCP&#34;</span> <span class=se>\
-</span><span class=se></span>    --priority <span class=m>302</span> --source-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> <span class=s2>&#34;10.0.2.0/23&#34;</span> --destination-address-prefixes <span class=s2>&#34;Internet&#34;</span> <span class=se>\
-</span><span class=se></span>    --destination-port-ranges <span class=s1>&#39;53&#39;</span> --direction Outbound --access Allow --protocol Tcp --description <span class=s2>&#34;DNS TCP&#34;</span>
-
-<span class=c1># Alow dns udp outbound</span>
-az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;OUT-ALLOW-DNS-UDP&#34;</span> <span class=se>\
-</span><span class=se></span>    --priority <span class=m>303</span> --source-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> <span class=s2>&#34;10.0.2.0/23&#34;</span> --destination-address-prefixes <span class=s2>&#34;Internet&#34;</span> <span class=se>\
-</span><span class=se></span>    --destination-port-ranges <span class=s1>&#39;53&#39;</span> --direction Outbound --access Allow --protocol Udp --description <span class=s2>&#34;DNS Udp&#34;</span>
-
-<span class=c1># Allow intra vnet communication</span>
-az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;OUT-ALLOW-ARO-VNET&#34;</span> --priority <span class=m>400</span> <span class=se>\
-</span><span class=se></span>    --source-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> <span class=s2>&#34;10.0.2.0/23&#34;</span> <span class=se>\
-</span><span class=se></span>    --destination-port-ranges <span class=s1>&#39;*&#39;</span> --direction Outbound <span class=se>\
-</span><span class=se></span>    --destination-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> <span class=s2>&#34;10.0.2.0/23&#34;</span> --access Allow <span class=se>\
-</span><span class=se></span>    --description <span class=s2>&#34;Intra vnet communication.&#34;</span>
-
-<span class=c1># Default deny all outbound traffic</span>
-az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;OUT-DENY-ALL&#34;</span> --priority <span class=m>4096</span> <span class=se>\
-</span><span class=se></span>    --source-address-prefixes <span class=s2>&#34;*&#34;</span> <span class=se>\
-</span><span class=se></span>    --destination-port-ranges <span class=s1>&#39;*&#39;</span> --direction Outbound <span class=se>\
-</span><span class=se></span>    --destination-address-prefixes <span class=s2>&#34;*&#34;</span> --access Deny <span class=se>\
-</span><span class=se></span>    --description <span class=s2>&#34;Deny outbound.&#34;</span>
-</code></pre></div><h2 id=setup-connectivity-to-aro-cluster>Setup connectivity to ARO cluster</h2>
-<p>Set connectivity to Azure:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>az login <span class=c1># follow instructions</span>
-
-<span class=c1># List of subscriptions</span>
-az account list -o table
-<span class=c1># Select TestingSubscription</span>
-az account <span class=nb>set</span> -s TestingSubscription
-</code></pre></div><h3 id=access-to-openshift-web-console>Access to OpenShift Web Console</h3>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>source</span> .envrc
-<span class=c1># The simple way</span>
-az aro list-credentials <span class=se>\
-</span><span class=se></span>  --name <span class=nv>$CLUSTER</span> <span class=se>\
-</span><span class=se></span>  --resource-group <span class=nv>$RESOURCEGROUP</span>
-</code></pre></div><p>The following example output shows what the password will be in kubeadminPassword:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>{
-</span><span class=go>  &#34;kubeadminPassword&#34;: &#34;&lt;generated password&gt;&#34;,
-</span><span class=go>  &#34;kubeadminUsername&#34;: &#34;kubeadmin&#34;
-</span><span class=go>}
-</span></code></pre></div><p>You can find the cluster console URL by running the following command, which will look like this:
-<a href=https://console-openshift-console.apps.xxxxx.westeurope.aroapp.io/ target=_blank rel="noopener noreferrer">https://console-openshift-console.apps.xxxxx.westeurope.aroapp.io/</a></p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>az aro show <span class=se>\
-</span><span class=se></span>    --name <span class=nv>$CLUSTER</span> <span class=se>\
-</span><span class=se></span>    --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
-</span><span class=se></span>    --query <span class=s2>&#34;consoleProfile.url&#34;</span> -o tsv
-</code></pre></div><p>Once you&rsquo;re logged into the OpenShift Web Console, click on the ? on the top right and then on Command Line Tools. Download the release appropriate to your machine.</p>
-<p>You can download client tools here:
-<a href=https://console-openshift-console.apps.xxxxx.westeurope.aroapp.io/command-line-tools target=_blank rel="noopener noreferrer">https://console-openshift-console.apps.xxxxx.westeurope.aroapp.io/command-line-tools</a></p>
-<p>or directly from WEB Console:
-<figure><a class=lightgallery href=/iaac-aro/resources/images/cli_tools.png title="Alt text" data-thumbnail=/iaac-aro/resources/images/cli_tools.png data-sub-html="<h2>Download CLI Tools</h2><p>Alt text</p>">
-<img class=lazyload src=/svg/loading.min.svg data-src=resources/images/cli_tools.png data-srcset="/iaac-aro/resources/images/cli_tools.png, resources/images/cli_tools.png 1.5x, /iaac-aro/resources/images/cli_tools.png 2x" data-sizes=auto alt=/iaac-aro/resources/images/cli_tools.png>
-</a><figcaption class=image-caption>Download CLI Tools</figcaption>
-</figure></p>
-<h3 id=connect-with-cli-tools>Connect with CLI Tools</h3>
-<p>Open current user profile (right upper corner) and click on &ldquo;Copy Login Command&rdquo;:
-<figure><a class=lightgallery href=/iaac-aro/resources/images/login_command.png title="Alt text" data-thumbnail=/iaac-aro/resources/images/login_command.png data-sub-html="<h2>Copy Login Command</h2><p>Alt text</p>">
-<img class=lazyload src=/svg/loading.min.svg data-src=resources/images/login_command.png data-srcset="/iaac-aro/resources/images/login_command.png, resources/images/login_command.png 1.5x, /iaac-aro/resources/images/login_command.png 2x" data-sizes=auto alt=/iaac-aro/resources/images/login_command.png>
-</a><figcaption class=image-caption>Copy Login Command</figcaption>
-</figure>
-Copy and paste login command to your console:
-<figure><a class=lightgallery href=/iaac-aro/resources/images/login.png title="Alt text" data-thumbnail=/iaac-aro/resources/images/login.png data-sub-html="<h2>Log in with this token</h2><p>Alt text</p>">
-<img class=lazyload src=/svg/loading.min.svg data-src=resources/images/login.png data-srcset="/iaac-aro/resources/images/login.png, resources/images/login.png 1.5x, /iaac-aro/resources/images/login.png 2x" data-sizes=auto alt=/iaac-aro/resources/images/login.png>
-</a><figcaption class=image-caption>Log in with this token</figcaption>
-</figure>
-Test connectivity:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>oc get nodes
-</code></pre></div><h2 id=deploying-an-example-application>Deploying an example application</h2>
-<p>Deploying to OpenShift:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># Create namespace</span>
-oc create namespace <span class=nb>test</span>
-<span class=c1># Deploy apps</span>
-oc apply -f example.yaml --namespace <span class=nb>test</span>
-</code></pre></div><p>Setting access to deployed app:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># Retrieve your IP public address using curl</span>
-<span class=nv>CURRENT_IP</span><span class=o>=</span><span class=k>$(</span>curl ifconfig.me<span class=k>)</span>
-<span class=c1># Retrieve your IP public address using dig</span>
-<span class=nv>CURRENT_IP</span><span class=o>=</span><span class=k>$(</span>dig @resolver1.opendns.com ANY myip.opendns.com +short<span class=k>)</span>
-<span class=c1># or visit https://www.whatismyip.com/ and set manually:</span>
-<span class=nv>CURRENT_IP</span><span class=o>=</span><span class=s2>&#34;xxx.xxx.xxx.xxx&#34;</span>
-</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># list all running services</span>
-oc get services --namespace <span class=nb>test</span>
-<span class=c1># Save service IP to variable</span>
-<span class=nv>SERVICE_IP</span><span class=o>=</span><span class=k>$(</span>oc get svc voting-app --namespace <span class=nb>test</span> -o <span class=nv>jsonpath</span><span class=o>=</span><span class=s1>&#39;{.status.loadBalancer.ingress[*].ip}&#39;</span><span class=k>)</span>
-
-<span class=c1># Create a rule to enable incoming traffic from load balancer</span>
-az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;IN-ALLOW-WEB&#34;</span> --priority <span class=m>600</span> <span class=se>\
-</span><span class=se></span>    --source-address-prefixes <span class=s2>&#34;</span><span class=nv>$CURRENT_IP</span><span class=s2>&#34;</span> <span class=se>\
-</span><span class=se></span>    --destination-port-ranges <span class=s1>&#39;80&#39;</span> <span class=se>\
-</span><span class=se></span>    --destination-address-prefixes <span class=s2>&#34;</span><span class=nv>$SERVICE_IP</span><span class=s2>&#34;</span> --access Allow <span class=se>\
-</span><span class=se></span>    --description <span class=s2>&#34;Intra test application.&#34;</span>
-</code></pre></div><p>Go to:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>echo</span> http://<span class=nv>$SERVICE_IP</span>
-</code></pre></div><h2 id=resources>Resources</h2>
-<p><a href=https://docs.microsoft.com/en-us/azure/openshift/tutorial-create-cluster target=_blank rel="noopener noreferrer">https://docs.microsoft.com/en-us/azure/openshift/tutorial-create-cluster</a></p>
-</div><div class=post-footer id=post-footer>
-<div class=post-info>
-<div class=post-info-line>
-<div class=post-info-mod>
-<span>Updated on 2021-09-23</span>
-</div>
-<div class=post-info-license></div>
-</div>
-<div class=post-info-line>
-<div class=post-info-md><span>
-<a class=link-to-markdown href=/iaac-aro/index.md target=_blank rel="noopener noreferrer">Read Markdown</a>
-</span></div>
-<div class=post-info-share>
-<span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/iaac-aro/ data-title="Creating Azure Red Hat OpenShift 4 cluster" data-hashtags=azure,aro,openshift><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/iaac-aro/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/iaac-aro/ data-title="Creating Azure Red Hat OpenShift 4 cluster" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/iaac-aro/ data-title="Creating Azure Red Hat OpenShift 4 cluster"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/iaac-aro/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/iaac-aro/ data-title="Creating Azure Red Hat OpenShift 4 cluster"><i class="fab fa-evernote fa-fw"></i></a></span>
-</div>
-</div>
-</div>
-<div class=post-info-more>
-<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/azure/>azure</a>,&nbsp;<a href=/tags/aro/>aro</a>,&nbsp;<a href=/tags/openshift/>openshift</a></section>
-<section>
-<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span>
-</section>
-</div>
-<div class=post-nav><a href=/jenkins-creating-dynamic-project-folders-with-job-dsl/ class=prev rel=prev title="Jenkins - Creating Dynamic Project Folders with Job DSL"><i class="fas fa-angle-left fa-fw"></i>Jenkins - Creating Dynamic Project Folders with Job DSL</a>
-<a href=/azure-functions-system-integration/ class=next rel=next title="Transfer data between two systems using Azure functions">Transfer data between two systems using Azure functions<i class="fas fa-angle-right fa-fw"></i></a></div>
-</div>
-<div id=comments><div id=disqus_thread class=comment></div><noscript>
-Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.
-</noscript></div></article></div>
-</main><footer class=footer>
-<div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
-</div>
-</footer></div>
-<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
-<i class="fas fa-arrow-up fa-fw"></i>
-</a><a href=# id=view-comments class=fixed-button title="View Comments">
-<i class="fas fa-comment fa-fw"></i>
-</a>
-</div><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body>
-</html>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=blog.pavelsklenar.com><span class=header-title-pre><i class="fas fa-code-branch fa-fw"></i></span>blog.pavelsklenar.com</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a class=menu-item href=/about/ title>About</a><a class=menu-item href=https://github.com/pajikos title=GitHub rel="noopener noreferrer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Creating Azure Red Hat OpenShift 4 cluster</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Pavel Sklenar</a></span>&nbsp;<span class=post-category>included in <a href=/categories/azure/><i class="far fa-folder fa-fw"></i>azure</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-09-23>2021-09-23</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1315 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#create-azure-red-hat-openshift-4-aro-cluster>Create Azure Red Hat OpenShift 4 (ARO) cluster</a><ul><li><a href=#prepare-environment>Prepare environment</a></li><li><a href=#networking>Networking</a></li><li><a href=#setup-permissions>Setup permissions</a></li><li><a href=#creating-azure-red-hat-openshift-4-cluster>Creating Azure Red Hat OpenShift 4 cluster</a></li><li><a href=#image-pull-secrets>Image pull secrets</a></li><li><a href=#securing-aro>Securing ARO</a></li></ul></li><li><a href=#setup-connectivity-to-aro-cluster>Setup connectivity to ARO cluster</a><ul><li><a href=#access-to-openshift-web-console>Access to OpenShift Web Console</a></li><li><a href=#connect-with-cli-tools>Connect with CLI Tools</a></li></ul></li><li><a href=#deploying-an-example-application>Deploying an example application</a></li><li><a href=#resources>Resources</a></li></ul></nav></div></div><div class=content id=content><p>You can find here the guide:</p><ul><li>how to create an Azure Red Hat OpenShift 4 (ARO) cluster,</li><li>how to setup connectivity to the new ARO cluster,</li><li>how to deploy an example application.</li></ul><div class="details admonition note open"><div class="details-summary admonition-title"><i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>The full example with all resources could be found <a href=https://github.com/pajikos/cloud-samples/tree/master/iaac-aro target=_blank rel="noopener noreferrer">here</a> on GitHub.</div></div></div><h2 id=create-azure-red-hat-openshift-4-aro-cluster>Create Azure Red Hat OpenShift 4 (ARO) cluster</h2><h3 id=prepare-environment>Prepare environment</h3><p>Set the correct subsription:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>az account <span class=nb>set</span> -s TestingSubscription
+</span></span></code></pre></div><p>The file .env contains variables used in many places here to avoid typo bugs:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>source</span> .envrc
+</span></span></code></pre></div><p>Create a new resource group:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>az group create <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --name <span class=nv>$RESOURCEGROUP</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --location <span class=nv>$LOCATION</span>
+</span></span></code></pre></div><p>To by able to deploy ARO, these providers must be registeted:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># Register the Microsoft.RedHatOpenShift resource provider:</span>
+</span></span><span class=line><span class=cl>az provider register -n Microsoft.RedHatOpenShift --wait
+</span></span><span class=line><span class=cl><span class=c1># Register the Microsoft.Compute resource provider:</span>
+</span></span><span class=line><span class=cl>az provider register -n Microsoft.Compute --wait
+</span></span><span class=line><span class=cl><span class=c1># Register the Microsoft.Storage resource provider:</span>
+</span></span><span class=line><span class=cl>az provider register -n Microsoft.Storage --wait
+</span></span><span class=line><span class=cl><span class=c1># Register the Microsoft.Authorization resource provider:</span>
+</span></span><span class=line><span class=cl>az provider register -n Microsoft.Authorization --wait
+</span></span></code></pre></div><h3 id=networking>Networking</h3><p>It will be created 2 subnets inside aro-vnet:</p><ul><li>master-subnet</li><li>worker-subnet</li></ul><table><thead><tr><th>Network Name</th><th>Network Address</th><th>Usable Host Range</th><th>Broadcast Address</th></tr></thead><tbody><tr><td>aro-vnet</td><td>10.0.0.0/22</td><td>10.0.0.1 - 10.0.3.254</td><td>10.0.3.255</td></tr><tr><td>master-subnet</td><td>10.0.0.0/23</td><td>10.0.0.1 - 10.0.1.254</td><td>10.0.1.255</td></tr><tr><td>worker-subnet</td><td>10.0.2.0/23</td><td>10.0.2.1 - 10.0.3.254</td><td>10.0.3.255</td></tr></tbody></table><p>The ARO requires a special subnet for worker and master nodes, so create a new vnet first:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>az network vnet create <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>   --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>   --name aro-vnet <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>   --address-prefixes 10.0.0.0/22
+</span></span></code></pre></div><p>Create subnet for master nodes:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>az network vnet subnet create <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --vnet-name aro-vnet <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --name master-subnet <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --address-prefixes 10.0.0.0/23 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --service-endpoints Microsoft.ContainerRegistry
+</span></span></code></pre></div><p>Create subnet for worker nodes:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>az network vnet subnet create <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --vnet-name aro-vnet <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --name worker-subnet <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --address-prefixes 10.0.2.0/23 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --service-endpoints Microsoft.ContainerRegistry
+</span></span></code></pre></div><p>Disable subnet private endpoint policies on the master subnet. This is required for the service to be able to connect to and manage the cluster:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>az network vnet subnet update <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --name master-subnet <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --vnet-name aro-vnet <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --disable-private-link-service-network-policies <span class=nb>true</span>
+</span></span></code></pre></div><h3 id=setup-permissions>Setup permissions</h3><p>Create a new service principal (AAD role owner reqiured):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>az ad sp create-for-rbac -n <span class=s2>&#34;</span><span class=si>${</span><span class=nv>PREFIX</span><span class=si>}</span><span class=s2>arosp&#34;</span> --skip-assignment
+</span></span></code></pre></div><p>Take appId and password and set it:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>APPID</span><span class=o>=</span><span class=s2>&#34;changeit&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>PASSWORD</span><span class=o>=</span><span class=s2>&#34;changeit&#34;</span>
+</span></span></code></pre></div><div class="details admonition tip open"><div class="details-summary admonition-title"><i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>More info about creating service principals: <a href=https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal#delegate-access-to-other-azure-resources target=_blank rel="noopener noreferrer">https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal#delegate-access-to-other-azure-resources</a></div></div></div><p>Obtain the full registry ID and VNETID for adding roles:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>ACR_REGISTRY_ID</span><span class=o>=</span><span class=k>$(</span>az acr show --name <span class=nv>$ACR_NAME</span> --query id --output tsv<span class=k>)</span>
+</span></span><span class=line><span class=cl><span class=nv>VNETID</span><span class=o>=</span><span class=k>$(</span>az network vnet show -g <span class=nv>$RESOURCEGROUP</span> --name aro-vnet --query id -o tsv<span class=k>)</span>
+</span></span></code></pre></div><p>Assign role to service principal (AAD role Owner required):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># Assign SP Permission to VNET</span>
+</span></span><span class=line><span class=cl>az role assignment create --assignee <span class=nv>$APPID</span> --scope <span class=nv>$VNETID</span> --role <span class=s2>&#34;Network Contributor&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># Assign SP Permission to ACR</span>
+</span></span><span class=line><span class=cl>az role assignment create --assignee <span class=nv>$APPID</span> --scope <span class=nv>$ACR_REGISTRY_ID</span> --role acrpull
+</span></span></code></pre></div><div class="details admonition tip open"><div class="details-summary admonition-title"><i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>For more info about accessing ACR with SP visit <a href=https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal target=_blank rel="noopener noreferrer">https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal</a></div></div></div><h3 id=creating-azure-red-hat-openshift-4-cluster>Creating Azure Red Hat OpenShift 4 cluster</h3><p>All command before were just preparing for ARO deployment:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>az aro create <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --name <span class=nv>$CLUSTER</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --vnet aro-vnet <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --master-subnet master-subnet <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --worker-subnet worker-subnet <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --client-id <span class=nv>$APPID</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --client-secret <span class=nv>$PASSWORD</span>
+</span></span></code></pre></div><h3 id=image-pull-secrets>Image pull secrets</h3><p>Kubernetes uses an image pull secret to store information needed to authenticate to your registry. To create the pull secret for an Azure container registry, you provide the service principal ID, password, and the registry URL.</p><p>Create an image pull secret with the following kubectl command:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>oc create secret docker-registry acr-secret <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --namespace <span class=nb>test</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --docker-server<span class=o>=</span><span class=nv>$ACR_NAME</span>.azurecr.io <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --docker-username<span class=o>=</span><span class=nv>$APPID</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --docker-password<span class=o>=</span><span class=nv>$PASSWORD</span>
+</span></span></code></pre></div><div class="details admonition tip open"><div class="details-summary admonition-title"><i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content><p>Tip for copy existing secret from another namespace to default namespace:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>oc get secret acr-secret --namespace<span class=o>=</span><span class=nb>test</span> -o yaml <span class=p>|</span> grep -v <span class=s1>&#39;^\s*namespace:\s&#39;</span> <span class=p>|</span> oc apply --namespace<span class=o>=</span>default -f -
+</span></span></code></pre></div></div></div></div><p>Once you&rsquo;ve created the image pull secret, you can use it to create Kubernetes pods and deployments. Provide the name of the secret under imagePullSecrets in the deployment file. For example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>my-awesome-app-pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>awesomeapps</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>main-app-container</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>sklenaracr.azurecr.io/my-awesome-app:v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>imagePullPolicy</span><span class=p>:</span><span class=w> </span><span class=l>IfNotPresent</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>imagePullSecrets</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>acr-secret</span><span class=w>
+</span></span></span></code></pre></div><h3 id=securing-aro>Securing ARO</h3><p>Create NSG and assign to aro-vnet:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># Create NSG</span>
+</span></span><span class=line><span class=cl>az network nsg create -g <span class=nv>$RESOURCEGROUP</span> -n <span class=s2>&#34;aro-nsg&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># Assing it to master-subnet</span>
+</span></span><span class=line><span class=cl>az network vnet subnet update -g <span class=nv>$RESOURCEGROUP</span> -n master-subnet --vnet-name aro-vnet --network-security-group <span class=s2>&#34;aro-nsg&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># Assign it to worker-subnet</span>
+</span></span><span class=line><span class=cl>az network vnet subnet update -g <span class=nv>$RESOURCEGROUP</span> -n worker-subnet --vnet-name aro-vnet --network-security-group <span class=s2>&#34;aro-nsg&#34;</span>
+</span></span></code></pre></div><p>Create NSG rule for API server:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;apiserver_in&#34;</span> --priority <span class=m>101</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --source-address-prefixes <span class=s2>&#34;</span><span class=nv>$CURRENT_IP</span><span class=s2>&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-port-ranges <span class=s1>&#39;6443&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> --access Allow <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --description <span class=s2>&#34;API Server IN.&#34;</span>
+</span></span></code></pre></div><p>Setup inbound rules:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># Take ingress ip from ARO create stdout result:</span>
+</span></span><span class=line><span class=cl><span class=c1>#&#34;ingressProfiles&#34;: [</span>
+</span></span><span class=line><span class=cl><span class=c1>#    {</span>
+</span></span><span class=line><span class=cl><span class=c1>#      &#34;ip&#34;: &#34;xxx.xxx.xxx.xxx&#34;,</span>
+</span></span><span class=line><span class=cl><span class=c1>#      &#34;name&#34;: &#34;default&#34;,</span>
+</span></span><span class=line><span class=cl><span class=c1>#      &#34;visibility&#34;: &#34;Public&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1>#    }</span>
+</span></span><span class=line><span class=cl><span class=c1>#  ],</span>
+</span></span><span class=line><span class=cl><span class=nv>INGRESS_IP</span><span class=o>=</span><span class=s2>&#34;xxx.xxx.xxx.xxx&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1>#or</span>
+</span></span><span class=line><span class=cl><span class=nv>INGRESS_IP</span><span class=o>=</span><span class=k>$(</span>az aro show <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --name <span class=nv>$CLUSTER</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --query <span class=s2>&#34;ingressProfiles[0].ip&#34;</span> -o tsv<span class=k>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;ingress-443&#34;</span> --priority <span class=m>501</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --source-address-prefixes <span class=s2>&#34;</span><span class=nv>$CURRENT_IP</span><span class=s2>&#34;</span>  <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-port-ranges <span class=s1>&#39;443&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-address-prefixes <span class=s2>&#34;</span><span class=nv>$INGRESS_IP</span><span class=s2>&#34;</span> --access Allow <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --description <span class=s2>&#34;Ingress Allow IN.&#34;</span>
+</span></span></code></pre></div><p>Setup outbound rules (All outbound traffic is enabled by default):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># Allow ntp outbound</span>
+</span></span><span class=line><span class=cl>az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;OUT-ALLOW-NTP&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --priority <span class=m>300</span> --source-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> <span class=s2>&#34;10.0.2.0/23&#34;</span> --destination-address-prefixes <span class=s2>&#34;Internet&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-port-ranges <span class=s1>&#39;123&#39;</span> --direction Outbound --access Allow --protocol Udp --description <span class=s2>&#34;NTP&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Allow https outbound</span>
+</span></span><span class=line><span class=cl>az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;OUT-ALLOW-HTTPS&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --priority <span class=m>301</span> --source-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> <span class=s2>&#34;10.0.2.0/23&#34;</span> --destination-address-prefixes <span class=s2>&#34;Internet&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-port-ranges <span class=s1>&#39;443&#39;</span> --direction Outbound --access Allow --protocol Tcp --description <span class=s2>&#34;HTTPS&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Allow dns tcp outbound</span>
+</span></span><span class=line><span class=cl>az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;OUT-ALLOW-DNS-TCP&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --priority <span class=m>302</span> --source-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> <span class=s2>&#34;10.0.2.0/23&#34;</span> --destination-address-prefixes <span class=s2>&#34;Internet&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-port-ranges <span class=s1>&#39;53&#39;</span> --direction Outbound --access Allow --protocol Tcp --description <span class=s2>&#34;DNS TCP&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Alow dns udp outbound</span>
+</span></span><span class=line><span class=cl>az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;OUT-ALLOW-DNS-UDP&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --priority <span class=m>303</span> --source-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> <span class=s2>&#34;10.0.2.0/23&#34;</span> --destination-address-prefixes <span class=s2>&#34;Internet&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-port-ranges <span class=s1>&#39;53&#39;</span> --direction Outbound --access Allow --protocol Udp --description <span class=s2>&#34;DNS Udp&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Allow intra vnet communication</span>
+</span></span><span class=line><span class=cl>az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;OUT-ALLOW-ARO-VNET&#34;</span> --priority <span class=m>400</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --source-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> <span class=s2>&#34;10.0.2.0/23&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-port-ranges <span class=s1>&#39;*&#39;</span> --direction Outbound <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-address-prefixes <span class=s2>&#34;10.0.0.0/23&#34;</span> <span class=s2>&#34;10.0.2.0/23&#34;</span> --access Allow <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --description <span class=s2>&#34;Intra vnet communication.&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Default deny all outbound traffic</span>
+</span></span><span class=line><span class=cl>az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;OUT-DENY-ALL&#34;</span> --priority <span class=m>4096</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --source-address-prefixes <span class=s2>&#34;*&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-port-ranges <span class=s1>&#39;*&#39;</span> --direction Outbound <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-address-prefixes <span class=s2>&#34;*&#34;</span> --access Deny <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --description <span class=s2>&#34;Deny outbound.&#34;</span>
+</span></span></code></pre></div><h2 id=setup-connectivity-to-aro-cluster>Setup connectivity to ARO cluster</h2><p>Set connectivity to Azure:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>az login <span class=c1># follow instructions</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># List of subscriptions</span>
+</span></span><span class=line><span class=cl>az account list -o table
+</span></span><span class=line><span class=cl><span class=c1># Select TestingSubscription</span>
+</span></span><span class=line><span class=cl>az account <span class=nb>set</span> -s TestingSubscription
+</span></span></code></pre></div><h3 id=access-to-openshift-web-console>Access to OpenShift Web Console</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>source</span> .envrc
+</span></span><span class=line><span class=cl><span class=c1># The simple way</span>
+</span></span><span class=line><span class=cl>az aro list-credentials <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --name <span class=nv>$CLUSTER</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --resource-group <span class=nv>$RESOURCEGROUP</span>
+</span></span></code></pre></div><p>The following example output shows what the password will be in kubeadminPassword:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>{
+</span></span></span><span class=line><span class=cl><span class=go>  &#34;kubeadminPassword&#34;: &#34;&lt;generated password&gt;&#34;,
+</span></span></span><span class=line><span class=cl><span class=go>  &#34;kubeadminUsername&#34;: &#34;kubeadmin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>}
+</span></span></span></code></pre></div><p>You can find the cluster console URL by running the following command, which will look like this:
+<a href=https://console-openshift-console.apps.xxxxx.westeurope.aroapp.io/ target=_blank rel="noopener noreferrer">https://console-openshift-console.apps.xxxxx.westeurope.aroapp.io/</a></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>az aro show <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --name <span class=nv>$CLUSTER</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --resource-group <span class=nv>$RESOURCEGROUP</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --query <span class=s2>&#34;consoleProfile.url&#34;</span> -o tsv
+</span></span></code></pre></div><p>Once you&rsquo;re logged into the OpenShift Web Console, click on the ? on the top right and then on Command Line Tools. Download the release appropriate to your machine.</p><p>You can download client tools here:
+<a href=https://console-openshift-console.apps.xxxxx.westeurope.aroapp.io/command-line-tools target=_blank rel="noopener noreferrer">https://console-openshift-console.apps.xxxxx.westeurope.aroapp.io/command-line-tools</a></p><p>or directly from WEB Console:<figure><a class=lightgallery href=/iaac-aro/resources/images/cli_tools.png title="Alt text" data-thumbnail=/iaac-aro/resources/images/cli_tools.png data-sub-html="<h2>Download CLI Tools</h2><p>Alt text</p>"><img class=lazyload src=/svg/loading.min.svg data-src=resources/images/cli_tools.png data-srcset="/iaac-aro/resources/images/cli_tools.png, resources/images/cli_tools.png 1.5x, /iaac-aro/resources/images/cli_tools.png 2x" data-sizes=auto alt=/iaac-aro/resources/images/cli_tools.png></a><figcaption class=image-caption>Download CLI Tools</figcaption></figure></p><h3 id=connect-with-cli-tools>Connect with CLI Tools</h3><p>Open current user profile (right upper corner) and click on &ldquo;Copy Login Command&rdquo;:<figure><a class=lightgallery href=/iaac-aro/resources/images/login_command.png title="Alt text" data-thumbnail=/iaac-aro/resources/images/login_command.png data-sub-html="<h2>Copy Login Command</h2><p>Alt text</p>"><img class=lazyload src=/svg/loading.min.svg data-src=resources/images/login_command.png data-srcset="/iaac-aro/resources/images/login_command.png, resources/images/login_command.png 1.5x, /iaac-aro/resources/images/login_command.png 2x" data-sizes=auto alt=/iaac-aro/resources/images/login_command.png></a><figcaption class=image-caption>Copy Login Command</figcaption></figure>Copy and paste login command to your console:<figure><a class=lightgallery href=/iaac-aro/resources/images/login.png title="Alt text" data-thumbnail=/iaac-aro/resources/images/login.png data-sub-html="<h2>Log in with this token</h2><p>Alt text</p>"><img class=lazyload src=/svg/loading.min.svg data-src=resources/images/login.png data-srcset="/iaac-aro/resources/images/login.png, resources/images/login.png 1.5x, /iaac-aro/resources/images/login.png 2x" data-sizes=auto alt=/iaac-aro/resources/images/login.png></a><figcaption class=image-caption>Log in with this token</figcaption></figure>Test connectivity:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>oc get nodes
+</span></span></code></pre></div><h2 id=deploying-an-example-application>Deploying an example application</h2><p>Deploying to OpenShift:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># Create namespace</span>
+</span></span><span class=line><span class=cl>oc create namespace <span class=nb>test</span>
+</span></span><span class=line><span class=cl><span class=c1># Deploy apps</span>
+</span></span><span class=line><span class=cl>oc apply -f example.yaml --namespace <span class=nb>test</span>
+</span></span></code></pre></div><p>Setting access to deployed app:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># Retrieve your IP public address using curl</span>
+</span></span><span class=line><span class=cl><span class=nv>CURRENT_IP</span><span class=o>=</span><span class=k>$(</span>curl ifconfig.me<span class=k>)</span>
+</span></span><span class=line><span class=cl><span class=c1># Retrieve your IP public address using dig</span>
+</span></span><span class=line><span class=cl><span class=nv>CURRENT_IP</span><span class=o>=</span><span class=k>$(</span>dig @resolver1.opendns.com ANY myip.opendns.com +short<span class=k>)</span>
+</span></span><span class=line><span class=cl><span class=c1># or visit https://www.whatismyip.com/ and set manually:</span>
+</span></span><span class=line><span class=cl><span class=nv>CURRENT_IP</span><span class=o>=</span><span class=s2>&#34;xxx.xxx.xxx.xxx&#34;</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># list all running services</span>
+</span></span><span class=line><span class=cl>oc get services --namespace <span class=nb>test</span>
+</span></span><span class=line><span class=cl><span class=c1># Save service IP to variable</span>
+</span></span><span class=line><span class=cl><span class=nv>SERVICE_IP</span><span class=o>=</span><span class=k>$(</span>oc get svc voting-app --namespace <span class=nb>test</span> -o <span class=nv>jsonpath</span><span class=o>=</span><span class=s1>&#39;{.status.loadBalancer.ingress[*].ip}&#39;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Create a rule to enable incoming traffic from load balancer</span>
+</span></span><span class=line><span class=cl>az network nsg rule create -g <span class=nv>$RESOURCEGROUP</span> --nsg-name <span class=s2>&#34;aro-nsg&#34;</span> -n <span class=s2>&#34;IN-ALLOW-WEB&#34;</span> --priority <span class=m>600</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --source-address-prefixes <span class=s2>&#34;</span><span class=nv>$CURRENT_IP</span><span class=s2>&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-port-ranges <span class=s1>&#39;80&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --destination-address-prefixes <span class=s2>&#34;</span><span class=nv>$SERVICE_IP</span><span class=s2>&#34;</span> --access Allow <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --description <span class=s2>&#34;Intra test application.&#34;</span>
+</span></span></code></pre></div><p>Go to:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>echo</span> http://<span class=nv>$SERVICE_IP</span>
+</span></span></code></pre></div><h2 id=resources>Resources</h2><p><a href=https://docs.microsoft.com/en-us/azure/openshift/tutorial-create-cluster target=_blank rel="noopener noreferrer">https://docs.microsoft.com/en-us/azure/openshift/tutorial-create-cluster</a></p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2021-09-23</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/iaac-aro/index.md target=_blank rel="noopener noreferrer">Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://blog.pavelsklenar.com/iaac-aro/ data-title="Creating Azure Red Hat OpenShift 4 cluster" data-hashtags=azure,aro,openshift><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://blog.pavelsklenar.com/iaac-aro/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://blog.pavelsklenar.com/iaac-aro/ data-title="Creating Azure Red Hat OpenShift 4 cluster" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://blog.pavelsklenar.com/iaac-aro/ data-title="Creating Azure Red Hat OpenShift 4 cluster"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Pocket" data-sharer=pocket data-url=https://blog.pavelsklenar.com/iaac-aro/><i class="fab fa-get-pocket fa-fw"></i></a><a href=javascript:void(0); title="Share on Evernote" data-sharer=evernote data-url=https://blog.pavelsklenar.com/iaac-aro/ data-title="Creating Azure Red Hat OpenShift 4 cluster"><i class="fab fa-evernote fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/azure/>azure</a>,&nbsp;<a href=/tags/aro/>aro</a>,&nbsp;<a href=/tags/openshift/>openshift</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/jenkins-creating-dynamic-project-folders-with-job-dsl/ class=prev rel=prev title="Jenkins - Creating Dynamic Project Folders with Job DSL"><i class="fas fa-angle-left fa-fw"></i>Jenkins - Creating Dynamic Project Folders with Job DSL</a>
+<a href=/azure-functions-system-integration/ class=next rel=next title="Transfer data between two systems using Azure functions">Transfer data between two systems using Azure functions<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=disqus_thread class=comment></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://disqus.com/?ref_noscript>Disqus</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2015 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer">Pavel Sklenar</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=https://pavelsklenar.disqus.com/embed.js defer></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:70},comment:{},search:{algoliaAppID:"FCUIGZY2I2",algoliaIndex:"index.en",algoliaSearchKey:"c8c5599716aec462e125eea72ac52f41",highlightTag:"em",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"algolia"}}</script><script type=text/javascript src=/js/theme.min.47a1ff73dc443ed4a9f13e3134f6058e8c6d21248b35d03e7d64f56345190c3e.js integrity="sha256-R6H/c9xEPtSp8T4xNPYFjoxtISSLNdA+fWT1Y0UZDD4="></script></body></html>
