@@ -51,6 +51,13 @@ target = "content/posts/two-node-nomad-cluster/index.md"
 source = "content/cloud-samples/two-node-nomad-cluster"
 target = "content/posts/two-node-nomad-cluster"
 
+[[module.mounts]]
+source = "content/cloud-samples/azure-functions-in-k8s/README.md"
+target = "content/posts/azure-functions-in-k8s/index.md"
+
+[[module.mounts]]
+source = "content/cloud-samples/azure-functions-in-k8s"
+target = "content/posts/azure-functions-in-k8s"
 
 [[module.mounts]]
 source = "content/posts"
